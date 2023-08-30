@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:latest
+    container_name: my-mysql-container
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234  # Replace with your desired root password
+      MYSQL_DATABASE: sistema_generico       # Replace with the desired database name
+      MYSQL_USER: vitor           # Replace with the desired database user
+      MYSQL_PASSWORD: 1234   # Replace with the desired database password
+    ports:
+      - "3306:3306"  # Map container's port 3306 to host's port 3306 (MySQL default port)
+    volumes:
+      - mysql-data:/var/lib/mysql              # Mount a volume to persist MySQL data
+
+volumes:
+  mysql-data:  # Define a named volume for MySQL data persistence
