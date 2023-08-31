@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\MaterialController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,19 +14,10 @@ use App\Http\Controllers\API\AuthController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-Route::middleware('api')
-->prefix('auth')
-->group(base_path('routes/api/auth.php'));
 
-Route::middleware('api')
-->prefix('servico')
-->group(base_path('routes/api/servico.php'));
-
-Route::middleware('api')
-->prefix('material')
-->group(base_path('routes/api/material.php'));
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::controller(MaterialController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
 });
-
