@@ -16,8 +16,5 @@ use App\Http\Controllers\API\MaterialController;
 */
 
 Route::controller(MaterialController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
+    
 });
