@@ -22,6 +22,10 @@ Route::middleware('api')
 ->prefix('servico')
 ->group(base_path('routes/api/servico.php'));
 
+Route::middleware('api')
+->prefix('servicoTipo')
+->group(base_path('routes/api/servicoTipo.php'));
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
