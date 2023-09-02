@@ -30,6 +30,10 @@ Route::middleware('api')
 ->prefix('material')
 ->group(base_path('routes/api/material.php'));
 
+Route::middleware('api')
+->prefix('estoque')
+->group(base_path('routes/api/estoque.php'));
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
