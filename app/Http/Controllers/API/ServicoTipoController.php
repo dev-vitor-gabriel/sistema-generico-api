@@ -8,46 +8,39 @@ use Illuminate\Http\Request;
 
 class ServicoTipoController extends Controller
 {
-     // create
-     public function create(Request $request) {
-        
-        $request->validate([
-            'des_servico_tipo_stp' => 'required|string|max:255'
-        ]); 
+    public function create(Request $request) {
 
-        $servicoTipo = ServicoTipo::create([
+        $request->validate([
+            'des_servico_tipo_stp' => 'required|string|max:255',
+        ]);
+
+        $servico_tipo = ServicoTipo::create([
             'des_servico_tipo_stp' => $request->des_servico_tipo_stp,
             'is_ativo_stp' => 1,
         ]);
 
-        return response()->json([
-            'message' => 'Service type created successfully',
-            'service' => $servicoTipo
-        ]);
+        return response()->json($servico_tipo,201);
     }
 
-    // read all
-    public function getAll() {
+    public function get(Int $id_servico_tipo = null) {
+        if($id_servico_tipo){
+            $data = ServicoTipo::getById(($id_servico_tipo));
+            return $data;
+        }
         $data = ServicoTipo::getAll();
         return $data;
     }
 
-    // read by id
-    public function getById(Request $request) {
-        $data = ServicoTipo::getById(($request->id_servico_tipo_stp));
-        return $data;
-    }
-
-    // update
-    public function updateServiceType(Request $request) {
-        $data = ServicoTipo::updateServiceType($request);
-        return $data;
+    public function update(Int $id_servico_tipo, Request $request) {
+        $request->validate([
+            'des_servico_tipo_stp' => 'required|string|max:255',
+        ]);
+        ServicoTipo::updateReg($id_servico_tipo, $request);
     }
 
     // delete (inactivate)
-    public function deleteServiceType(Request $request) {
-        $data = ServicoTipo::deleteServiceType($request->id_servico_tipo_stp);
-        return $data;
+    public function delete(Int $id_servico_tipo) {
+        ServicoTipo::deleteReg($id_servico_tipo);
     }
- 
 }
+

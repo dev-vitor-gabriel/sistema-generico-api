@@ -16,9 +16,9 @@ use App\Http\Controllers\API\ServicoTipoController;
 */
 
 Route::controller(ServicoTipoController::class)->group(function () {
-    Route::post('create', 'create');
-    Route::get('getAll', 'getAll');
-    Route::post('getById', 'getById');
-    Route::post('updateServiceType', 'updateServiceType');
-    Route::post('deleteServiceType', 'deleteServiceType');
+    Route::post('', 'create');
+    Route::get('{id_material}', 'get');
+    Route::get('', 'get');
+    Route::put('{id_material}', 'update');
+    Route::delete('{id_material}', 'delete');
 });
