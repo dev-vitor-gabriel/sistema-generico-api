@@ -36,7 +36,10 @@ class Cliente extends Model
     public static function updateReg(Int $id_cliente, $obj) {
         Cliente::where('id_cliente_cli', $id_cliente)
         ->update([
-            'des_material_mte' => $obj->des_material_mte
+            'des_cliente_cli' => $obj->des_cliente_cli,
+            'telefone_cliente_cli' => $obj->telefone_cliente_cli,
+            'documento_cliente_cli' => $obj->documento_cliente_cli,
+            'endereco_cliente_cli' => $obj->endereco_cliente_cli
         ]);
     }
 
