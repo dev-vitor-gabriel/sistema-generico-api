@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Menu;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,12 +32,14 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        $menu = Menu::getAll();
         return response()->json([
             'user' => $user,
             'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
-            ]
+            ],
+            'menu' => $menu
         ]);
     }
 
