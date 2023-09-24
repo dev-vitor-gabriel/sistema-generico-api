@@ -11,12 +11,14 @@ class UnidadeController extends Controller
     public function create(Request $request) {
 
         $request->validate([
-            'des_unidade_und' => 'required|string|max:255',
+            'des_unidade_und'       => 'required|string|max:255',
+            'des_reduz_unidade_und' => 'required|string|max:255',
         ]);
 
         $servico_tipo = Unidade::create([
-            'des_unidade_und' => $request->des_unidade_und,
-            'is_ativo_stp' => 1,
+            'des_unidade_und'       => $request->des_unidade_und,
+            'des_reduz_unidade_und' => $request->des_reduz_unidade_und,
+            'is_ativo_stp'          => 1,
         ]);
 
         return response()->json($servico_tipo,201);
@@ -33,7 +35,8 @@ class UnidadeController extends Controller
 
     public function update(Int $id_unidade_und, Request $request) {
         $request->validate([
-            'des_unidade_und' => 'required|string|max:255',
+            'des_unidade_und'       => 'string|max:255',
+            'des_reduz_unidade_und' => 'string|max:255',
         ]);
         Unidade::updateReg($id_unidade_und, $request);
     }
