@@ -42,9 +42,11 @@ Route::middleware('api')
 ->prefix('cliente')
 ->group(base_path('routes/api/cliente.php'));
 
-
 Route::middleware('api')->prefix('centroCusto')
 ->group(base_path('routes/api/centroCusto.php'));
+
+Route::middleware('api')->prefix('unidade')
+->group(base_path('routes/api/unidade.php'));
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
