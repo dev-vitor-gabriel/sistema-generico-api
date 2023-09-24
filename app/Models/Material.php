@@ -52,7 +52,7 @@ class Material extends Model
                 ->where('id_material_mte', $id)
                 ->where('is_ativo_mte', 1)
                 ->get();
-                return response()->json($data);
+            return response()->json($data);
         } else {
             $data = Material::select([
                 'tb_material.id_material_mte',
