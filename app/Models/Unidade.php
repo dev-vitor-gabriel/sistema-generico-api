@@ -12,6 +12,7 @@ class Unidade extends Model
 
     protected $fillable = [
         'des_unidade_und',
+        'des_reduz_unidade_und',
         'is_ativo_und'
     ];
 
@@ -20,7 +21,7 @@ class Unidade extends Model
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null) {    
+    public static function getById(Int $id = null) {
         if($id) {
             $data = Unidade::select(['*'])->where('id_unidade_und', $id)->get();
         }else{
