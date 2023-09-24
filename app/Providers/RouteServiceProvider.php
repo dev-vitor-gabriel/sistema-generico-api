@@ -30,11 +30,45 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::middleware('api')
-                ->prefix('api')
-                ->group(base_path('routes/api.php'));
+            ->prefix('api')
+            ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+            ->group(base_path('routes/web.php'));
+
+            Route::middleware('api')
+            ->prefix('api/auth')
+            ->group(base_path('routes/api/auth.php'));
+
+            Route::middleware('api')
+            ->prefix('api/servico')
+            ->group(base_path('routes/api/servico.php'));
+
+            Route::middleware('api')
+            ->prefix('api/servicoTipo')
+            ->group(base_path('routes/api/servicoTipo.php'));
+
+            Route::middleware('api')
+            ->prefix('api/material')
+            ->group(base_path('routes/api/material.php'));
+
+            Route::middleware('api')
+            ->prefix('api/estoque')
+            ->group(base_path('routes/api/estoque.php'));
+
+            Route::middleware('api')
+            ->prefix('api/movimentacao')
+            ->group(base_path('routes/api/materialMovimentacao.php'));
+
+            Route::middleware('api')
+            ->prefix('api/cliente')
+            ->group(base_path('routes/api/cliente.php'));
+
+            Route::middleware('api')->prefix('api/centroCusto')
+            ->group(base_path('routes/api/centroCusto.php'));
+
+            Route::middleware('api')->prefix('api/unidade')
+            ->group(base_path('routes/api/unidade.php'));
         });
     }
 }
