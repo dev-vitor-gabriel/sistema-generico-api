@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('telefone_funcionario_tfu');
             $table->string('documento_funcionario_tfu');
             $table->string('endereco_funcionario_tfu');
-            $table->boolean('is_ativo_tfu');
+            $table->boolean('is_ativo_tfu')->default(true);
             $table->foreign('id_funcionario_cargo_tfu')->references('id_cargo_tcg')->on('tb_cargos');
             $table->timestamps();
         });
