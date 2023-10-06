@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use APP\Models\MetodoPagamento;
+use App\Models\MetodoPagamento;
 use Illuminate\Http\Request;
 
 class MetodoPagamentoController extends Controller

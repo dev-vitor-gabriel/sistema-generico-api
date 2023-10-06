@@ -21,7 +21,7 @@ class MetodoPagamento extends Model
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null) {    
+    public static function getById(Int $id = null) {
         if($id) {
             $data = MetodoPagamento::select(['*'])->where('id_metodo_pagamento_tmp', $id)->get();
         }else{
