@@ -18,7 +18,9 @@ return new class extends Migration
             $table->integer('vlr_servico_ser');
             $table->date('dta_agendamento_ser');
             $table->boolean('is_ativo_ser');
+            $table->unsignedBigInteger('id_situacao_ser');
             $table->unsignedBigInteger('id_funcionario_servico_ser');
+            $table->foreign('id_situacao_ser')->references('id_situacao_tsi')->on('tb_situacao');
             $table->foreign('id_funcionario_servico_ser')->references('id_funcionario_tfu')->on('tb_funcionarios');
             $table->timestamps();
         });
