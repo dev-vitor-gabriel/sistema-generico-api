@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('tb_servico_tipo', function (Blueprint $table) {
             $table->id('id_servico_tipo_stp');
             $table->string('des_servico_tipo_stp');
+            $table->integer('vlr_servico_tipo_stp');
             $table->boolean('is_ativo_stp');
             $table->timestamps();
         });
