@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('des_servico_ser', 255);
             $table->longText('txt_servico_ser');
             $table->integer('vlr_servico_ser');
-            $table->date('dta_agendamento_ser');
+            $table->date('dta_agendamento_ser')->nullable();
             $table->boolean('is_ativo_ser');
             $table->unsignedBigInteger('id_situacao_ser');
             $table->unsignedBigInteger('id_funcionario_servico_ser');
