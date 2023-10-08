@@ -17,7 +17,7 @@ class ServicoTipo extends Model
     ];
 
     public static function getAll() {
-        $data = ServicoTipo::select(['*'])->get();
+        $data = ServicoTipo::select(['*'])->where('is_ativo_stp', 1)->get();
         return response()->json($data);
     }
 
@@ -25,7 +25,7 @@ class ServicoTipo extends Model
         if($id) {
             $data = ServicoTipo::select(['*'])->where('id_servico_tipo_stp', $id)->get();
         }else{
-            $data = ServicoTipo::select(['*'])->get();
+            $data = ServicoTipo::select(['*'])->where('is_ativo_stp', 1)->where('is_ativo_stp', 1)->get();
         }
         return response()->json($data);
     }

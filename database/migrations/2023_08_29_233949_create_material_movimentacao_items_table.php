@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_movimentacao_item_mit');
             $table->integer('id_movimentacao_mit');
             $table->integer('id_material_mit');
-            $table->boolean('is_ativo_mit');
+            $table->boolean('is_ativo_mit')->default(true);
             $table->timestamps();
         });
     }
