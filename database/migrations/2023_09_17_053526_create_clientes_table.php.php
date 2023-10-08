@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id('id_cliente_cli');
             $table->string('des_cliente_cli');
             $table->string('telefone_cliente_cli');
-            $table->string('documento_cliente_cli');
-            $table->string('endereco_cliente_cli');
+            $table->string('email_cliente_cli')->nullable();
+            $table->string('documento_cliente_cli')->nullable();
+            $table->string('endereco_cliente_cli')->nullable();
             $table->boolean('is_ativo_cli');
             $table->timestamps();
         });
