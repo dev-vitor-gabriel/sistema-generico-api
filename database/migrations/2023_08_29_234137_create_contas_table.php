@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id('id_conta_con');
             $table->integer('id_conta_tipo_con');
             $table->date('dta_conta_con');
-            $table->integer('vlr_conta_ser');
-            $table->boolean('is_ativo_con');
+            $table->integer('vlr_conta_con');
+            $table->boolean('is_ativo_con')->default(true);
+            $table->unsignedBigInteger('id_centro_custo_con');
+            $table->foreign('id_centro_custo_con')->references('id_centro_custo_cco')->on('tb_centro_custo');
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tb_estoque', function (Blueprint $table) {
             $table->id('id_estoque_est');
             $table->string('des_estoque_est', 255);
-            $table->boolean('is_ativo_est');
+            $table->boolean('is_ativo_est')->default(true);
             $table->timestamps();
         });
     }

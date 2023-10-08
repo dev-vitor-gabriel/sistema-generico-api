@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_unidade_mte');
             $table->string('des_material_mte', 255);
             $table->float('vlr_material_mte');
-            $table->boolean('is_ativo_mte');
+            $table->boolean('is_ativo_mte')->default(true);
             $table->foreign('id_unidade_mte')->references('id_unidade_und')->on('tb_unidade');
             $table->timestamps();
         });

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tb_conta_tipo', function (Blueprint $table) {
             $table->id('id_conta_tipo_ctp');
             $table->string('des_conta_tipo_ctp');
-            $table->boolean('is_ativo_ctp');
+            $table->boolean('is_ativo_ctp')->default(true);
             $table->timestamps();
         });
     }

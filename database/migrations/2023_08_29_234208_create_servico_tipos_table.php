@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_servico_tipo_stp');
             $table->string('des_servico_tipo_stp');
             $table->integer('vlr_servico_tipo_stp');
-            $table->boolean('is_ativo_stp');
+            $table->boolean('is_ativo_stp')->default(true);
             $table->timestamps();
         });
     }

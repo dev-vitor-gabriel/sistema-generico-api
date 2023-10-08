@@ -16,7 +16,9 @@ return new class extends Migration
             $table->longText('txt_movimentacao_mov');
             $table->integer('id_estoque_entrada_mov');
             $table->integer('id_estoque_saida_mov');
-            $table->boolean('is_ativo_mov');
+            $table->boolean('is_ativo_mov')->default(true);
+            $table->unsignedBigInteger('id_centro_custo_mov');
+            $table->foreign('id_centro_custo_mov')->references('id_centro_custo_cco')->on('tb_centro_custo');
             $table->timestamps();
         });
     }

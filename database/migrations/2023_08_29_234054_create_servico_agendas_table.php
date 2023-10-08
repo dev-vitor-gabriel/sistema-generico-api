@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_agenda_age');
             $table->dateTime('dth_agenda_age');
             $table->integer('id_servico_age');
-            $table->boolean('is_ativo_age');
+            $table->boolean('is_ativo_age')->default(true);
             $table->timestamps();
         });
     }
