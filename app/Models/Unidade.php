@@ -33,7 +33,8 @@ class Unidade extends Model
     public static function updateReg(Int $id_unidade_und, $obj) {
         Unidade::where('id_unidade_und', $id_unidade_und)
         ->update([
-            'des_unidade_und' => $obj->des_unidade_und,
+            'des_unidade_und'       => $obj->des_unidade_und,
+            'des_reduz_unidade_und' => $obj->des_reduz_unidade_und
         ]);
     }
 
