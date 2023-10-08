@@ -17,7 +17,7 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => null,
             'des_menu_mnu'  => 'Home',
             'icon_menu_mnu' => 'House',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/',
             'num_ordem_mnu' => 1,
         ]);
         DB::table('tb_menu')->insert([
@@ -31,21 +31,21 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 2,
             'des_menu_mnu' => 'Novo Serviço',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/servico/novo',
             'num_ordem_mnu' => 3,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 2,
             'des_menu_mnu' => 'Finalizar Serviço',
             'icon_menu_mnu' => 'CheckSquareOffset',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/servico/finalizar',
             'num_ordem_mnu' => 4,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 2,
             'des_menu_mnu' => 'Relatório de Serviço',
             'icon_menu_mnu' => 'ChartLine',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/servico/relatorio',
             'num_ordem_mnu' => 5,
         ]);
         DB::table('tb_menu')->insert([
@@ -59,28 +59,28 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 6,
             'des_menu_mnu' => 'Consulta Estoque',
             'icon_menu_mnu' => 'MagnifyingGlass',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/almoxarifado/consulta-estoque',
             'num_ordem_mnu' => 7,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 6,
             'des_menu_mnu' => 'Baixa de Entrada',
             'icon_menu_mnu' => 'ArrowDown',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/almoxarifado/baixa-entrada',
             'num_ordem_mnu' => 8,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 6,
             'des_menu_mnu' => 'Baixa de Saída',
             'icon_menu_mnu' => 'ArrowUp',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/almoxarifado/baixa-saida',
             'num_ordem_mnu' => 9,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 6,
             'des_menu_mnu' => 'Relatório de Movimentações',
             'icon_menu_mnu' => 'ChartLine',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/almoxarifado/relatorio',
             'num_ordem_mnu' => 10,
         ]);
         DB::table('tb_menu')->insert([
@@ -94,21 +94,21 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 11,
             'des_menu_mnu' => 'A Receber',
             'icon_menu_mnu' => 'ArrowDown',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/financeiro/a-receber',
             'num_ordem_mnu' => 12,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 11,
             'des_menu_mnu' => 'A Pagar',
             'icon_menu_mnu' => 'ArrowUp',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/financeiro/a-pagar',
             'num_ordem_mnu' => 13,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 11,
             'des_menu_mnu' => 'Relatório Financeiro',
             'icon_menu_mnu' => 'ChartLine',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/financeiro/relatorio',
             'num_ordem_mnu' => 14,
         ]);
         DB::table('tb_menu')->insert([
@@ -129,7 +129,7 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 16,
             'des_menu_mnu' => 'Cadastro de Tipo de Serviço',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/cadastro-base/servico/tipo-servico',
             'num_ordem_mnu' => 17,
         ]);
         DB::table('tb_menu')->insert([
@@ -143,21 +143,21 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 18,
             'des_menu_mnu' => 'Cadastro de Unidade',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/cadastro-base/almoxarifado/unidade',
             'num_ordem_mnu' => 19,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 18,
             'des_menu_mnu' => 'Cadastro de Materiais',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => 'cadastroMaterial',
+            'path_menu_mnu' => '/cadastro-base/almoxarifado/material',
             'num_ordem_mnu' => 20,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 18,
             'des_menu_mnu' => 'Cadastro de Estoque',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/cadastro-base/almoxarifado/estoque',
             'num_ordem_mnu' => 21,
         ]);
         DB::table('tb_menu')->insert([
@@ -171,19 +171,19 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 22,
             'des_menu_mnu' => 'Cadastro de método de Pagamento',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/cadastro-base/financeiro/metodo-pagamento',
             'num_ordem_mnu' => 23,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 22,
             'des_menu_mnu' => 'Cadastro de instituições de Pagamento',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/cadastro-base/financeiro/intituicao-pagamento',
             'num_ordem_mnu' => 24,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 15,
-            'des_menu_mnu' => 'USUÁRIOS',
+            'des_menu_mnu' => 'PERFIL',
             'icon_menu_mnu' => 'FilePlus',
             'path_menu_mnu' => '',
             'num_ordem_mnu' => 25,
@@ -192,15 +192,22 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 25,
             'des_menu_mnu' => 'Cadastro de Cargo',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/cadastro-base/perfil/cargo',
             'num_ordem_mnu' => 26,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 25,
             'des_menu_mnu' => 'Cadastro de Funcionário',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/cadastro-base/perfil/funcionario',
             'num_ordem_mnu' => 27,
+        ]);
+        DB::table('tb_menu')->insert([
+            'id_father_mnu' => 25,
+            'des_menu_mnu' => 'Cadastro de Usuário',
+            'icon_menu_mnu' => 'FilePlus',
+            'path_menu_mnu' => '/cadastro-base/perfil/usuario',
+            'num_ordem_mnu' => 28,
         ]);
     }
 }
