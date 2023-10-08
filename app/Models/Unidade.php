@@ -17,15 +17,15 @@ class Unidade extends Model
     ];
 
     public static function getAll() {
-        $data = Unidade::select(['*'])->get();
+        $data = Unidade::select(['*'])->where('is_ativo_und', 1)->get();
         return response()->json($data);
     }
 
     public static function getById(Int $id = null) {
         if($id) {
-            $data = Unidade::select(['*'])->where('id_unidade_und', $id)->get();
+            $data = Unidade::select(['*'])->where('id_unidade_und', $id)->where('is_ativo_und', 1)->get();
         }else{
-            $data = Unidade::select(['*'])->get();
+            $data = Unidade::select(['*'])->where('is_ativo_und', 1)->get();
         }
         return response()->json($data);
     }
