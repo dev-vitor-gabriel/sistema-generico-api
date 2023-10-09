@@ -16,5 +16,5 @@ use App\Http\Controllers\API\ServicoController;
 */
 
 Route::controller(ServicoController::class)->group(function () {
-    Route::post('create', 'create');
+    Route::post('', 'create');
 });

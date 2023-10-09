@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('id_rel_rsm');
             $table->unsignedBigInteger('id_servico_rsm');
             $table->unsignedBigInteger('id_material_rsm');
+            $table->integer('vlr_material_rsm');
+            $table->integer('qtd_material_rsm');
             $table->foreign('id_servico_rsm')->references('id_servico_ser')->on('tb_servico');
             $table->foreign('id_material_rsm')->references('id_material_mte')->on('tb_material');
             $table->timestamps();
