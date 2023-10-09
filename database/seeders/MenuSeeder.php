@@ -178,7 +178,7 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 22,
             'des_menu_mnu' => 'Cadastro de instituições de Pagamento',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '/cadastro-base/financeiro/intituicao-pagamento',
+            'path_menu_mnu' => '/cadastro-base/financeiro/instituicao-pagamento',
             'num_ordem_mnu' => 24,
         ]);
         DB::table('tb_menu')->insert([
