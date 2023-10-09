@@ -209,5 +209,12 @@ class MenuSeeder extends Seeder
             'path_menu_mnu' => '/cadastro-base/perfil/usuario',
             'num_ordem_mnu' => 28,
         ]);
+        DB::table('tb_menu')->insert([
+            'id_father_mnu' => 25,
+            'des_menu_mnu' => 'Cadastro Centro de Custo',
+            'icon_menu_mnu' => 'FilePlus',
+            'path_menu_mnu' => '/cadastro-base/perfil/centro-custo',
+            'num_ordem_mnu' => 29,
+        ]);
     }
 }
