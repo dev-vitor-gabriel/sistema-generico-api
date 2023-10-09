@@ -17,15 +17,15 @@ class MetodoPagamento extends Model
 
     public static function getAll()
     {
-        $data = MetodoPagamento::select(['*'])->get();
+        $data = MetodoPagamento::select(['*'])->where('is_ativo_tmp', 1)->get();
         return response()->json($data);
     }
 
     public static function getById(Int $id = null) {
         if($id) {
-            $data = MetodoPagamento::select(['*'])->where('id_metodo_pagamento_tmp', $id)->get();
+            $data = MetodoPagamento::select(['*'])->where('id_metodo_pagamento_tmp', $id)->where('is_ativo_tmp', 1)->get();
         }else{
-            $data = MetodoPagamento::select(['*'])->get();
+            $data = MetodoPagamento::select(['*'])->where('is_ativo_tmp', 1)->get();
         }
         return response()->json($data);
     }
