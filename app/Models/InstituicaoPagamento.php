@@ -12,20 +12,21 @@ class InstituicaoPagamento extends Model
     protected $table = "tb_instituicao_pagamento";
 
     protected $fillable = [
-        'desc_instituicao_pagamento_tip'
+        'desc_instituicao_pagamento_tip',
+        'is_ativo_tip'
     ];
 
     public static function getAll()
     {
-        $data = InstituicaoPagamento::select(['*'])->get();
+        $data = InstituicaoPagamento::select(['*'])->where('is_ativo_tip', 1)->get();
         return response()->json($data);
     }
 
     public static function getById(Int $id = null) {
         if($id) {
-            $data = InstituicaoPagamento::select(['*'])->where('desc_instituicao_pagamento_tip', $id)->get();
+            $data = InstituicaoPagamento::select(['*'])->where('desc_instituicao_pagamento_tip', $id)->where('is_ativo_tip', 1)->get();
         }else{
-            $data = InstituicaoPagamento::select(['*'])->get();
+            $data = InstituicaoPagamento::select(['*'])->where('is_ativo_tip', 1)->get();
         }
         return response()->json($data);
     }
