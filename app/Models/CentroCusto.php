@@ -12,19 +12,20 @@ class CentroCusto extends Model
     protected $table = "tb_centro_custo";
 
     protected $fillable = [
-        'des_centro_custo_cco'
+        'des_centro_custo_cco',
+        'is_ativo_cco'
     ];
 
     public static function getAll() {
-        $data = CentroCusto::select(['*'])->get();
+        $data = CentroCusto::select(['*'])->where('is_ativo_cco', 1)->get();
         return response()->json($data);
     }
 
     public static function getById(Int $id = null) {    
         if($id) {
-            $data = CentroCusto::select(['*'])->where('id_centro_custo_cco', $id)->get();
+            $data = CentroCusto::select(['*'])->where('id_centro_custo_cco', $id)->where('is_ativo_cco', 1)->get();
         }else{
-            $data = CentroCusto::select(['*'])->get();
+            $data = CentroCusto::select(['*'])->where('is_ativo_cco', 1)->get();
         }
         return response()->json($data);
     }
