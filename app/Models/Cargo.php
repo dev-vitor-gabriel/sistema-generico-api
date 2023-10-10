@@ -12,19 +12,20 @@ class Cargo extends Model
     protected $table = "tb_cargos";
 
     protected $fillable = [
-        'desc_cargo_tcg'
+        'desc_cargo_tcg',
+        'is_ativo_tcg'
     ];
 
     public static function getAll() {
-        $data = Cargo::select(['*'])->get();
+        $data = Cargo::select(['*'])->where('is_ativo_tcg', 1)->get();
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null) {    
+    public static function getById(Int $id = null) {
         if($id) {
-            $data = Cargo::select(['*'])->where('id_cargo_tcg', $id)->get();
+            $data = Cargo::select(['*'])->where('id_cargo_tcg', $id)->where('is_ativo_tcg', 1)->get();
         }else{
-            $data = Cargo::select(['*'])->get();
+            $data = Cargo::select(['*'])->where('is_ativo_tcg', 1)->get();
         }
         return response()->json($data);
     }
