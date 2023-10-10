@@ -20,4 +20,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('logout', 'logout');
     Route::post('refresh', 'refresh');
+    Route::get('{id_usuario}', 'get');
+    Route::get('', 'get');
+    Route::put('{id_usuario}', 'update');
+    Route::delete('{id_usuario}', 'delete');
 });

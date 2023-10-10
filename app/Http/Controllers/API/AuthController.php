@@ -83,4 +83,27 @@ class AuthController extends Controller
             ]
         ]);
     }
+
+    public function get(Int $id_user = null) {
+        if($id_user){
+            $data = User::getById(($id_user));
+            return $data;
+        }
+        $data = User::getAll();
+        return $data;
+    }
+
+    public function update(Int $id, Request $request) {
+        $request->validate([
+            'name'         => 'required|string|max:255',
+            'email'        => 'required|string|email|max:255|unique:users',
+            'password'     => 'required|string|min:6',
+            'url_img_user' => 'string'
+        ]);
+        User::updateReg($id, $request);
+    }
+
+    public function delete(Int $id) {
+        User::deleteReg($id);
+    }
 }

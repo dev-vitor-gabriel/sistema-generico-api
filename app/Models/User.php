@@ -7,6 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
@@ -22,8 +23,41 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'url_img_user'
+        'url_img_user',
+        'is_ativo_user'
     ];
+
+    public static function getAll() {
+        $data = User::select(['name','email','url_img_user'])->where('is_ativo_user', 1)->get();
+        return response()->json($data);
+    }
+
+    public static function getById(Int $id = null) {
+        if($id) {
+            $data = User::select(['name','email','url_img_user'])->where('id', $id)->where('is_ativo_user', 1)->get();
+        }else{
+            $data = User::select(['name','email','url_img_user'])->where('is_ativo_user', 1)->get();
+        }
+        return response()->json($data);
+    }
+
+    public static function updateReg(Int $id, $obj) {
+        User::where('id', $id)
+        ->update([
+            'name'         => $obj->name,
+            'email'        => $obj->email,
+            'password'     => Hash::make($obj->password),
+            'url_img_user' => $obj->url_img_user
+        ]);
+    }
+
+    public static function deleteReg($id) {
+        User::where('id', $id)
+        ->update([
+            'is_ativo_user' => 0
+        ]);
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
