@@ -34,41 +34,35 @@ class ServicoController extends Controller
             'is_ativo_ser'                  => 1,
         ]);
 
-        foreach ($request->tipo_servico as $tipo_servico) {
-            if (isset($tipo_servico['custom']) && isset($tipo_servico['custom']['value'])) {
-                $value = $tipo_servico['custom']['value'];
+        foreach ($request->tipos_servico as $tipo_servico) {
+            if (isset($tipo_servico['vlr_tipo_servico_rst'])) {
+                $value = $tipo_servico['vlr_tipo_servico_rst'];
             } else {
-                $value = ServicoTipo::select(['vlr_servico_tipo_stp'])->where('id_servico_tipo_stp', $tipo_servico['value'])->get()[0]->vlr_servico_tipo_stp;
+                $value = ServicoTipo::select(['vlr_servico_tipo_stp'])->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])->get()[0]->vlr_servico_tipo_stp;
             }
 
             RelServicoTipoServico::create([
                 'id_servico_rst'                    => $servico->id,
-                'id_tipo_servico_rst'               => $tipo_servico['value'],
+                'id_tipo_servico_rst'               => $tipo_servico['id_servico_tipo_stp'],
                 'vlr_tipo_servico_rst'              => $value
             ]);
         }
 
-        foreach ($request->material as $material) {
-            $vlr_material = [...array_filter($material['custom'], function ($reg) {
-                return $reg['column'] == 'vlr_material_mte';
-            })];
-            if (isset($vlr_material[0])) {
-                $valueMaterial = $vlr_material[0]['value'];
+        foreach ($request->materiais as $material) {
+            if (isset($material['vlr_material_rsm'])) {
+                $valueMaterial = $material['vlr_material_rsm'];
             } else {
-                $valueMaterial = Material::select(['vlr_material_mte'])->where('id_material_mte', $material['value'])->get()[0]->vlr_material_mte;
+                $valueMaterial = Material::select(['vlr_material_mte'])->where('id_material_mte', $material['id_material_mte'])->get()[0]->vlr_material_mte;
             }
 
-            $qtd_material = [...array_filter($material['custom'], function ($reg) {
-                return $reg['column'] == 'qtd_material_mte';
-            })];
             $valueQtdMaterial = 1;
-            if (isset($qtd_material[0])) {
-                $valueQtdMaterial = $qtd_material[0]['value'];
+            if (isset($material['qtd_material_rsm'])) {
+                $valueQtdMaterial = $material['qtd_material_rsm'];
             }
 
             RelServicoMaterial::create([
                 'id_servico_rsm'                    => $servico->id,
-                'id_material_rsm'                   => $material['value'],
+                'id_material_rsm'                   => $material['id_material_mte'],
                 'vlr_material_rsm'                  => $valueQtdMaterial * $valueMaterial,
                 'qtd_material_rsm'                  => $valueQtdMaterial
             ]);
@@ -115,19 +109,19 @@ class ServicoController extends Controller
 
         $input_array = $serviceData->toArray();
 
-        if($request->tipo_servico || $request->material){
+        if($request->tipos_servico || $request->materiais){
             $serviceData = $this->groupServiceByTypeServiceAndMaterial($input_array);
             
-            if($request->tipo_servico){
+            if($request->tipos_servico){
                 $tipoServicoRemove = [];
                 $tipoServicoUpdate = [];
                 $tipoServicoNew = [];
                 $tipoServicoAlreadyRegistered = $serviceData[0]['tipos_servico'];
                 foreach ($tipoServicoAlreadyRegistered as $key => $old) {
                     $exists = false;
-                    foreach ($request->tipo_servico as $key => $new) {
-                        if($old['id_servico_tipo_stp'] == $new['value']){
-                            if($old['vlr_tipo_servico_rst'] != $new['custom']['value']){
+                    foreach ($request->tipos_servico as $key => $new) {
+                        if($old['id_servico_tipo_stp'] == $new['id_servico_tipo_stp']){
+                            if($old['vlr_tipo_servico_rst'] != $new['vlr_tipo_servico_rst']){
                                 $tipoServicoUpdate []=$new;
                             }
                             $exists = true;
@@ -140,40 +134,39 @@ class ServicoController extends Controller
                     }
                 }
                 
-                $tipoServicoNew = array_filter($request->tipo_servico, function($reg) use ($tipoServicoAlreadyRegistered) { 
+                $tipoServicoNew = array_filter($request->tipos_servico, function($reg) use ($tipoServicoAlreadyRegistered) { 
                     foreach ($tipoServicoAlreadyRegistered as $value){ 
-                        if($value['id_servico_tipo_stp'] == $reg['value'])
+                        if($value['id_servico_tipo_stp'] == $reg['id_servico_tipo_stp'])
                             return false;
                     }
                     return true;
                 });
 
+          
 
                 foreach ($tipoServicoNew as $tipo_servico) {
-                    if (isset($tipo_servico['custom']) && isset($tipo_servico['custom']['value'])) {
-                        $value = $tipo_servico['custom']['value'];
+                    if (isset($tipo_servico['vlr_tipo_servico_rst'])) {
+                        $value = $tipo_servico['vlr_tipo_servico_rst'];
                     } else {
-                        $value = ServicoTipo::select(['vlr_servico_tipo_stp'])->where('id_servico_tipo_stp', $tipo_servico['value'])->get()[0]->vlr_servico_tipo_stp;
+                        $value = ServicoTipo::select(['vlr_servico_tipo_stp'])->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])->get()[0]->vlr_servico_tipo_stp;
                     }
 
                     RelServicoTipoServico::create([
                         'id_servico_rst'                    => $id_servico,
-                        'id_tipo_servico_rst'               => $tipo_servico['value'],
+                        'id_tipo_servico_rst'               => $tipo_servico['id_servico_tipo_stp'],
                         'vlr_tipo_servico_rst'              => $value
                     ]);
                 }
                 foreach ($tipoServicoUpdate as $tipo_servico) {
-                    if (isset($tipo_servico['custom']) && isset($tipo_servico['custom']['value'])) {
-                        $value = $tipo_servico['custom']['value'];
+                    if (isset($tipo_servico['vlr_tipo_servico_rst'])) {
+                        $value = $tipo_servico['vlr_tipo_servico_rst'];
                     } else {
-                        $value = ServicoTipo::select(['vlr_servico_tipo_stp'])->where('id_servico_tipo_stp', $tipo_servico['value'])->get()[0]->vlr_servico_tipo_stp;
+                        $value = ServicoTipo::select(['vlr_servico_tipo_stp'])->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])->get()[0]->vlr_servico_tipo_stp;
                     }
 
                     RelServicoTipoServico::where('id_servico_rst', $id_servico)
-                    ->where('id_tipo_servico_rst', $tipo_servico['value'])
+                    ->where('id_tipo_servico_rst', $tipo_servico['id_servico_tipo_stp'])
                     ->update([
-                        'id_servico_rst'                    => $id_servico,
-                        'id_tipo_servico_rst'               => $tipo_servico['value'],
                         'vlr_tipo_servico_rst'              => $value
                     ]);
                 }
@@ -185,32 +178,83 @@ class ServicoController extends Controller
                 }
             }
 
-            // todo: implementar mesma logia acima para materiais
-            if($request->material){
-                foreach ($request->material as $material) {
-                    $vlr_material = [...array_filter($material['custom'], function ($reg) {
-                        return $reg['column'] == 'vlr_material_mte';
-                    })];
-                    if (isset($vlr_material[0])) {
-                        $valueMaterial = $vlr_material[0]['value'];
+            if($request->materiais){
+                $materialRemove = [];
+                $materialUpdate = [];
+                $materialNew = [];
+                $materialAlreadyRegistered = $serviceData[0]['materiais'];
+                foreach ($materialAlreadyRegistered as $key => $old) {
+                    $exists = false;
+                    foreach ($request->materiais as $key => $new) {
+                        if($old['id_material_mte'] == $new['id_material_mte']){
+                            if($old['vlr_material_rsm'] != $new['vlr_material_rsm'] || $old['qtd_material_rsm'] != $new['qtd_material_rsm']){
+                                $materialUpdate []=$new;
+                            }
+                            $exists = true;
+                            break;
+                        }
+
+                    }
+                    if($exists == false){
+                        $materialRemove []=$old;
+                    }
+                }
+                
+                $materialNew = array_filter($request->materiais, function($reg) use ($materialAlreadyRegistered) { 
+                    foreach ($materialAlreadyRegistered as $value){ 
+                        if($value['id_material_mte'] == $reg['id_material_mte'])
+                            return false;
+                    }
+                    return true;
+                });
+
+                // novos
+                foreach ($materialNew as $material) {
+                    if (isset($material['vlr_material_rsm'])) {
+                        $valueMaterial = $material['vlr_material_rsm'];
                     } else {
-                        $valueMaterial = Material::select(['vlr_material_mte'])->where('id_material_mte', $material['value'])->get()[0]->vlr_material_mte;
+                        $valueMaterial = Material::select(['vlr_material_mte'])->where('id_material_mte', $material['id_material_mte'])->get()[0]->vlr_material_mte;
                     }
 
-                    $qtd_material = [...array_filter($material['custom'], function ($reg) {
-                        return $reg['column'] == 'qtd_material_mte';
-                    })];
                     $valueQtdMaterial = 1;
-                    if (isset($qtd_material[0])) {
-                        $valueQtdMaterial = $qtd_material[0]['value'];
+                    if (isset($material['qtd_material_rsm'])) {
+                        $valueQtdMaterial = $material['qtd_material_rsm'];
                     }
 
                     RelServicoMaterial::create([
                         'id_servico_rsm'                    => $id_servico,
-                        'id_material_rsm'                   => $material['value'],
+                        'id_material_rsm'                   => $material['id_material_mte'],
                         'vlr_material_rsm'                  => $valueQtdMaterial * $valueMaterial,
                         'qtd_material_rsm'                  => $valueQtdMaterial
                     ]);
+                }
+
+                // update
+                foreach ($materialUpdate as $material) {
+                    if (isset($material['vlr_material_rsm'])) {
+                        $valueMaterial = $material['vlr_material_rsm'];
+                    } else {
+                        $valueMaterial = Material::select(['vlr_material_mte'])->where('id_material_mte', $material['id_material_mte'])->get()[0]->vlr_material_mte;
+                    }
+
+                    $valueQtdMaterial = 1;
+                    if (isset($material['qtd_material_rsm'])) {
+                        $valueQtdMaterial = $material['qtd_material_rsm'];
+                    }
+
+                    RelServicoMaterial::where('id_servico_rsm', $id_servico)
+                    ->where('id_material_rsm', $material['id_material_mte'])
+                    ->update([
+                        'vlr_material_rsm'                  => $valueQtdMaterial * $valueMaterial,
+                        'qtd_material_rsm'                  => $valueQtdMaterial
+                    ]);
+                }
+
+                // delete
+                foreach ($materialRemove as $material) {
+                    RelServicoMaterial::where('id_servico_rsm', $id_servico)
+                    ->where('id_material_rsm', $material['id_material_mte'])
+                    ->delete();
                 }
             }
         }
@@ -241,19 +285,25 @@ class ServicoController extends Controller
             }
 
             if ($item['id_material_mte'] !== null) {
-                $output_array[$id]['materiais'][] = [
-                    "id_material_mte" => $item['id_material_mte'],
-                    "des_material_mte" => $item['des_material_mte'],
-                    "vlr_material_rsm" => $item['vlr_material_rsm'],
-                    "qtd_material_rsm" => $item['qtd_material_rsm']
-                ];
+                $temp = array_filter($output_array[$id]['materiais'], function ($reg) use($item) { return $reg['id_material_mte'] == $item['id_material_mte']; });
+                if(count($temp) == 0) {
+                    $output_array[$id]['materiais'][] = [
+                        "id_material_mte" => $item['id_material_mte'],
+                        "des_material_mte" => $item['des_material_mte'],
+                        "vlr_material_rsm" => $item['vlr_material_rsm'],
+                        "qtd_material_rsm" => $item['qtd_material_rsm']
+                    ];
+                }
             }
             if ($item['id_servico_tipo_stp'] !== null) {
-                $output_array[$id]['tipos_servico'][] = [
-                    "id_servico_tipo_stp" => $item['id_servico_tipo_stp'],
-                    "des_servico_tipo_stp" => $item['des_servico_tipo_stp'],
-                    "vlr_tipo_servico_rst" => $item['vlr_tipo_servico_rst']
-                ];
+                $temp = array_filter($output_array[$id]['tipos_servico'], function ($reg) use($item) { return $reg['id_servico_tipo_stp'] == $item['id_servico_tipo_stp']; });
+                if(count($temp) == 0) {
+                    $output_array[$id]['tipos_servico'][] = [
+                        "id_servico_tipo_stp" => $item['id_servico_tipo_stp'],
+                        "des_servico_tipo_stp" => $item['des_servico_tipo_stp'],
+                        "vlr_tipo_servico_rst" => $item['vlr_tipo_servico_rst']
+                    ];
+                }
             }
         }
 
