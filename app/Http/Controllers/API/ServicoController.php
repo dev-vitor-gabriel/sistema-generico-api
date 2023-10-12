@@ -16,9 +16,9 @@ class ServicoController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'txt_servico_ser'               => 'required|string|max:255',
-            'vlr_servico_ser'               => 'required|integer',
-            'dta_agendamento_ser'           => 'required|date_format:Y-m-d H:i:s',
+            'txt_servico_ser'               => 'string|max:255',
+            // 'vlr_servico_ser'               => 'required|integer',
+            // 'dta_agendamento_ser'           => 'required|date_format:Y-m-d H:i:s',
             'id_centro_custo_ser'           => 'required|integer',
             'id_funcionario_servico_ser'    => 'required|integer',
             'id_cliente_ser'                => 'required|integer',
@@ -26,8 +26,8 @@ class ServicoController extends Controller
 
         $servico = Servico::create([
             'txt_servico_ser'               => $request->txt_servico_ser,
-            'vlr_servico_ser'               => $request->vlr_servico_ser,
-            'dta_agendamento_ser'           => $request->dta_agendamento_ser,
+            // 'vlr_servico_ser'               => $request->vlr_servico_ser,
+            // 'dta_agendamento_ser'           => $request->dta_agendamento_ser,
             'id_centro_custo_ser'           => $request->id_centro_custo_ser,
             'id_funcionario_servico_ser'    => $request->id_funcionario_servico_ser,
             'id_cliente_ser'                => $request->id_funcionario_servico_ser,
@@ -94,8 +94,8 @@ class ServicoController extends Controller
     {
         $request->validate([
             'txt_servico_ser'               => 'string|max:255',
-            'vlr_servico_ser'               => 'integer',
-            'dta_agendamento_ser'           => 'date_format:Y-m-d H:i:s',
+            // 'vlr_servico_ser'               => 'integer',
+            // 'dta_agendamento_ser'           => 'date_format:Y-m-d H:i:s',
             'id_centro_custo_ser'           => 'integer',
             'id_funcionario_servico_ser'    => 'integer',
             'id_cliente_ser'                => 'integer',

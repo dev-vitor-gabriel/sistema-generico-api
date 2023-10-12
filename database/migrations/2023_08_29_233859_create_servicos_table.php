@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tb_servico', function (Blueprint $table) {
             $table->id('id_servico_ser');
             $table->longText('txt_servico_ser')->nullable();
-            $table->integer('vlr_servico_ser');
+            $table->integer('vlr_servico_ser')->nullable();
             $table->dateTime('dta_agendamento_ser')->nullable();
             $table->unsignedBigInteger('id_situacao_ser')->default(1);
             $table->unsignedBigInteger('id_funcionario_servico_ser');
