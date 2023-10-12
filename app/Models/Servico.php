@@ -27,6 +27,7 @@ class Servico extends Model
         $data = Servico::select([
             'id_servico_ser'
             , 'txt_servico_ser'
+            , 'vlr_servico_ser'
             , 'dta_agendamento_ser'
             , 'id_situacao_ser'
             , 'id_funcionario_servico_ser'
