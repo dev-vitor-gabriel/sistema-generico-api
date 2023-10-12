@@ -36,6 +36,7 @@ class Servico extends Model
             , 'tb_servico.created_at'
             , 'id_material_mte'
             , 'des_material_mte'
+            , 'des_reduz_unidade_und'
             , 'vlr_material_rsm'
             , 'qtd_material_rsm'
             , 'id_servico_tipo_stp'
@@ -48,7 +49,8 @@ class Servico extends Model
         ->leftJoin('rel_servico_tipo_servico', 'id_servico_ser', '=', 'id_servico_rst')
         ->leftJoin('tb_servico_tipo', 'id_tipo_servico_rst', '=', 'id_servico_tipo_stp')
         ->leftJoin('rel_servico_material', 'id_servico_ser', '=', 'id_servico_rsm')
-        ->leftJoin('tb_material', 'id_material_rsm', '=', 'id_material_mte');
+        ->leftJoin('tb_material', 'id_material_rsm', '=', 'id_material_mte')
+        ->leftJoin('tb_unidade', 'id_unidade_mte', '=', 'id_unidade_und');
         
         if($id_servico){
             $data = $data->where('id_servico_ser', $id_servico);

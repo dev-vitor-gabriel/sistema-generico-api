@@ -277,6 +277,7 @@ class ServicoController extends Controller
                 ];
                 unset($output_array[$id]['id_material_mte']);
                 unset($output_array[$id]['des_material_mte']);
+                unset($output_array[$id]['des_reduz_unidade_und']);
                 unset($output_array[$id]['vlr_material_rsm']);
                 unset($output_array[$id]['qtd_material_rsm']);
                 unset($output_array[$id]['id_servico_tipo_stp']);
@@ -290,6 +291,7 @@ class ServicoController extends Controller
                     $output_array[$id]['materiais'][] = [
                         "id_material_mte" => $item['id_material_mte'],
                         "des_material_mte" => $item['des_material_mte'],
+                        "des_reduz_unidade_und" => $item['des_reduz_unidade_und'],
                         "vlr_material_rsm" => $item['vlr_material_rsm'],
                         "qtd_material_rsm" => $item['qtd_material_rsm']
                     ];
