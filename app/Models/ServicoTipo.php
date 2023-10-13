@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class ServicoTipo extends Model
 {
     use HasFactory;
-    
+
     protected $table = "tb_servico_tipo";
 
     protected $fillable = [
         'des_servico_tipo_stp',
+        'vlr_servico_tipo_stp',
         'is_ativo_stp'
     ];
 
@@ -21,7 +22,7 @@ class ServicoTipo extends Model
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null) {    
+    public static function getById(Int $id = null) {
         if($id) {
             $data = ServicoTipo::select(['*'])->where('id_servico_tipo_stp', $id)->get();
         }else{
@@ -34,6 +35,7 @@ class ServicoTipo extends Model
         ServicoTipo::where('id_servico_tipo_stp', $id_tipo_servico)
         ->update([
             'des_servico_tipo_stp' => $obj->des_servico_tipo_stp,
+            'vlr_servico_tipo_stp' => $obj->vlr_servico_tipo_stp
         ]);
     }
 

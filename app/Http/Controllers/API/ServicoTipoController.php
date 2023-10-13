@@ -12,10 +12,12 @@ class ServicoTipoController extends Controller
 
         $request->validate([
             'des_servico_tipo_stp' => 'required|string|max:255',
+            'vlr_servico_tipo_stp' => 'required|string|max:255',
         ]);
 
         $servico_tipo = ServicoTipo::create([
             'des_servico_tipo_stp' => $request->des_servico_tipo_stp,
+            'vlr_servico_tipo_stp' => $request->vlr_servico_tipo_stp,
             'is_ativo_stp' => 1,
         ]);
 
@@ -34,6 +36,7 @@ class ServicoTipoController extends Controller
     public function update(Int $id_servico_tipo, Request $request) {
         $request->validate([
             'des_servico_tipo_stp' => 'required|string|max:255',
+            'vlr_servico_tipo_stp' => 'required|string|max:255',
         ]);
         ServicoTipo::updateReg($id_servico_tipo, $request);
     }
