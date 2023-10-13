@@ -17,4 +17,7 @@ use App\Http\Controllers\API\ServicoController;
 
 Route::controller(ServicoController::class)->group(function () {
     Route::post('', 'create');
+    Route::get('{id_servico}', 'get');
+    Route::get('', 'get');
+    Route::put('{id_servico}', 'update');
 });
