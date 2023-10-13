@@ -16,7 +16,7 @@ use App\Http\Controllers\API\MaterialMovimentacaoController;
 */
 
 Route::controller(MaterialMovimentacaoController::class)->group(function () {
-    Route::post('', 'create');
+    Route::post('{tipo_movimentacao}', 'create');
     Route::get('{id_estoque}', 'get');
     Route::get('', 'get');
     Route::put('{id_estoque}', 'update');

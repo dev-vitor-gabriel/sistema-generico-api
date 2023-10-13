@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('tb_estoque', function (Blueprint $table) {
             $table->id('id_estoque_est');
             $table->string('des_estoque_est', 255);
+            $table->unsignedBigInteger('id_centro_custo_est');
             $table->boolean('is_ativo_est')->default(true);
+            $table->foreign('id_centro_custo_est')->references('id_centro_custo_cco')->on('tb_centro_custo');
             $table->timestamps();
         });
     }

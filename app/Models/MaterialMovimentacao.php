@@ -14,6 +14,7 @@ class MaterialMovimentacao extends Model
         'txt_movimentacao_mov',
         'id_estoque_entrada_mov',
         'id_estoque_saida_mov',
+        'id_centro_custo_mov',
         'is_ativo_mov'
     ];
 
