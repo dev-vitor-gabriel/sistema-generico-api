@@ -12,34 +12,50 @@ class Estoque extends Model
 
     protected $fillable = [
         'des_estoque_est',
+        'id_centro_custo_est',
         'is_ativo_est'
     ];
 
     public static function getAll() {
-        $data = Estoque::select(['*'])->get();
+        $data = Estoque::select([
+        'tb_estoque.id_estoque_est',
+        'tb_estoque.des_estoque_est',
+        'tb_centro_custo.des_centro_custo_cco',
+        'tb_estoque.created_at' ,
+        'tb_estoque.updated_at'
+        ])
+        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_estoque_est')
+        ->where('is_ativo_est', 1)
+        ->get();
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null) {    
+    public static function getById(Int $id = null) {
         if($id) {
-            $data = Estoque::select(['*'])->where('id_estoque_est', $id)->get();
+            $data = Estoque::select([
+                'tb_estoque.id_estoque_est',
+                'tb_estoque.des_estoque_est',
+                'tb_centro_custo.des_centro_custo_cco',
+                'tb_estoque.created_at' ,
+                'tb_estoque.updated_at'
+                ])
+                ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_estoque_est')
+                ->where('is_ativo_est', 1)
+                ->where('id_estoque_est', $id)
+                ->get();
         }else{
-            $data = Estoque::select(['*'])->get();
+            $data = Estoque::select([
+                'tb_estoque.id_estoque_est',
+                'tb_estoque.des_estoque_est',
+                'tb_centro_custo.des_centro_custo_cco',
+                'tb_estoque.created_at' ,
+                'tb_estoque.updated_at'
+                ])
+                ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_estoque_est')
+                ->where('is_ativo_est', 1)
+                ->get();
         }
         return response()->json($data);
     }
 
-    public static function updateReg(Int $id_estoque, $obj) {
-        Estoque::where('id_estoque_est', $id_estoque)
-        ->update([
-            'des_estoque_est' => $obj->des_estoque_est
-        ]);
-    }
-
-    public static function deleteReg($id_estoque) {
-        Estoque::where('id_estoque_est', $id_estoque)
-        ->update([
-            'is_ativo_est' => 0
-        ]);
-    }
 }

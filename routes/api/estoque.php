@@ -16,9 +16,6 @@ use App\Http\Controllers\API\EstoqueController;
 */
 
 Route::controller(EstoqueController::class)->group(function () {
-    Route::post('', 'create');
     Route::get('{id_estoque}', 'get');
     Route::get('', 'get');
-    Route::put('{id_estoque}', 'update');
-    Route::delete('{id_estoque}', 'delete');
 });
