@@ -16,19 +16,54 @@ class Funcionario extends Model
         'desc_funcionario_tfu',
         'telefone_funcionario_tfu',
         'documento_funcionario_tfu',
-        'endereco_funcionario_tfu'
+        'endereco_funcionario_tfu',
+        'is_ativo_tfu'
     ];
 
     public static function getAll() {
-        $data = Funcionario::select(['*'])->get();
+        $data = $data = Funcionario::select([
+            'id_funcionario_tfu',
+            'desc_funcionario_tfu',
+            'tb_cargos.desc_cargo_tcg',
+            'tb_funcionarios.telefone_funcionario_tfu',
+            'tb_funcionarios.documento_funcionario_tfu',
+            'tb_funcionarios.endereco_funcionario_tfu',
+            'tb_funcionarios.created_at',
+            'tb_funcionarios.updated_at'])
+            ->join('tb_cargos', 'tb_cargos.id_cargo_tcg', '=', 'tb_funcionarios.id_funcionario_cargo_tfu')
+            ->where('is_ativo_tfu', 1)
+            ->get();
         return response()->json($data);
     }
 
     public static function getById(Int $id = null) {    
         if($id) {
-            $data = Funcionario::select(['*'])->where('id_funcionario_tfu', $id)->get();
+            $data = Funcionario::select([
+                'id_funcionario_tfu',
+                'desc_funcionario_tfu',
+                'tb_cargos.desc_cargo_tcg',
+                'tb_funcionarios.telefone_funcionario_tfu',
+                'tb_funcionarios.documento_funcionario_tfu',
+                'tb_funcionarios.endereco_funcionario_tfu',
+                'tb_funcionarios.created_at',
+                'tb_funcionarios.updated_at'])
+                ->join('tb_cargos', 'tb_cargos.id_cargo_tcg', '=', 'tb_funcionarios.id_funcionario_cargo_tfu')
+                ->where('id_funcionario_tfu', $id)
+                ->where('is_ativo_tfu', 1)
+                ->get();
         }else{
-            $data = Funcionario::select(['*'])->get();
+            $data = Funcionario::select([
+                'id_funcionario_tfu',
+                'desc_funcionario_tfu',
+                'tb_cargos.desc_cargo_tcg',
+                'tb_funcionarios.telefone_funcionario_tfu',
+                'tb_funcionarios.documento_funcionario_tfu',
+                'tb_funcionarios.endereco_funcionario_tfu',
+                'tb_funcionarios.created_at',
+                'tb_funcionarios.updated_at'])
+                ->join('tb_cargos', 'tb_cargos.id_cargo_tcg', '=', 'tb_funcionarios.id_funcionario_cargo_tfu')
+                ->where('is_ativo_tfu', 1)
+                ->get();
         }
         return response()->json($data);
     }
