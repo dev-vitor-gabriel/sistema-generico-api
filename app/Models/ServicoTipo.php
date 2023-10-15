@@ -18,15 +18,15 @@ class ServicoTipo extends Model
     ];
 
     public static function getAll() {
-        $data = ServicoTipo::select(['*'])->where('is_ativo_stp', 1)->get();
+        $data = ServicoTipo::select(['*'])->where('is_ativo_stp', 1)->orderBy('id_servico_tipo_stp', 'desc')->get();
         return response()->json($data);
     }
 
     public static function getById(Int $id = null) {
         if($id) {
-            $data = ServicoTipo::select(['*'])->where('id_servico_tipo_stp', $id)->get();
+            $data = ServicoTipo::select(['*'])->where('id_servico_tipo_stp', $id)->orderBy('id_servico_tipo_stp', 'desc')->get();
         }else{
-            $data = ServicoTipo::select(['*'])->where('is_ativo_stp', 1)->where('is_ativo_stp', 1)->get();
+            $data = ServicoTipo::select(['*'])->where('is_ativo_stp', 1)->orderBy('id_servico_tipo_stp', 'desc')->get();
         }
         return response()->json($data);
     }

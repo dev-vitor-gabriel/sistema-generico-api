@@ -17,15 +17,15 @@ class CentroCusto extends Model
     ];
 
     public static function getAll() {
-        $data = CentroCusto::select(['*'])->where('is_ativo_cco', 1)->get();
+        $data = CentroCusto::select(['*'])->where('is_ativo_cco', 1)->orderBy('id_centro_custo_cco', 'desc')->get();
         return response()->json($data);
     }
 
     public static function getById(Int $id = null) {    
         if($id) {
-            $data = CentroCusto::select(['*'])->where('id_centro_custo_cco', $id)->where('is_ativo_cco', 1)->get();
+            $data = CentroCusto::select(['*'])->where('id_centro_custo_cco', $id)->where('is_ativo_cco', 1)->orderBy('id_centro_custo_cco', 'desc')->get();
         }else{
-            $data = CentroCusto::select(['*'])->where('is_ativo_cco', 1)->get();
+            $data = CentroCusto::select(['*'])->where('is_ativo_cco', 1)->orderBy('id_centro_custo_cco', 'desc')->get();
         }
         return response()->json($data);
     }
