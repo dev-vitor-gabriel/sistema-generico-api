@@ -11,17 +11,19 @@ class ClienteController extends Controller
     public function create(Request $request) {
 
         $request->validate([
-            'des_cliente_cli' => 'required|string|max:255',
+            'des_cliente_cli'      => 'required|string|max:255',
             'telefone_cliente_cli' => 'required|string|max:11',
-            'documento_cliente_cli' => 'required|string|max:11',
-            'endereco_cliente_cli' => 'required|string|max:255',
+            'email_cliente_cli'    => 'required|string|max:11',
+            'documento_cliente_cli'=> 'string|max:11',
+            'endereco_cliente_cli' => 'string|max:255',
         ]); 
 
         $cliente = Cliente::create([
-            'des_cliente_cli' => $request->des_cliente_cli,
-            'telefone_cliente_cli' => $request->telefone_cliente_cli,
+            'des_cliente_cli'       => $request->des_cliente_cli,
+            'telefone_cliente_cli'  => $request->telefone_cliente_cli,
+            'email_cliente_cli'     => $request->email_cliente_cli,
             'documento_cliente_cli' => $request->documento_cliente_cli,
-            'endereco_cliente_cli' => $request->endereco_cliente_cli,
+            'endereco_cliente_cli'  => $request->endereco_cliente_cli,
             'is_ativo_cli' => 1,
         ]);
 
@@ -39,10 +41,11 @@ class ClienteController extends Controller
 
     public function update(Int $id_cliente, Request $request) {
         $request->validate([
-            'des_cliente_cli' => 'required|string|max:255',
+            'des_cliente_cli'      => 'required|string|max:255',
             'telefone_cliente_cli' => 'required|string|max:11',
-            'documento_cliente_cli' => 'required|string|max:11',
-            'endereco_cliente_cli' => 'required|string|max:255',
+            'email_cliente_cli'    => 'required|string|max:11',
+            'documento_cliente_cli'=> 'string|max:11',
+            'endereco_cliente_cli' => 'string|max:255',
         ]);
         Cliente::updateReg($id_cliente, $request);
     }
