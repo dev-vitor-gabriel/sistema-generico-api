@@ -13,10 +13,10 @@ class ClienteController extends Controller
         $request->validate([
             'des_cliente_cli'      => 'required|string|max:255',
             'telefone_cliente_cli' => 'required|string|max:11',
-            'email_cliente_cli'    => 'required|string|max:11',
+            'email_cliente_cli'    => 'required|string|max:255',
             'documento_cliente_cli'=> 'string|max:11',
             'endereco_cliente_cli' => 'string|max:255',
-        ]); 
+        ]);
 
         $cliente = Cliente::create([
             'des_cliente_cli'       => $request->des_cliente_cli,
@@ -43,7 +43,7 @@ class ClienteController extends Controller
         $request->validate([
             'des_cliente_cli'      => 'required|string|max:255',
             'telefone_cliente_cli' => 'required|string|max:11',
-            'email_cliente_cli'    => 'required|string|max:11',
+            'email_cliente_cli'    => 'required|string|max:255',
             'documento_cliente_cli'=> 'string|max:11',
             'endereco_cliente_cli' => 'string|max:255',
         ]);
