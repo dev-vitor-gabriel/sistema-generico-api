@@ -22,5 +22,20 @@ class SituacoesSeeder extends Seeder
             'tbl_situacao_tsi'  => 'tb_servico',
             'desc_situacao_tsi'  => 'Finalizado',
         ]);
+        DB::table('tb_situacao')->insert([
+            'id_situacao_tsi'  => 10,
+            'tbl_situacao_tsi'  => 'tb_servico_agenda',
+            'desc_situacao_tsi'  => 'Pré-Agendamento',
+        ]);
+        DB::table('tb_situacao')->insert([
+            'id_situacao_tsi'  => 11,
+            'tbl_situacao_tsi'  => 'tb_servico_agenda',
+            'desc_situacao_tsi'  => 'Agendado',
+        ]);
+        DB::table('tb_situacao')->insert([
+            'id_situacao_tsi'  => 12,
+            'tbl_situacao_tsi'  => 'tb_servico_agenda',
+            'desc_situacao_tsi'  => 'Cancelado',
+        ]);
     }
 }
