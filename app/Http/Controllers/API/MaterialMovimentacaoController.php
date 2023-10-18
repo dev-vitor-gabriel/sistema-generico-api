@@ -43,14 +43,21 @@ class MaterialMovimentacaoController extends Controller
         return response()->json($materialMov,201);
     }
 
-    public function get(Int $id_movimentacao = null) {
+        // get
+        public function get(Int $id_material = null)
+        {
 
-        $data = MaterialMovimentacao::get($id_movimentacao);
-        return $data;
-    }
+            $data = MaterialMovimentacao::get($id_material);
+
+            $input_array = $data->toArray();
+
+            $data = $this->groupMovimentacaoMaterialByMovimentacaoMaterialItem($input_array);
+            // return $data;
+            return response()->json($data);
+        }
 
     public function update(Int $id_movimentacao, Request $request) {
-        
+
         $request->validate([
             'txt_movimentacao_mov' => 'required|string'
         ]);
@@ -60,5 +67,43 @@ class MaterialMovimentacaoController extends Controller
     // delete (inactivate)
     public function delete(Int $id_movimentacao) {
         MaterialMovimentacao::deleteReg($id_movimentacao);
+    }
+
+    private function groupMovimentacaoMaterialByMovimentacaoMaterialItem($input_array){
+        // variavel de saida
+        $output_array = [];
+
+        // agrupa materiais
+        foreach ($input_array as $item) {
+            $id = $item['id_movimentacao_mov'];
+            if (!isset($output_array[$id])) {
+                $output_array[$id] = [...$item,
+                    'materiais' => [],
+                ];
+                unset($output_array[$id]['id_material_mte']);
+                unset($output_array[$id]['des_material_mte']);
+                unset($output_array[$id]['vlr_material_mte']);
+                unset($output_array[$id]['des_reduz_unidade_und']);
+                unset($output_array[$id]['id_material_mit']);
+                unset($output_array[$id]['vlr_material_mit']);
+                unset($output_array[$id]['qtd_material_mit']);
+            }
+
+            if ($item['id_material_mte'] !== null) {
+                $temp = array_filter($output_array[$id]['materiais'], function ($reg) use($item) { return $reg['id_material_mte'] == $item['id_material_mte']; });
+                if(count($temp) == 0) {
+                    $output_array[$id]['materiais'][] = [
+                        "id_material_mte"  => $item['id_material_mte'],
+                        "des_material_mte" => $item['des_material_mte'],
+                        "vlr_material_mit" => $item['vlr_material_mit'],
+                        "qtd_material_mit" => $item['qtd_material_mit']
+                    ];
+                }
+            }
+        }
+
+        // Converte o array associativo em um array indexado
+        $output_array = array_values($output_array);
+        return $output_array;
     }
 }

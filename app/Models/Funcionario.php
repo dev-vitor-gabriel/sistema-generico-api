@@ -31,6 +31,7 @@ class Funcionario extends Model
             'tb_funcionarios.created_at',
             'tb_funcionarios.updated_at'])
             ->join('tb_cargos', 'tb_cargos.id_cargo_tcg', '=', 'tb_funcionarios.id_funcionario_cargo_tfu')
+            ->orderBy('id_funcionario_tfu', 'desc')
             ->where('is_ativo_tfu', 1)
             ->get();
         return response()->json($data);
@@ -49,6 +50,7 @@ class Funcionario extends Model
                 'tb_funcionarios.updated_at'])
                 ->join('tb_cargos', 'tb_cargos.id_cargo_tcg', '=', 'tb_funcionarios.id_funcionario_cargo_tfu')
                 ->where('id_funcionario_tfu', $id)
+                ->orderBy('id_funcionario_tfu', 'desc')
                 ->where('is_ativo_tfu', 1)
                 ->get();
         }else{
@@ -62,6 +64,7 @@ class Funcionario extends Model
                 'tb_funcionarios.created_at',
                 'tb_funcionarios.updated_at'])
                 ->join('tb_cargos', 'tb_cargos.id_cargo_tcg', '=', 'tb_funcionarios.id_funcionario_cargo_tfu')
+                ->orderBy('id_funcionario_tfu', 'desc')
                 ->where('is_ativo_tfu', 1)
                 ->get();
         }

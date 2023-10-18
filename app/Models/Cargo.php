@@ -17,15 +17,15 @@ class Cargo extends Model
     ];
 
     public static function getAll() {
-        $data = Cargo::select(['*'])->where('is_ativo_tcg', 1)->get();
+        $data = Cargo::select(['*'])->where('is_ativo_tcg', 1)->orderBy('id_cargo_tcg', 'desc')->get();
         return response()->json($data);
     }
 
     public static function getById(Int $id = null) {
         if($id) {
-            $data = Cargo::select(['*'])->where('id_cargo_tcg', $id)->where('is_ativo_tcg', 1)->get();
+            $data = Cargo::select(['*'])->where('id_cargo_tcg', $id)->where('is_ativo_tcg', 1)->orderBy('id_cargo_tcg', 'desc')->get();
         }else{
-            $data = Cargo::select(['*'])->where('is_ativo_tcg', 1)->get();
+            $data = Cargo::select(['*'])->where('is_ativo_tcg', 1)->orderBy('id_cargo_tcg', 'desc')->get();
         }
         return response()->json($data);
     }

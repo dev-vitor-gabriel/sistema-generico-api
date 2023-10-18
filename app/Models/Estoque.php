@@ -26,6 +26,7 @@ class Estoque extends Model
         ])
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_estoque_est')
         ->where('is_ativo_est', 1)
+        ->orderBy('tb_estoque.id_estoque_est', 'desc')
         ->get();
         return response()->json($data);
     }
@@ -41,6 +42,7 @@ class Estoque extends Model
                 ])
                 ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_estoque_est')
                 ->where('is_ativo_est', 1)
+                ->orderBy('tb_estoque.id_estoque_est', 'desc')
                 ->where('id_estoque_est', $id)
                 ->get();
         }else{
@@ -53,6 +55,7 @@ class Estoque extends Model
                 ])
                 ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_estoque_est')
                 ->where('is_ativo_est', 1)
+                ->orderBy('tb_estoque.id_estoque_est', 'desc')
                 ->get();
         }
         return response()->json($data);
