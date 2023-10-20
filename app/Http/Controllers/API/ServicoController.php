@@ -34,7 +34,7 @@ class ServicoController extends Controller
             // 'dta_agendamento_ser'           => $request->dta_agendamento_ser,
             'id_centro_custo_ser'           => $request->id_centro_custo_ser,
             'id_funcionario_servico_ser'    => $request->id_funcionario_servico_ser,
-            'id_cliente_ser'                => $request->id_funcionario_servico_ser,
+            'id_cliente_ser'                => $request->id_cliente_ser,
             'is_ativo_ser'                  => 1,
         ]);
 
