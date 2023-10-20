@@ -287,6 +287,8 @@ class ServicoController extends Controller
                 unset($output_array[$id]['id_servico_tipo_stp']);
                 unset($output_array[$id]['des_servico_tipo_stp']);
                 unset($output_array[$id]['vlr_tipo_servico_rst']);
+
+                $output_array[$id]['vlr_servico_ser'] = 0;
             }
 
             if ($item['id_material_mte'] !== null) {
@@ -299,6 +301,7 @@ class ServicoController extends Controller
                         "vlr_material_rsm" => $item['vlr_material_rsm'],
                         "qtd_material_rsm" => $item['qtd_material_rsm']
                     ];
+                    $output_array[$id]['vlr_servico_ser'] +=$item['vlr_material_rsm'];
                 }
             }
             if ($item['id_servico_tipo_stp'] !== null) {
@@ -309,6 +312,7 @@ class ServicoController extends Controller
                         "des_servico_tipo_stp" => $item['des_servico_tipo_stp'],
                         "vlr_tipo_servico_rst" => $item['vlr_tipo_servico_rst']
                     ];
+                    $output_array[$id]['vlr_servico_ser'] +=$item['vlr_tipo_servico_rst'];
                 }
             }
         }
