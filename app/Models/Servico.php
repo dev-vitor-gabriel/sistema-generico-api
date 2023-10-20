@@ -55,6 +55,7 @@ class Servico extends Model
         if($id_servico){
             $data = $data->where('id_servico_ser', $id_servico);
         }
+        $data = $data->where('is_ativo_ser', 1);
         $data = $data->orderBy('id_servico_ser', 'desc')
         ->get();
         return $data;

@@ -267,6 +267,13 @@ class ServicoController extends Controller
             'message' => 'Service updated successfully'
         ]);
     }
+
+
+    public function delete(Int $id_servico) {
+        Servico::deleteReg($id_servico);
+    }
+
+
     private function groupServiceByTypeServiceAndMaterial($input_array){
         // variavel de saida
         $output_array = [];
