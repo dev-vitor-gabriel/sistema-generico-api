@@ -272,6 +272,10 @@ class ServicoController extends Controller
     }
 
 
+    public function finalizar(Int $id_servico) {
+        Servico::finalizarReg($id_servico);
+    }
+
     public function delete(Int $id_servico) {
         Servico::deleteReg($id_servico);
     }

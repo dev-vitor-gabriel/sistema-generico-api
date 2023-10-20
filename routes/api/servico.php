@@ -20,5 +20,6 @@ Route::controller(ServicoController::class)->group(function () {
     Route::get('{id_servico}', 'get');
     Route::get('', 'get');
     Route::put('{id_servico}', 'update');
+    Route::patch('{id_servico}/finalizar', 'finalizar');
     Route::delete('{id_servico}', 'delete');
 });

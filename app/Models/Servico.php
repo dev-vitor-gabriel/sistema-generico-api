@@ -87,6 +87,12 @@ class Servico extends Model
             'is_ativo_ser' => 0
         ]);
     }
+    public static function finalizarReg($id_servico) {
+        Servico::where('id_servico_ser', $id_servico)
+        ->update([
+            'id_situacao_ser' => 2
+        ]);
+    }
 
 
 }
