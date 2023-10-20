@@ -23,7 +23,7 @@ class Servico extends Model
         'is_ativo_ser'
     ];
 
-    public static function get(Int $id_servico = null) {
+    public static function get(Int $id_servico = null, $filtros) {
         $data = Servico::select([
             'id_servico_ser'
             , 'txt_servico_ser'
@@ -55,6 +55,7 @@ class Servico extends Model
         if($id_servico){
             $data = $data->where('id_servico_ser', $id_servico);
         }
+        $data = $data->where($filtros);
         $data = $data->orderBy('id_servico_ser', 'desc')
         ->get();
         return $data;

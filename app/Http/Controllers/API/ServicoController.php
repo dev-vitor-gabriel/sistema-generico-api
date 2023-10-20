@@ -78,10 +78,11 @@ class ServicoController extends Controller
         ]);
     }
     // get
-    public function get(Int $id_servico = null)
+    public function get(Request $request, Int $id_servico = null)
     {
-
-        $data = Servico::get($id_servico);
+        $Servico = new Servico();
+        $filter = $request->only($Servico->getFillable());
+        $data = Servico::get($id_servico,$filter);
 
         $input_array = $data->toArray();
 
