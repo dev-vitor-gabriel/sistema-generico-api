@@ -82,6 +82,8 @@ class ServicoController extends Controller
     {
         $Servico = new Servico();
         $filter = $request->only($Servico->getFillable());
+        
+        $filter = array_filter($filter, function($reg){ return mb_strtoupper($reg) != "NULL";});
         $data = Servico::get($id_servico,$filter);
 
         $input_array = $data->toArray();
