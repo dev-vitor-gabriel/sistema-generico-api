@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Observers\GlobalObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -25,7 +26,18 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Registrar o observer global
+        foreach ($this->getObservableModels() as $model) {
+            $model::observe(GlobalObserver::class);
+        }
+    }
+
+    // Definir os modelos para observar
+    protected function getObservableModels()
+    {
+        return [
+            \App\Models\Cargo::class,
+        ];
     }
 
     /**
