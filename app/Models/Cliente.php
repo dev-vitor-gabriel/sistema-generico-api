@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cliente extends Model
 {
     use HasFactory;
-     
+
     protected $table = "tb_cliente";
 
     protected $fillable = [
@@ -25,7 +25,7 @@ class Cliente extends Model
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null) {    
+    public static function getById(Int $id = null) {
         if($id) {
             $data = Cliente::select(['*'])->where('id_cliente_cli', $id)->where('is_ativo_cli', 1)->orderBy('id_cliente_cli', 'desc')->get();
         }else{
