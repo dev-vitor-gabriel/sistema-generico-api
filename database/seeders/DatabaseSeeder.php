@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             MaterialSeeder::class,
             TipoServicoSeeder::class,
             CentroCustoSeeder::class,
+            ContaTipoSeeder::class,
         ]);
     }
 }
