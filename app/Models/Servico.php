@@ -23,7 +23,7 @@ class Servico extends Model
         'is_ativo_ser'
     ];
 
-    public static function get(Int $id_servico = null, $filtros) {
+    public static function get(Int $id_servico = null, $filtros = null) {
         $data = Servico::select([
             'id_servico_ser'
             , 'txt_servico_ser'
