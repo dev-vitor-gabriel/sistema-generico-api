@@ -31,6 +31,7 @@ class Servico extends Model
             , 'dta_agendamento_ser'
             , 'id_situacao_ser'
             , 'id_funcionario_servico_ser'
+            , 'desc_funcionario_tfu'
             , 'id_centro_custo_ser'
             , 'id_cliente_ser'
             , 'tb_servico.created_at'
@@ -58,6 +59,7 @@ class Servico extends Model
         $data = $data->where($filtros);
         $data = $data->where('is_ativo_ser', 1);
         $data = $data->orderBy('id_servico_ser', 'desc')
+        // ->ddRawSql();
         ->get();
         return $data;
     }
