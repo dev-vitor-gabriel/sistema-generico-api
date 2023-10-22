@@ -9,27 +9,25 @@ class GlobalObserver
 {
     public function created (Model $model)
     {
-
-        // DB::commit(function () use ($model) {
             
-            // Capturar os atributos que estão sendo atualizados
-            $changes = $model->getAttributes();
+        // Capturar os atributos que estão sendo atualizados
+        $changes = $model->getAttributes();
 
-            // Capturar o nome da Tabela    
-            $tableName = $model->getTable();
+        // Capturar o nome da Tabela    
+        $tableName = $model->getTable();
 
-            // Obter a chave primária
-            $primaryKey = $model->getKey();
+        // Obter a chave primária
+        $primaryKey = $model->getKey();
 
-            DB::table('tb_auditoria')->insert(
-                [
-                    'id_externo_aud' => $primaryKey,  
-                    'json_alteracao_aud' => json_encode($changes), 
-                    'des_tabela_aud' => $tableName, 
-                    'dth_cadastro_aud' => date('Y-m-d H:i:s')
-                ]
-            );
-        // });
+        DB::table('tb_auditoria')->insert(
+            [
+                'id_externo_aud' => $primaryKey,  
+                'des_alteracao_aud' => 'insert', 
+                'json_alteracao_aud' => json_encode($changes), 
+                'des_tabela_aud' => $tableName, 
+                'dth_cadastro_aud' => date('Y-m-d H:i:s')
+            ]
+        );
 
     }
 
@@ -53,7 +51,8 @@ class GlobalObserver
 
        DB::table('tb_auditoria')->insert(
             [
-                'id_externo_aud' => $primaryKeyValue, 
+                'id_externo_aud' => $primaryKeyValue,
+                'des_alteracao_aud' => 'update', 
                 'json_original_aud' => json_encode($resultado), 
                 'json_alteracao_aud' => json_encode($changes), 
                 'des_tabela_aud' => $tableName, 
@@ -69,6 +68,24 @@ class GlobalObserver
     public function deleted(Model $model): void
     {
         //
+        $originalAll = $model->getOriginal();
+
+       // Capturar o nome da Tabela    
+       $tableName = $model->getTable();
+
+       // Obter o valor da chave primária
+       $primaryKeyValue = $model->getKey();
+
+       DB::table('tb_auditoria')->insert(
+            [
+                'id_externo_aud' => $primaryKeyValue,
+                'des_alteracao_aud' => 'delete', 
+                'json_original_aud' => json_encode($originalAll), 
+                'json_alteracao_aud' => json_encode([]), 
+                'des_tabela_aud' => $tableName, 
+                'dth_cadastro_aud' => date('Y-m-d H:i:s')
+            ]
+        );
     }
 
     /**

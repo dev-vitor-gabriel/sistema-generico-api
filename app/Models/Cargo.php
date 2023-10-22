@@ -11,6 +11,8 @@ class Cargo extends Model
 
     protected $table = "tb_cargos";
 
+    protected $primaryKey = 'id_cargo_tcg';
+
     protected $fillable = [
         'desc_cargo_tcg',
         'is_ativo_tcg'
@@ -38,10 +40,12 @@ class Cargo extends Model
     }
 
     public static function deleteReg($id_cargo) {
-        Cargo::where('id_cargo_tcg', $id_cargo)
-        ->update([
-            'is_ativo_tcg' => 0
-        ]);
+        // Cargo::where('id_cargo_tcg', $id_cargo)
+        // ->update([
+        //     'is_ativo_tcg' => 0
+        // ]);
+        $delete = Cargo::where('id_cargo_tcg', $id_cargo)->first();
+        $delete->delete();
     }
 
 }
