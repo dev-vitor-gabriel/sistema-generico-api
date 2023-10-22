@@ -37,36 +37,6 @@ class EventServiceProvider extends ServiceProvider
         }
     }
 
-    // Definir os modelos para observar
-    protected function getObservableModels()
-    {
-        return [
-            \App\Models\Agenda::class,
-            \App\Models\AgendaTipoServico::class,
-            \App\Models\Cargo::class,
-            \App\Models\CentroCusto::class,
-            \App\Models\Cliente::class,
-            \App\Models\Contas::class,
-            \App\Models\ContaTipo::class,
-            \App\Models\Empresa::class,
-            \App\Models\Estoque::class,
-            \App\Models\Funcionario::class,
-            \App\Models\InstituicaoPagamento::class,
-            \App\Models\Material::class,
-            \App\Models\MaterialMovimentacao::class,
-            \App\Models\MaterialMovimentacaoItem::class,
-            \App\Models\Menu::class,
-            \App\Models\MetodoPagamento::class,
-            \App\Models\RelFuncionarioTipoServico::class,
-            \App\Models\RelServicoMaterial::class,
-            \App\Models\RelServicoTipoServico::class,
-            \App\Models\Servico::class,
-            \App\Models\ServicoAgenda::class,
-            \App\Models\ServicoTipo::class,
-            \App\Models\Unidade::class,
-            \App\Models\User::class,
-        ];
-    }
     protected function getModels(): Collection
     {
         $models = collect(File::allFiles(app_path()))
