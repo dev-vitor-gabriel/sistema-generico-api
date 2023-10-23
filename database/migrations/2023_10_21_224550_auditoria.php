@@ -16,8 +16,8 @@ return new class extends Migration
             $table->integer('id_externo_aud');
             $table->string('des_alteracao_aud', 20);
             $table->string('des_tabela_aud', 100);
-            $table->jsonb('json_original_aud')->nullable();
-            $table->jsonb('json_alteracao_aud');
+            $table->string('json_original_aud', 1000)->nullable();
+            $table->string('json_alteracao_aud', 1000);
             $table->timestamp('dth_cadastro_aud');
         });
     }

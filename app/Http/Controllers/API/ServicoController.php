@@ -31,7 +31,7 @@ class ServicoController extends Controller
         $servico = Servico::create([
             'txt_servico_ser'               => $request->txt_servico_ser,
             // 'vlr_servico_ser'               => $request->vlr_servico_ser,
-            // 'dta_agendamento_ser'           => $request->dta_agendamento_ser,
+            'dta_agendamento_ser'           => date('Y-m-d H:i'),
             'id_centro_custo_ser'           => $request->id_centro_custo_ser,
             'id_funcionario_servico_ser'    => $request->id_funcionario_servico_ser,
             'id_cliente_ser'                => $request->id_cliente_ser,
@@ -92,6 +92,21 @@ class ServicoController extends Controller
 
 
         // return $data;
+        return response()->json($data);
+    }
+    public function getLast30Days(Request $request)
+    {
+        $data = Servico::getLast30Days();
+        return response()->json($data);
+    }
+    public function getLast30DaysPerFunc(Request $request)
+    {
+        $data = Servico::getLast30DaysPerFunc();
+        return response()->json($data);
+    }
+    public function getLast30DaysPerTipoServico(Request $request)
+    {
+        $data = Servico::getLast30DaysPerTipoServico();
         return response()->json($data);
     }
 

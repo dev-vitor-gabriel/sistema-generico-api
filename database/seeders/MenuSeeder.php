@@ -43,9 +43,9 @@ class MenuSeeder extends Seeder
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 2,
-            'des_menu_mnu' => 'Relatório de Serviço',
+            'des_menu_mnu' => 'Dashboard Serviço',
             'icon_menu_mnu' => 'ChartLine',
-            'path_menu_mnu' => '/servico/relatorio',
+            'path_menu_mnu' => '/servico/dashboard',
             'num_ordem_mnu' => 5+1,
         ]);
         DB::table('tb_menu')->insert([

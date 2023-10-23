@@ -17,6 +17,9 @@ use App\Http\Controllers\API\ServicoController;
 
 Route::controller(ServicoController::class)->group(function () {
     Route::post('', 'create');
+    Route::get('30days', 'getLast30Days');
+    Route::get('30DaysPerFunc', 'getLast30DaysPerFunc');
+    Route::get('30DaysPerTipoServico', 'getLast30DaysPerTipoServico');
     Route::get('{id_servico}', 'get');
     Route::get('', 'get');
     Route::put('{id_servico}', 'update');
