@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             TipoServicoSeeder::class,
             CentroCustoSeeder::class,
             ContaTipoSeeder::class,
+            ClienteSeeder::class,
         ]);
     }
 }
