@@ -96,17 +96,17 @@ class ServicoController extends Controller
     }
     public function getLast30Days(Request $request)
     {
-        $data = Servico::getLast30Days();
+        $data = Servico::getLast30Days($request);
         return response()->json($data);
     }
     public function getLast30DaysPerFunc(Request $request)
     {
-        $data = Servico::getLast30DaysPerFunc();
+        $data = Servico::getLast30DaysPerFunc($request);
         return response()->json($data);
     }
     public function getLast30DaysPerTipoServico(Request $request)
     {
-        $data = Servico::getLast30DaysPerTipoServico();
+        $data = Servico::getLast30DaysPerTipoServico($request);
         return response()->json($data);
     }
 

@@ -63,34 +63,50 @@ class Servico extends Model
         ->get();
         return $data;
     }
-    public static function getLast30Days() {
+    public static function getLast30Days($request) {
+        
         $data = Servico::selectRaw('COUNT(1) as qtd, DATE_FORMAT(dta_agendamento_ser, "%d/%m/%Y") as dta_agendamento')
         ->where('dta_agendamento_ser', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-        ->where('id_situacao_ser', 2)
-        ->groupBy('dta_agendamento')
+        ->where('id_situacao_ser', 2);
+        if(isset($request->centrocusto) && !empty($request->centrocusto)){
+            $centroCusto = explode(',', $request->centrocusto);
+            $data = $data->whereIn('id_centro_custo_ser', $centroCusto);
+        }
+        $data = $data->groupBy('dta_agendamento')
         ->orderBy('dta_agendamento', 'ASC')
         // ->ddRawSql();
         ->get();
         return $data;
     }
-    public static function getLast30DaysPerFunc() {
+    public static function getLast30DaysPerFunc($request = null) {
+        
         $data = Servico::selectRaw('COUNT(1) as qtd, desc_funcionario_tfu')
         ->join('tb_funcionarios', 'id_funcionario_servico_ser', '=', 'id_funcionario_tfu')
         ->where('dta_agendamento_ser', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-        ->where('id_situacao_ser', 2)
-        ->groupBy('desc_funcionario_tfu')
+        ->where('id_situacao_ser', 2);
+        if(isset($request->centrocusto) && !empty($request->centrocusto)){
+            $centroCusto = explode(',', $request->centrocusto);
+            $data = $data->whereIn('id_centro_custo_ser', $centroCusto);
+        }
+        $data = $data->groupBy('desc_funcionario_tfu')
         ->orderBy('qtd', 'DESC')
         // ->ddRawSql();
         ->get();
+
         return $data;
     }
-    public static function getLast30DaysPerTipoServico() {
+    public static function getLast30DaysPerTipoServico($request) {
+        
         $data = Servico::selectRaw('COUNT(1) as qtd, des_servico_tipo_stp')
         ->join('rel_servico_tipo_servico', 'id_servico_ser', '=', 'id_servico_rst')
         ->join('tb_servico_tipo', 'id_tipo_servico_rst', '=', 'id_servico_tipo_stp')
         ->where('dta_agendamento_ser', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-        ->where('id_situacao_ser', 2)
-        ->groupBy('des_servico_tipo_stp')
+        ->where('id_situacao_ser', 2);
+        if(isset($request->centrocusto) && !empty($request->centrocusto)){
+            $centroCusto = explode(',', $request->centrocusto);
+            $data = $data->whereIn('id_centro_custo_ser', $centroCusto);
+        }
+        $data = $data->groupBy('des_servico_tipo_stp')
         ->orderBy('qtd', 'DESC')
         // ->ddRawSql();
         ->get();
