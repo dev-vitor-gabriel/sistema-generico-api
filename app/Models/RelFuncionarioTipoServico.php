@@ -11,6 +11,8 @@ class RelFuncionarioTipoServico extends Model
 
     protected $table = 'rel_funcionarios_tipo_servico';
 
+    protected $primaryKey = 'id_rel_rft';
+
     protected $fillable = [
         'id_funcionario_rft',
         'id_tipo_servico_rft'
