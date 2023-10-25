@@ -30,6 +30,7 @@ class Servico extends Model
             , 'vlr_servico_ser'
             , 'dta_agendamento_ser'
             , 'id_situacao_ser'
+            , 'desc_situacao_tsi'
             , 'id_funcionario_servico_ser'
             , 'desc_funcionario_tfu'
             , 'id_centro_custo_ser'
