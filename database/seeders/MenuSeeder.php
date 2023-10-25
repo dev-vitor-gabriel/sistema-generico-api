@@ -227,7 +227,7 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => null,
             'des_menu_mnu' => 'Agenda',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '',
+            'path_menu_mnu' => '/agenda',
             'num_ordem_mnu' => 2,
         ]);
     }
