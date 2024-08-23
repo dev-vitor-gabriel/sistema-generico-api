@@ -28,7 +28,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     public static function getAll() {
-        $data = User::select(['name','email','url_img_user'])->where('is_ativo_user', 1)->orderBy('id', 'desc')->get();
+        $data = User::select(['id','name','email','url_img_user'])->where('is_ativo_user', 1)->orderBy('id', 'desc')->get();
         return response()->json($data);
     }
 
