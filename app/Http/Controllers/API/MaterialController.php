@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class MaterialController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => []]);
+    }
+    
     public function create(Request $request) {
 
         $request->validate([
