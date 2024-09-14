@@ -48,7 +48,7 @@ class MaterialMovimentacao extends Model
             $data = $data->where('id_material_mte', $id_material);
         }
         $data = $data->where('is_ativo_mov', 1);
-        $data = $data->orderBy('id_material_mte', 'desc')
+        $data = $data->orderBy('tb_material_movimentacao.id_movimentacao_mov', 'desc')
         ->get();
         return $data;
     }
