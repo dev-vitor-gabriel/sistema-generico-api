@@ -82,8 +82,8 @@ class Estoque extends Model
             ->where('te.is_ativo_est', 1)
             ->where('tm.is_ativo_mte', 1)
             ->groupBy('te.id_estoque_est', 'tm.id_material_mte', 'tm.vlr_material_mte')
-            ->orderBy('te.id_estoque_est', 'asc')
-            ->orderBy('tm.des_material_mte', 'asc')
+            ->orderBy('te.id_estoque_est', 'desc')
+            // ->orderBy('tm.des_material_mte', 'desc')
             ->get();
     }
 }
