@@ -66,14 +66,14 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 6,
             'des_menu_mnu' => 'Baixa de Entrada',
             'icon_menu_mnu' => 'ArrowDown',
-            'path_menu_mnu' => '/almoxarifado/baixa-entrada',
+            'path_menu_mnu' => '/almoxarifado/baixa/entrada',
             'num_ordem_mnu' => 8+1,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 6,
             'des_menu_mnu' => 'Baixa de Saída',
             'icon_menu_mnu' => 'ArrowUp',
-            'path_menu_mnu' => '/almoxarifado/baixa-saida',
+            'path_menu_mnu' => '/almoxarifado/baixa/saida',
             'num_ordem_mnu' => 9+1,
         ]);
         DB::table('tb_menu')->insert([
