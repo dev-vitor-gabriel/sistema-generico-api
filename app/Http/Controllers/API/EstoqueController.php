@@ -9,6 +9,21 @@ use Illuminate\Http\Request;
 class EstoqueController extends Controller
 {
 
+    public function create(Request $request) {
+
+        $request->validate([
+            'des_estoque_est'     => 'required|string|max:255',
+            'id_centro_custo_est' => 'required|integer|exists:tb_centro_custo,id_centro_custo_cco'
+        ]);
+
+        $estoque = Estoque::create([
+            'des_estoque_est'            => $request->des_estoque_est,
+            'id_centro_custo_est'        => $request->id_centro_custo_est
+        ]);
+
+        return response()->json($estoque,201);
+    }
+
     public function get(Int $id_estoque = null) {
         if($id_estoque){
             $data = Estoque::getById(($id_estoque));
