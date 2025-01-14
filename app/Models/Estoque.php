@@ -86,4 +86,11 @@ class Estoque extends Model
             // ->orderBy('tm.des_material_mte', 'desc')
             ->get();
     }
+
+    public static function deleteReg($id_estoque_est) {
+        Estoque::where('id_estoque_est', $id_estoque_est)
+        ->update([
+            'is_ativo_est' => 0
+        ]);
+    }
 }

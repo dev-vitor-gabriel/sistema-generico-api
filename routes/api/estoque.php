@@ -19,4 +19,5 @@ Route::controller(EstoqueController::class)->group(function () {
     Route::get('{id_estoque}', 'get');
     Route::get('', 'get');
     Route::post('', 'create');
+    Route::delete('{id_estoque}', 'delete');
 });

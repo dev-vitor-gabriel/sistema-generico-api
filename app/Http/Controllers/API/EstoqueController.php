@@ -63,4 +63,7 @@ class EstoqueController extends Controller
         return response()->json($response);
     }
 
+    public function delete(Int $id_estoque) {
+        Estoque::deleteReg($id_estoque);
+    }
 }
