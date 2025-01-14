@@ -45,11 +45,17 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        if(strlen($request->password) <= 6){
+            return response()->json([
+                'message' => 'Your password must be at least 6 characters long.',
+            ], 400);
+        }
+
         $request->validate([
             'name'         => 'required|string|max:255',
             'email'        => 'required|string|email|max:255|unique:users',
             'password'     => 'required|string|min:6',
-            'url_img_user' => 'nullable|file|mimes:jpg,jpeg,png|max:2048', // Validando como arquivo
+            'url_img_user' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $filePath = null;
