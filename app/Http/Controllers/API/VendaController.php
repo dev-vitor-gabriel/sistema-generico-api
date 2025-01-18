@@ -52,7 +52,8 @@ class VendaController extends Controller
         $venda = Venda::create(
             [
                 'id_funcionario_vda' => $request->id_funcionario_vda,
-                'desc_venda_vda' => $request->desc_venda_vda
+                'desc_venda_vda' => $request->desc_venda_vda,
+                'id_centro_custo_vda' => $request->id_centro_custo_vda,
             ]
         );
 
