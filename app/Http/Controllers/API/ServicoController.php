@@ -71,7 +71,6 @@ class ServicoController extends Controller
                 'qtd_material_rsm'                  => $valueQtdMaterial
             ]);
         }
-        // teste
 
         return response()->json([
             'message' => 'Service created successfully',
