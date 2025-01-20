@@ -27,6 +27,12 @@ class ServicoTipoController extends Controller
     public function get(Int $id_servico_tipo = null) {
         if($id_servico_tipo){
             $data = ServicoTipo::getById(($id_servico_tipo));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Tip de Serviço Não Existe',],400);
+            }
             return $data;
         }
         $data = ServicoTipo::getAll();
