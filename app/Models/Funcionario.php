@@ -21,7 +21,7 @@ class Funcionario extends Model
     ];
 
     public static function getAll() {
-        $data = $data = Funcionario::select([
+            $data = Funcionario::select([
             'id_funcionario_tfu',
             'desc_funcionario_tfu',
             'tb_cargos.desc_cargo_tcg',
