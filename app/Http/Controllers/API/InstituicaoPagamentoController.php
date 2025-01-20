@@ -25,6 +25,12 @@ class InstituicaoPagamentoController extends Controller
     public function get(Int $id_instituicao_pagamento = null) {
         if($id_instituicao_pagamento){
             $data = InstituicaoPagamento::getById(($id_instituicao_pagamento));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Instituicao de Pagamento Não Existe',],400);
+            }
             return $data;
         }
         $data = InstituicaoPagamento::getAll();
