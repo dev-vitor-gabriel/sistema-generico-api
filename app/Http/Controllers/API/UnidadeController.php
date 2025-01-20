@@ -27,6 +27,12 @@ class UnidadeController extends Controller
     public function get(Int $id_unidade_und = null) {
         if($id_unidade_und){
             $data = Unidade::getById(($id_unidade_und));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Unidade Não Existe',],400);
+            }
             return $data;
         }
         $data = Unidade::getAll();
