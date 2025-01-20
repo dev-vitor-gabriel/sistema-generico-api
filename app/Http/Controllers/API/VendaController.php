@@ -71,7 +71,7 @@ class VendaController extends Controller
 
 
         return response()->json([
-            'message' => 'Sele created successfully!',
+            'message' => 'Venda criada com sucesso!',
         ]);
     }
 
