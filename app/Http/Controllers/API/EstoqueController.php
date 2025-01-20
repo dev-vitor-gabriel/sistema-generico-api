@@ -27,6 +27,12 @@ class EstoqueController extends Controller
     public function get(Int $id_estoque = null) {
         if($id_estoque){
             $data = Estoque::getById(($id_estoque));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Estoque Não Existe',],400);
+            }
             return $data;
         }
         $data = Estoque::getAll();
