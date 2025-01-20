@@ -42,6 +42,12 @@ class FuncionarioController extends Controller
     public function get(Int $id_funcionario = null) {
         if($id_funcionario){
             $data = Funcionario::getById(($id_funcionario));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Funcionário Não Existe',],400);
+            }
             return $data;
         }
         $data = Funcionario::getAll();
