@@ -24,6 +24,12 @@ class CargoController extends Controller
     public function get(Int $id_cargo = null) {
         if($id_cargo){
             $data = Cargo::getById(($id_cargo));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Cargo Não Existe',],400);
+            }
             return $data;
         }
         $data = Cargo::getAll();
