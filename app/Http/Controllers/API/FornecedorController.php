@@ -25,4 +25,33 @@ class FornecedorController extends Controller
 
         return response()->json($fornecedor,201); 
     }
+
+    public function get(Int $id_fornecedor = null){
+
+        if($id_fornecedor){
+            $data = Fornecedor::getById($id_fornecedor);
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([],204);
+            }
+            return $data;
+        }
+        $data = Fornecedor::getAll();
+        return $data;
+    }
+
+    public function update(Int $id_fornecedor, Request $request){
+        $request->validate([
+            'desc_fornecedor_frn'      => 'string',
+            'tel_fornecedor_frn'       => 'string',
+            'documento_fornecedor_frn' => 'string',
+        ]);
+        Fornecedor::updateReg($id_fornecedor, $request);
+    }
+
+    // delete (inactivate)
+    public function delete(Int $id_fornecedor){
+        Fornecedor::deleteReg($id_fornecedor);
+    }
 }

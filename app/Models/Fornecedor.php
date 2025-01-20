@@ -19,7 +19,7 @@ class Fornecedor extends Model
     ];
 
     public static function getAll(){
-        $data = Fornecedor::select(['*'])->where('is_ativo_frn', 1)->ordeBy('id_fornecedor_frn', 'desc')->get();
+        $data = Fornecedor::select(['*'])->where('is_ativo_frn', 1)->orderBy('id_fornecedor_frn', 'desc')->get();
         return response()->json($data);
     }
 
@@ -34,7 +34,7 @@ class Fornecedor extends Model
        return $data;
     }
 
-    public static function updataReg(Int $id_fornecedor, $obj) {
+    public static function updateReg(Int $id_fornecedor, $obj) {
         Fornecedor::where('id_fornecedor_frn', $id_fornecedor)
         ->update([
             'desc_fornecedor_frn'       => $obj->desc_fornecedor_frn,
