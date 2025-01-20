@@ -24,6 +24,12 @@ class CentroCustoController extends Controller
     public function get(Int $id_centro_custo = null) {
         if($id_centro_custo){
             $data = CentroCusto::getById(($id_centro_custo));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Centro de Custo Não Existe',],400);
+            }
             return $data;
         }
         $data = CentroCusto::getAll();
