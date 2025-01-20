@@ -34,6 +34,12 @@ class MaterialController extends Controller
     public function get(Int $id_material = null) {
         if($id_material){
             $data = Material::getById(($id_material));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Material Não Existe',],400);
+            }
             return $data;
         }
         $data = Material::getAll();
