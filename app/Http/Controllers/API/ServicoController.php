@@ -73,7 +73,7 @@ class ServicoController extends Controller
         }
 
         return response()->json([
-            'message' => 'Service created successfully',
+            'message' => 'Serviço criado com sucesso',
             'service' => $servico
         ]);
     }
@@ -284,7 +284,7 @@ class ServicoController extends Controller
         }
 
         return response()->json([
-            'message' => 'Service updated successfully'
+            'message' => 'Serviço atualizado com sucesso'
         ]);
     }
 

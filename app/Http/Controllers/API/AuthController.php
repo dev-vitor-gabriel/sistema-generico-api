@@ -27,7 +27,7 @@ class AuthController extends Controller
 
         if (!$token) {
             return response()->json([
-                'message' => 'Unauthorized',
+                'message' => 'Não autorizado',
             ], 401);
         }
 
@@ -47,7 +47,7 @@ class AuthController extends Controller
     {
         if(strlen($request->password) <= 6){
             return response()->json([
-                'message' => 'Your password must be at least 6 characters long.',
+                'message' => 'Sua senha deve ter pelo menos 6 caracteres.',
             ], 400);
         }
 
@@ -71,7 +71,7 @@ class AuthController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'User created successfully',
+            'message' => 'Usuário criado com sucesso',
             'user' => $user
         ]);
     }
@@ -82,7 +82,7 @@ class AuthController extends Controller
     {
         Auth::logout();
         return response()->json([
-            'message' => 'Successfully logged out',
+            'message' => 'Desconectado com sucesso',
         ]);
     }
 
