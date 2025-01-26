@@ -31,9 +31,11 @@ class FornecedorController extends Controller
         if($id_fornecedor){
             $data = Fornecedor::getById($id_fornecedor);
             $data_array = json_decode($data->content());
-           
+
             if(empty($data_array)){
-                return response()->json([],204);
+                return response()->json([
+                    'error' => 'id_fornecedor_frn inválido',
+                ],400);
             }
             return $data;
         }

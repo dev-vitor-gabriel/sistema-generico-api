@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 use App\Models\MaterialMovimentacao;
 use App\Models\Material;
+use App\Models\Estoque;
 use App\Models\MaterialMovimentacaoItem;
 
 use App\Http\Controllers\Controller;
@@ -25,36 +26,84 @@ class MaterialMovimentacaoController extends Controller
             'is_ativo_mov'           => 1,
         ]);
 
-        foreach ($request->materiais as $material) {
-            if (isset($material['vlr_material_mit'])) {
-                $value = $material['vlr_material_mit'];
-            } else {
-                $value = Material::select(['vlr_material_mte'])->where('id_material_mte', $material['id_material_mte'])->get()[0]->vlr_material_mte;
+        if($tipo_movimentacao == 'entrada'){
+            foreach ($request->materiais as $material) {
+                if (isset($material['vlr_material_mit'])) {
+                    $value = $material['vlr_material_mit'];
+                } else {
+                    $value = Material::select(['vlr_material_mte'])->where('id_material_mte', $material['id_material_mte'])->get()[0]->vlr_material_mte;
+                }
+
+                MaterialMovimentacaoItem::create([
+                    'id_movimentacao_mit'                   => $materialMov->id,
+                    'id_material_mit'                       => $material['id_material_mte'],
+                    'qtd_material_mit'                      => $material['qtd_material_mit'],
+                    'vlr_material_mit'                      => $value,
+                    'tipo_movimentacao_mit'                 => 'entrada'
+                ]);
             }
 
-            MaterialMovimentacaoItem::create([
-                'id_movimentacao_mit'                   => $materialMov->id,
-                'id_material_mit'                       => $material['id_material_mte'],
-                'qtd_material_mit'                      => $material['qtd_material_mit'],
-                'vlr_material_mit'                      => $value
-            ]);
+            return response()->json($materialMov,201);
         }
 
-        return response()->json($materialMov,201);
+        if($tipo_movimentacao == 'saida'){
+            $consulta_estoque = Estoque::getEstoqueComValoresById($materialMov->id_estoque_saida_mov);
+            $movimentacao_estoque = [];
+            foreach ($consulta_estoque as $item) {
+                $movimentacao_estoque[$item->material_id] = [
+                    'id_estoque'           => $item->estoque_id,
+                    'qtd_material_estoque' => $item->quantidade_em_estoque,
+                ];
+            }
+
+            foreach ($request->materiais as $material) {
+                $material_id = $material['id_material_mte'];
+                $quantidade_solicitada = $material['qtd_material_mit'];
+
+                // Verifica se o material existe no estoque
+                if (!isset($movimentacao_estoque[$material_id])) {
+                    return response()->json([
+                        'error' => "Material com ID {$material_id} não encontrado no estoque."
+                    ], 404);
+                }
+
+                if (isset($material['vlr_material_mit'])) {
+                    $value = $material['vlr_material_mit'];
+                } else {
+                    $value = Material::select(['vlr_material_mte'])->where('id_material_mte', $material['id_material_mte'])->get()[0]->vlr_material_mte;
+                }
+
+                $quantidade_disponivel = $movimentacao_estoque[$material_id]['qtd_material_estoque'];
+                if ($quantidade_solicitada > $quantidade_disponivel) {
+                    return response()->json([
+                        'error' => "Quantidade insuficiente no estoque para o material com ID {$material_id}. Disponível: {$quantidade_disponivel}, Solicitado: {$quantidade_solicitada}."
+                    ], 400);
+                }
+
+                MaterialMovimentacaoItem::create([
+                    'id_movimentacao_mit'       =>  $materialMov->id,
+                    'id_material_mit'           =>  $material_id,
+                    'qtd_material_mit'          =>  -$quantidade_solicitada,
+                    'vlr_material_mit'          =>  -$value,
+                    'tipo_movimentacao_mit'     =>  'saida',
+                ]);
+
+                return response()->json($materialMov,201);
+            }
+        }
+
     }
 
-        // get
-        public function get(Int $id_material = null)
-        {
+    public function get(Int $id_material = null)
+    {
+        $data = MaterialMovimentacao::get($id_material);
 
-            $data = MaterialMovimentacao::get($id_material);
+        $input_array = $data->toArray();
 
-            $input_array = $data->toArray();
-
-            $data = $this->groupMovimentacaoMaterialByMovimentacaoMaterialItem($input_array);
-            // return $data;
-            return response()->json($data);
-        }
+        $data = $this->groupMovimentacaoMaterialByMovimentacaoMaterialItem($input_array);
+        // return $data;
+        return response()->json($data);
+    }
 
     public function update(Int $id_movimentacao, Request $request) {
 
