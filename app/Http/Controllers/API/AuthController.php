@@ -73,7 +73,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Usuário criado com sucesso',
             'user' => $user
-        ]);
+        ], 200, [], JSON_UNESCAPED_UNICODE);
     }
 
 
