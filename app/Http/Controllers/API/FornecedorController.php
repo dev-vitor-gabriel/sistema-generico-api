@@ -34,8 +34,7 @@ class FornecedorController extends Controller
 
             if(empty($data_array)){
                 return response()->json([
-                    'error' => 'id_fornecedor_frn inválido',
-                ],400);
+                    'error' => 'Fornecedor Não Existe'],400);
             }
             return $data;
         }

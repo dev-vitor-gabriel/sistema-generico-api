@@ -33,6 +33,12 @@ class ClienteController extends Controller
     public function get(Int $id_cliente = null) {
         if($id_cliente){
             $data = Cliente::getById(($id_cliente));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Cliente Não Existe',],400);
+            }
             return $data;
         }
         $data = Cliente::getAll();

@@ -25,6 +25,12 @@ class MetodoPagamentoController extends Controller
     public function get(Int $id_metodo_pagamento = null) {
         if($id_metodo_pagamento){
             $data = MetodoPagamento::getById(($id_metodo_pagamento));
+            $data_array = json_decode($data->content());
+           
+            if(empty($data_array)){
+                return response()->json([
+                    'error' => 'Metodo de Pagamento Não Existe',],400);
+            }
             return $data;
         }
         $data = MetodoPagamento::getAll();
