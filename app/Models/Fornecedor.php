@@ -15,7 +15,8 @@ class Fornecedor extends Model
         'desc_fornecedor_frn',
         'tel_fornecedor_frn',
         'documento_fornecedor_frn',
-        'is_ativo_frn'
+        'is_ativo_frn',
+        'id_empresa'
     ];
 
     public static function getAll(){
@@ -43,7 +44,7 @@ class Fornecedor extends Model
 
         ]);
     }
-    
+
     public static function deleteReg($id_fornecedor) {
         Fornecedor::where('id_fornecedor_frn', $id_fornecedor)
         ->update([

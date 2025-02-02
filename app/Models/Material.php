@@ -15,7 +15,8 @@ class Material extends Model
         'id_unidade_mte',
         'des_material_mte',
         'vlr_material_mte',
-        'is_ativo_mte'
+        'is_ativo_mte',
+        'id_empresa',
     ];
 
     public static function getAll()

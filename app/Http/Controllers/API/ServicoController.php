@@ -19,6 +19,8 @@ class ServicoController extends Controller
     // create
     public function create(Request $request)
     {
+        $id_empresa = $request->header('id_empresa');
+
         $request->validate([
             'txt_servico_ser'               => 'string|max:255',
             // 'vlr_servico_ser'               => 'required|integer',
@@ -36,6 +38,7 @@ class ServicoController extends Controller
             'id_funcionario_servico_ser'    => $request->id_funcionario_servico_ser,
             'id_cliente_ser'                => $request->id_cliente_ser,
             'is_ativo_ser'                  => 1,
+            'id_empresa'                    => $id_empresa,
         ]);
 
         foreach ($request->tipos_servico as $tipo_servico) {
@@ -82,7 +85,7 @@ class ServicoController extends Controller
     {
         $Servico = new Servico();
         $filter = $request->only($Servico->getFillable());
-        
+
         $filter = array_filter($filter, function($reg){ return mb_strtoupper($reg) != "NULL";});
         $data = Servico::get($id_servico,$filter);
 
@@ -135,7 +138,7 @@ class ServicoController extends Controller
 
         if($request->tipos_servico || $request->materiais){
             $serviceData = $this->groupServiceByTypeServiceAndMaterial($input_array);
-            
+
             if($request->tipos_servico){
                 $tipoServicoRemove = [];
                 $tipoServicoUpdate = [];
@@ -157,16 +160,16 @@ class ServicoController extends Controller
                         $tipoServicoRemove []=$old;
                     }
                 }
-                
-                $tipoServicoNew = array_filter($request->tipos_servico, function($reg) use ($tipoServicoAlreadyRegistered) { 
-                    foreach ($tipoServicoAlreadyRegistered as $value){ 
+
+                $tipoServicoNew = array_filter($request->tipos_servico, function($reg) use ($tipoServicoAlreadyRegistered) {
+                    foreach ($tipoServicoAlreadyRegistered as $value){
                         if($value['id_servico_tipo_stp'] == $reg['id_servico_tipo_stp'])
                             return false;
                     }
                     return true;
                 });
 
-          
+
 
                 foreach ($tipoServicoNew as $tipo_servico) {
                     if (isset($tipo_servico['vlr_tipo_servico_rst'])) {
@@ -223,9 +226,9 @@ class ServicoController extends Controller
                         $materialRemove []=$old;
                     }
                 }
-                
-                $materialNew = array_filter($request->materiais, function($reg) use ($materialAlreadyRegistered) { 
-                    foreach ($materialAlreadyRegistered as $value){ 
+
+                $materialNew = array_filter($request->materiais, function($reg) use ($materialAlreadyRegistered) {
+                    foreach ($materialAlreadyRegistered as $value){
                         if($value['id_material_mte'] == $reg['id_material_mte'])
                             return false;
                     }

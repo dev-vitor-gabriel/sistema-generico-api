@@ -14,7 +14,8 @@ class ServicoTipo extends Model
     protected $fillable = [
         'des_servico_tipo_stp',
         'vlr_servico_tipo_stp',
-        'is_ativo_stp'
+        'is_ativo_stp',
+        'id_empresa'
     ];
 
     public static function getAll() {

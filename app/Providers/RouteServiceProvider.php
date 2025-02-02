@@ -30,77 +30,86 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::middleware('api')
-            ->prefix('api')
-            ->group(base_path('routes/api.php'));
+                ->prefix('api')
+                ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
-            ->group(base_path('routes/web.php'));
+                ->group(base_path('routes/web.php'));
 
             Route::middleware('api')
-            ->prefix('api/auth')
-            ->group(base_path('routes/api/auth.php'));
+                ->prefix('api/auth')
+                ->group(base_path('routes/api/auth.php'));
+            Route::middleware(['api', 'set.empresa.header'])  // Adicionando o middleware aqui
+                ->prefix('api/servico')
+                ->group(base_path('routes/api/servico.php'));
 
-            Route::middleware('api')
-            ->prefix('api/servico')
-            ->group(base_path('routes/api/servico.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/venda')
+                ->group(base_path('routes/api/venda.php'));
 
-            Route::middleware('api')
-            ->prefix('api/venda')
-            ->group(base_path('routes/api/venda.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/servicoTipo')
+                ->group(base_path('routes/api/servicoTipo.php'));
 
-            Route::middleware('api')
-            ->prefix('api/servicoTipo')
-            ->group(base_path('routes/api/servicoTipo.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/material')
+                ->group(base_path('routes/api/material.php'));
 
-            Route::middleware('api')
-            ->prefix('api/material')
-            ->group(base_path('routes/api/material.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/estoque')
+                ->group(base_path('routes/api/estoque.php'));
 
-            Route::middleware('api')
-            ->prefix('api/estoque')
-            ->group(base_path('routes/api/estoque.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/estoqueQuantidadeMaterial')
+                ->group(base_path('routes/api/estoqueQuantidadeMaterial.php'));
 
-            Route::middleware('api')
-            ->prefix('api/estoqueQuantidadeMaterial')
-            ->group(base_path('routes/api/estoqueQuantidadeMaterial.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/movimentacao')
+                ->group(base_path('routes/api/materialMovimentacao.php'));
 
-            Route::middleware('api')
-            ->prefix('api/movimentacao')
-            ->group(base_path('routes/api/materialMovimentacao.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/cliente')
+                ->group(base_path('routes/api/cliente.php'));
 
-            Route::middleware('api')
-            ->prefix('api/cliente')
-            ->group(base_path('routes/api/cliente.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/centroCusto')
+                ->group(base_path('routes/api/centroCusto.php'));
 
-            Route::middleware('api')->prefix('api/centroCusto')
-            ->group(base_path('routes/api/centroCusto.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/unidade')
+                ->group(base_path('routes/api/unidade.php'));
 
-            Route::middleware('api')->prefix('api/unidade')
-            ->group(base_path('routes/api/unidade.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/cargo')
+                ->group(base_path('routes/api/cargo.php'));
 
-            Route::middleware('api')->prefix('api/cargo')
-            ->group(base_path('routes/api/cargo.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/funcionario')
+                ->group(base_path('routes/api/funcionario.php'));
 
-            Route::middleware('api')->prefix('api/funcionario')
-            ->group(base_path('routes/api/funcionario.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/instituicaoPagamento')
+                ->group(base_path('routes/api/instituicaoPagamento.php'));
 
-            Route::middleware('api')->prefix('api/instituicaoPagamento')
-            ->group(base_path('routes/api/instituicaoPagamento.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/metodoPagamento')
+                ->group(base_path('routes/api/metodoPagamento.php'));
 
-            Route::middleware('api')->prefix('api/metodoPagamento')
-            ->group(base_path('routes/api/metodoPagamento.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/agendamento')
+                ->group(base_path('routes/api/agendamento.php'));
 
-            Route::middleware('api')
+            Route::middleware(['api', 'set.empresa.header'])
             ->prefix('api/agendamento')
             ->group(base_path('routes/api/agendamento.php'));
 
-            Route::middleware('api')
-            ->prefix('api/fornecedor')
-            ->group(base_path('routes/api/fornecedor.php'));
-
-            Route::middleware('api')
+            Route::middleware(['api', 'set.empresa.header'])
             ->prefix('api/pessoa')
             ->group(base_path('routes/api/pessoa.php'));
+
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/fornecedor')
+                ->group(base_path('routes/api/fornecedor.php'));
         });
     }
 }

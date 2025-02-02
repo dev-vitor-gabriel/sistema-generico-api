@@ -10,7 +10,8 @@ use App\Helpers\ValidateString;
 class FornecedorController extends Controller
 {
     public function create(Request $request){
-       
+        $id_empresa = $request->header('id_empresa');
+
         $request->validate([
             'desc_fornecedor_frn'      => 'required|string|',
             'tel_fornecedor_frn'       => 'required|string|',
@@ -20,10 +21,11 @@ class FornecedorController extends Controller
         $fornecedor = Fornecedor::create([
             'desc_fornecedor_frn'      => $request->desc_fornecedor_frn,
             'tel_fornecedor_frn'       => ValidateString::removeCharacterSpecial($request->tel_fornecedor_frn),
-            'documento_fornecedor_frn' => ValidateString::removeCharacterSpecial($request->documento_fornecedor_frn)
+            'documento_fornecedor_frn' => ValidateString::removeCharacterSpecial($request->documento_fornecedor_frn),
+            'id_empresa' => $id_empresa,
         ]);
 
-        return response()->json($fornecedor,201); 
+        return response()->json($fornecedor,201);
     }
 
     public function get(Int $id_fornecedor = null){

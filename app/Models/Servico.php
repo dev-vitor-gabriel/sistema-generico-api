@@ -20,7 +20,8 @@ class Servico extends Model
         'id_centro_custo_ser',
         'id_funcionario_servico_ser',
         'id_cliente_ser',
-        'is_ativo_ser'
+        'is_ativo_ser',
+        'id_empresa',
     ];
 
     public static function get(Int $id_servico = null, $filtros = null) {
@@ -53,7 +54,7 @@ class Servico extends Model
         ->leftJoin('rel_servico_material', 'id_servico_ser', '=', 'id_servico_rsm')
         ->leftJoin('tb_material', 'id_material_rsm', '=', 'id_material_mte')
         ->leftJoin('tb_unidade', 'id_unidade_mte', '=', 'id_unidade_und');
-        
+
         if($id_servico){
             $data = $data->where('id_servico_ser', $id_servico);
         }
@@ -65,7 +66,7 @@ class Servico extends Model
         return $data;
     }
     public static function getLast30Days($request) {
-        
+
         $data = Servico::selectRaw('COUNT(1) as qtd, DATE_FORMAT(dta_agendamento_ser, "%d/%m/%Y") as dta_agendamento')
         ->where('dta_agendamento_ser', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
         ->where('id_situacao_ser', 2);
@@ -80,7 +81,7 @@ class Servico extends Model
         return $data;
     }
     public static function getLast30DaysPerFunc($request = null) {
-        
+
         $data = Servico::selectRaw('COUNT(1) as qtd, desc_funcionario_tfu')
         ->join('tb_funcionarios', 'id_funcionario_servico_ser', '=', 'id_funcionario_tfu')
         ->where('dta_agendamento_ser', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
@@ -97,7 +98,7 @@ class Servico extends Model
         return $data;
     }
     public static function getLast30DaysPerTipoServico($request) {
-        
+
         $data = Servico::selectRaw('COUNT(1) as qtd, des_servico_tipo_stp')
         ->join('rel_servico_tipo_servico', 'id_servico_ser', '=', 'id_servico_rst')
         ->join('tb_servico_tipo', 'id_tipo_servico_rst', '=', 'id_servico_tipo_stp')

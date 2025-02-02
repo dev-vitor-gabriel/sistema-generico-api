@@ -19,10 +19,11 @@ class Venda extends Model
         'id_funcionario_vda',
         'id_centro_custo_vda',
         'id_cliente_vda',
-        'desc_venda_vda'
+        'desc_venda_vda',
+        'id_empresa'
     ];
 
-    public static function get(Int $id = null, $filtros = null)
+    public static function get(Int $id_empresa, Int $id = null, $filtros = null)
     {
         $data = Venda::select([
             'tb_venda.id_venda_vda',
@@ -41,6 +42,7 @@ class Venda extends Model
             ->join('tb_centro_custo', 'tb_venda.id_centro_custo_vda', '=', 'tb_centro_custo.id_centro_custo_cco')
             ->join('rel_venda_material', 'tb_venda.id_venda_vda', '=', 'rel_venda_material.id_venda_rvm')
             ->where('tb_venda.is_deleted', 0)
+            ->where('tb_venda.id_empresa', $id_empresa)
             ->groupBy('tb_venda.id_venda_vda', 'tb_venda.id_funcionario_vda', 'tb_funcionarios.desc_funcionario_tfu')
             ->orderBy('id_venda_vda', 'desc')
             ->get();

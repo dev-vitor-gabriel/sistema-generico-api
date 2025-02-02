@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class MetodoPagamentoController extends Controller
 {
     public function create(Request $request) {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'desc_metodo_pagamento_tmp'       => 'required|string|max:255'
@@ -16,7 +17,8 @@ class MetodoPagamentoController extends Controller
 
         $metodoPagamento = MetodoPagamento::create([
             'desc_metodo_pagamento_tmp'       => $request->desc_metodo_pagamento_tmp,
-            'is_ativo_tmp'                    => 1
+            'is_ativo_tmp'                    => 1,
+            'id_empresa' => $id_empresa,
         ]);
 
         return response()->json($metodoPagamento,201);

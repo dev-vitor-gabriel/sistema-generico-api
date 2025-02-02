@@ -10,6 +10,7 @@ class EstoqueController extends Controller
 {
 
     public function create(Request $request) {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'des_estoque_est'     => 'required|string|max:255',
@@ -18,7 +19,8 @@ class EstoqueController extends Controller
 
         $estoque = Estoque::create([
             'des_estoque_est'            => $request->des_estoque_est,
-            'id_centro_custo_est'        => $request->id_centro_custo_est
+            'id_centro_custo_est'        => $request->id_centro_custo_est,
+            'id_empresa' => $id_empresa,
         ]);
 
         return response()->json($estoque,201);

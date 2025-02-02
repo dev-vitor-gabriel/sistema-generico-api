@@ -13,7 +13,8 @@ class InstituicaoPagamento extends Model
 
     protected $fillable = [
         'desc_instituicao_pagamento_tip',
-        'is_ativo_tip'
+        'is_ativo_tip',
+        'id_empresa'
     ];
 
     public static function getAll()

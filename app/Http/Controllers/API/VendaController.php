@@ -21,6 +21,8 @@ class VendaController extends Controller
     // create
     public function create(Request $request)
     {
+        $id_empresa = $request->header('id_empresa');
+
         $funcionario = Funcionario::getById($request->id_funcionario_vda);
 
         if (!$funcionario)
@@ -55,7 +57,8 @@ class VendaController extends Controller
                 'id_cliente_vda' => $request->id_cliente_vda,
                 'desc_venda_vda' => $request->desc_venda_vda,
                 'id_centro_custo_vda' => $request->id_centro_custo_vda,
-            ]
+                'id_empresa' => $id_empresa,
+             ]
         );
 
         foreach($request->materiais as $material_venda)
@@ -83,7 +86,7 @@ class VendaController extends Controller
         $filter = $request->only($Venda->getFillable());
 
         $filter = array_filter($filter, function($reg){ return mb_strtoupper($reg) != "NULL";});
-        $data = Venda::get($id_venda, $filter);
+        $data = Venda::get($request->header('id_empresa'), $id_venda, $filter);
 
         return response()->json($data);
     }

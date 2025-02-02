@@ -12,8 +12,9 @@ class MaterialController extends Controller
     {
         $this->middleware('auth:api', ['except' => []]);
     }
-    
+
     public function create(Request $request) {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'id_unidade_mte' =>  'required|int',
@@ -26,6 +27,7 @@ class MaterialController extends Controller
             'des_material_mte' => $request->des_material_mte,
             'vlr_material_mte' => $request->vlr_material_mte,
             'is_ativo_mte' => 1,
+            'id_empresa' => $id_empresa,
         ]);
 
         return response()->json($material,201);

@@ -17,25 +17,44 @@ class Cliente extends Model
         'email_cliente_cli',
         'documento_cliente_cli',
         'endereco_cliente_cli',
-        'is_ativo_cli'
+        'is_ativo_cli',
+        'id_empresa',
     ];
 
-    public static function getAll() {
-        $data = Cliente::select(['*'])->where('is_ativo_cli', 1)->orderBy('id_cliente_cli', 'desc')->get();
-        return response()->json($data);
+    public static function getAll(Int $id_empresa) {
+        $data = Cliente::select(['*'])
+        ->where('is_ativo_cli', 1)
+        ->where('id_empresa', $id_empresa)
+        ->orderBy('id_cliente_cli', 'desc')
+        ->get();
+        return response()
+        ->json($data);
     }
 
-    public static function getById(Int $id = null) {
+    public static function getById(Int $id_empresa, Int $id = null) {
         if($id) {
-            $data = Cliente::select(['*'])->where('id_cliente_cli', $id)->where('is_ativo_cli', 1)->orderBy('id_cliente_cli', 'desc')->get();
+            $data = Cliente::select(['*'])
+            ->where('id_cliente_cli', $id)
+            ->where('id_empresa', $id_empresa)
+            ->where('is_ativo_cli', 1)
+            ->orderBy('id_cliente_cli', 'desc')
+            ->get();
         }else{
-            $data = Cliente::select(['*'])->where('is_ativo_cli', 1)->orderBy('id_cliente_cli', 'desc')->get();
+            $data = Cliente::select(['*'])
+            ->where('is_ativo_cli', 1)
+            ->where('id_empresa', $id_empresa)
+            ->orderBy('id_cliente_cli', 'desc')
+            ->get();
         }
-        return response()->json($data);
+        return response()
+        ->json($data);
     }
 
-    public static function updateReg(Int $id_cliente, $obj) {
-        Cliente::where('id_cliente_cli', $id_cliente)
+    public static function updateReg(Int $id_empresa, Int $id_cliente, $obj) {
+        Cliente::
+        where('id_cliente_cli', $id_cliente)
+        ->where('id_empresa', $id_empresa)
+
         ->update([
             'des_cliente_cli'       => $obj->des_cliente_cli,
             'telefone_cliente_cli'  => $obj->telefone_cliente_cli,
@@ -45,8 +64,10 @@ class Cliente extends Model
         ]);
     }
 
-    public static function deleteReg($id_cliente) {
-        Cliente::where('id_cliente_cli', $id_cliente)
+    public static function deleteReg($id_empresa, $id_cliente) {
+        Cliente::
+        where('id_cliente_cli', $id_cliente)
+        ->where('id_empresa', $id_empresa)
         ->update([
             'is_ativo_cli' => 0
         ]);

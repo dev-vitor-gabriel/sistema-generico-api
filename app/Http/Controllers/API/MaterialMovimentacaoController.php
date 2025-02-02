@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 class MaterialMovimentacaoController extends Controller
 {
     public function create(Request $request, $tipo_movimentacao) {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'id_estoque'             => 'required|int',
@@ -24,6 +25,7 @@ class MaterialMovimentacaoController extends Controller
             'id_estoque_saida_mov'   => $tipo_movimentacao == 'saida'   ? $request->id_estoque : null,
             'id_centro_custo_mov'    => $request->id_centro_custo_mov,
             'is_ativo_mov'           => 1,
+            'id_empresa' => $id_empresa,
         ]);
 
         if($tipo_movimentacao == 'entrada'){

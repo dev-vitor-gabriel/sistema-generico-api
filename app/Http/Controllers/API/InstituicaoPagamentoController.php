@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class InstituicaoPagamentoController extends Controller
 {
     public function create(Request $request) {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'desc_instituicao_pagamento_tip'       => 'required|string|max:255'
@@ -16,7 +17,8 @@ class InstituicaoPagamentoController extends Controller
 
         $instituicaoPagamento = InstituicaoPagamento::create([
             'desc_instituicao_pagamento_tip'       => $request->desc_instituicao_pagamento_tip,
-            'is_ativo_tip'                         => 1
+            'is_ativo_tip'                         => 1,
+            'id_empresa'                           => $id_empresa,
         ]);
 
         return response()->json($instituicaoPagamento,201);

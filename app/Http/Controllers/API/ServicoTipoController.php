@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 class ServicoTipoController extends Controller
 {
     public function create(Request $request) {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'des_servico_tipo_stp' => 'required|string|max:255',
@@ -19,6 +20,7 @@ class ServicoTipoController extends Controller
             'des_servico_tipo_stp' => $request->des_servico_tipo_stp,
             'vlr_servico_tipo_stp' => $request->vlr_servico_tipo_stp,
             'is_ativo_stp' => 1,
+            'id_empresa' => $id_empresa,
         ]);
 
         return response()->json($servico_tipo,201);

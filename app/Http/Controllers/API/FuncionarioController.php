@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 class FuncionarioController extends Controller
 {
     public function create(Request $request) {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'id_funcionario_cargo_tfu' => 'required|int|max:255',
@@ -18,14 +19,15 @@ class FuncionarioController extends Controller
             'documento_funcionario_tfu' => 'required|string|max:255',
             'telefone_funcionario_tfu' => 'required|string|max:255',
             'endereco_funcionario_tfu' => 'required|string|max:255'
-        ]); 
+        ]);
 
         $funcionario = Funcionario::create([
             'id_funcionario_cargo_tfu' => $request->id_funcionario_cargo_tfu,
             'desc_funcionario_tfu' => $request->desc_funcionario_tfu,
             'documento_funcionario_tfu' => $request->documento_funcionario_tfu,
             'telefone_funcionario_tfu' => $request->telefone_funcionario_tfu,
-            'endereco_funcionario_tfu' => $request->endereco_funcionario_tfu
+            'endereco_funcionario_tfu' => $request->endereco_funcionario_tfu,
+            'id_empresa' => $id_empresa,
         ]);
         if($request->tipos_servico){
             foreach ($request->tipos_servico as $tipo_servico) {
@@ -69,9 +71,9 @@ class FuncionarioController extends Controller
         Funcionario::updateReg($id_funcionario, $request);
 
         $funcionarioData = Funcionario::getById($id_funcionario);
-        
+
         $input_array = $funcionarioData->toArray();
-        
+
 
         $funcionarioData = $this->groupByTypeService($input_array);
 

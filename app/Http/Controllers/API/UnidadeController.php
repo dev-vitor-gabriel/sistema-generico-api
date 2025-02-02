@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 
 class UnidadeController extends Controller
 {
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
 
         $request->validate([
             'des_unidade_und'       => 'required|string|max:255',

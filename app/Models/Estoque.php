@@ -14,7 +14,8 @@ class Estoque extends Model
     protected $fillable = [
         'des_estoque_est',
         'id_centro_custo_est',
-        'is_ativo_est'
+        'is_ativo_est',
+        'id_empresa',
     ];
 
     public static function getAll($perPage = 10) {

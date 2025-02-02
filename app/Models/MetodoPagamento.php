@@ -12,7 +12,8 @@ class MetodoPagamento extends Model
     protected $table = "tb_metodo_pagamento";
 
     protected $fillable = [
-        'desc_metodo_pagamento_tmp'
+        'desc_metodo_pagamento_tmp',
+        'id_empresa'
     ];
 
     public static function getAll()

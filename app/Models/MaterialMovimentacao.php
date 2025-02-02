@@ -15,7 +15,8 @@ class MaterialMovimentacao extends Model
         'id_estoque_entrada_mov',
         'id_estoque_saida_mov',
         'id_centro_custo_mov',
-        'is_ativo_mov'
+        'is_ativo_mov',
+        'id_empresa',
     ];
 
     public static function get(Int $id_material = null) {

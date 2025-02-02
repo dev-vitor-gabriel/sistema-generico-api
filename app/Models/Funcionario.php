@@ -17,6 +17,7 @@ class Funcionario extends Model
         'telefone_funcionario_tfu',
         'documento_funcionario_tfu',
         'endereco_funcionario_tfu',
+        'id_empresa',
         'is_ativo_tfu'
     ];
 
