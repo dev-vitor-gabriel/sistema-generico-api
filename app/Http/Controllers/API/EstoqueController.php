@@ -24,19 +24,25 @@ class EstoqueController extends Controller
         return response()->json($estoque,201);
     }
 
-    public function get(Int $id_estoque = null) {
-        if($id_estoque){
-            $data = Estoque::getById(($id_estoque));
+    public function get(Request $request, Int $id_estoque = null) {
+        if ($id_estoque) {
+            $data = Estoque::getById($id_estoque);
             $data_array = json_decode($data->content());
-           
-            if(empty($data_array)){
+
+            if (empty($data_array)) {
                 return response()->json([
-                    'error' => 'Estoque Não Existe',],400);
+                    'error' => 'Estoque Não Existe',
+                ], 400);
             }
             return $data;
         }
-        $data = Estoque::getAll();
-        return $data;
+
+        $per_page = $request->query('per_page', 10);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
+
+        $data = Estoque::paginate($per_page);
+
+        return response()->json($data);
     }
 
     public function showEstoqueComValores()
