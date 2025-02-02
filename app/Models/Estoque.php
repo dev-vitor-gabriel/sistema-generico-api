@@ -67,7 +67,7 @@ class Estoque extends Model
         return DB::table('tb_estoque as te')
             ->leftJoin('tb_material_movimentacao as tmm', function ($join) {
                 $join->on('te.id_estoque_est', '=', 'tmm.id_estoque_entrada_mov')
-                     ->orOn('te.id_estoque_est', '=', 'tmm.id_estoque_saida_mov');
+                    ->orOn('te.id_estoque_est', '=', 'tmm.id_estoque_saida_mov');
             })
             ->leftJoin('tb_material_movimentacao_item as tmmi', 'tmm.id_movimentacao_mov', '=', 'tmmi.id_movimentacao_mit')
             ->leftJoin('tb_material as tm', 'tmmi.id_material_mit', '=', 'tm.id_material_mte')
@@ -76,11 +76,56 @@ class Estoque extends Model
                 'te.des_estoque_est as estoque_descricao',
                 'tm.des_material_mte as material_descricao',
                 'tm.vlr_material_mte as valor_unitario',
+                DB::raw('
+                    COALESCE(SUM(
+                        CASE
+                            WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
+                            WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN -tmmi.qtd_material_mit
+                            ELSE 0
+                        END
+                    ), 0) as quantidade_em_estoque
+                '),
+                DB::raw('
+                    (
+                        COALESCE(SUM(
+                            CASE
+                                WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
+                                WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN -tmmi.qtd_material_mit
+                                ELSE 0
+                            END
+                        ), 0) * tm.vlr_material_mte
+                    ) as valor_total_em_estoque
+                ')
+            )
+            ->where('te.is_ativo_est', 1)
+            ->where('tm.is_ativo_mte', 1)
+            ->groupBy('te.id_estoque_est', 'tm.id_material_mte', 'tm.vlr_material_mte')
+            ->orderBy('te.id_estoque_est', 'desc')
+            ->get();
+    }
+
+
+    public static function getEstoqueComValoresById(Int $id_estoque = null)
+    {
+        return DB::table('tb_estoque as te')
+            ->leftJoin('tb_material_movimentacao as tmm', function ($join) {
+                $join->on('te.id_estoque_est', '=', 'tmm.id_estoque_entrada_mov')
+                     ->orOn('te.id_estoque_est', '=', 'tmm.id_estoque_saida_mov');
+            })
+            ->leftJoin('tb_material_movimentacao_item as tmmi', 'tmm.id_movimentacao_mov', '=', 'tmmi.id_movimentacao_mit')
+            ->leftJoin('tb_material as tm', 'tmmi.id_material_mit', '=', 'tm.id_material_mte')
+            ->select(
+                'te.id_estoque_est as estoque_id',
+                'te.des_estoque_est as estoque_descricao',
+                'tm.id_material_mte as material_id',
+                'tm.des_material_mte as material_descricao',
+                'tm.vlr_material_mte as valor_unitario',
                 DB::raw('COALESCE(SUM(CASE WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit ELSE 0 END), 0) - COALESCE(SUM(CASE WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN tmmi.qtd_material_mit ELSE 0 END), 0) as quantidade_em_estoque'),
                 DB::raw('(COALESCE(SUM(CASE WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit ELSE 0 END), 0) - COALESCE(SUM(CASE WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN tmmi.qtd_material_mit ELSE 0 END), 0)) * tm.vlr_material_mte as valor_total_em_estoque')
             )
             ->where('te.is_ativo_est', 1)
             ->where('tm.is_ativo_mte', 1)
+            ->where('te.id_estoque_est', $id_estoque)
             ->groupBy('te.id_estoque_est', 'tm.id_material_mte', 'tm.vlr_material_mte')
             ->orderBy('te.id_estoque_est', 'desc')
             // ->orderBy('tm.des_material_mte', 'desc')
