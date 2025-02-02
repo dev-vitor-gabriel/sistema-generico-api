@@ -17,18 +17,18 @@ class Estoque extends Model
         'is_ativo_est'
     ];
 
-    public static function getAll() {
+    public static function getAll($perPage = 10) {
         $data = Estoque::select([
-            'tb_estoque.id_estoque_est',
-            'tb_estoque.des_estoque_est',
-            'tb_centro_custo.des_centro_custo_cco',
-            'tb_estoque.created_at' ,
-            'tb_estoque.updated_at'
-        ])
-        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
-        ->where('is_ativo_est', 1)
-        ->orderBy('tb_estoque.id_estoque_est', 'desc')
-        ->get();
+                'tb_estoque.id_estoque_est',
+                'tb_estoque.des_estoque_est',
+                'tb_centro_custo.des_centro_custo_cco',
+                'tb_estoque.created_at',
+                'tb_estoque.updated_at'
+            ])
+            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
+            ->where('is_ativo_est', 1)
+            ->orderBy('tb_estoque.id_estoque_est', 'desc')
+            ->paginate($perPage);
         return response()->json($data);
     }
 

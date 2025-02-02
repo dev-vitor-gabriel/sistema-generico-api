@@ -40,9 +40,7 @@ class EstoqueController extends Controller
         $per_page = $request->query('per_page', 10);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        $data = Estoque::paginate($per_page);
-
-        return response()->json($data);
+        return Estoque::getAll($per_page);
     }
 
     public function showEstoqueComValores()
