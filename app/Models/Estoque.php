@@ -18,19 +18,24 @@ class Estoque extends Model
         'id_empresa',
     ];
 
-    public static function getAll($perPage = 10) {
-        $data = Estoque::select([
-                'tb_estoque.id_estoque_est',
-                'tb_estoque.des_estoque_est',
-                'tb_centro_custo.des_centro_custo_cco',
-                'tb_estoque.created_at',
-                'tb_estoque.updated_at'
-            ])
-            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
-            ->where('is_ativo_est', 1)
-            ->orderBy('tb_estoque.id_estoque_est', 'desc')
-            ->paginate($perPage);
-        return response()->json($data);
+    public static function getAll($perPage = 10, $pageNumber = 1) {
+
+        $paginator = Estoque::select([
+            'tb_estoque.id_estoque_est',
+            'tb_estoque.des_estoque_est',
+            'tb_centro_custo.des_centro_custo_cco',
+            'tb_estoque.created_at',
+            'tb_estoque.updated_at'
+        ])
+        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
+        ->where('is_ativo_est', 1)
+        ->orderBy('tb_estoque.id_estoque_est', 'desc')
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getById(Int $id = null) {
