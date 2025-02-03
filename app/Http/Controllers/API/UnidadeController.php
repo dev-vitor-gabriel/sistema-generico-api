@@ -13,11 +13,13 @@ class UnidadeController extends Controller
         $request->validate([
             'des_unidade_und'       => 'required|string|max:255',
             'des_reduz_unidade_und' => 'required|string|max:255',
+            'id_centro_custo_und'   => 'required|integer|',
         ]);
 
         $servico_tipo = Unidade::create([
             'des_unidade_und'       => $request->des_unidade_und,
             'des_reduz_unidade_und' => $request->des_reduz_unidade_und,
+            'id_centro_custo_und'   => $request->id_centro_custo_und,
             'is_ativo_stp'          => 1,
         ]);
 
@@ -43,6 +45,7 @@ class UnidadeController extends Controller
         $request->validate([
             'des_unidade_und'       => 'string|max:255',
             'des_reduz_unidade_und' => 'string|max:255',
+            'id_centro_custo_und'   => 'integer',
         ]);
         Unidade::updateReg($id_unidade_und, $request);
     }
