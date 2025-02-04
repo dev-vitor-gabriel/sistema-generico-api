@@ -24,29 +24,34 @@ class MetodoPagamentoController extends Controller
         return response()->json($metodoPagamento,201);
     }
 
-    public function get(Int $id_metodo_pagamento = null) {
+    public function get(Request $request, Int $id_metodo_pagamento = null) {
+        $id_empresa = $request->header('id_empresa');
+
         if($id_metodo_pagamento){
-            $data = MetodoPagamento::getById(($id_metodo_pagamento));
+            $data = MetodoPagamento::getById($id_empresa, $id_metodo_pagamento);
             $data_array = json_decode($data->content());
-           
+
             if(empty($data_array)){
                 return response()->json([
                     'error' => 'Metodo de Pagamento Não Existe',],400);
             }
             return $data;
         }
-        $data = MetodoPagamento::getAll();
+        $data = MetodoPagamento::getAll($id_empresa);
         return $data;
     }
 
     public function update(Int $id_metodo_pagamento, Request $request) {
+        $id_empresa = $request->header('id_empresa');
+
         $request->validate([
             'desc_metodo_pagamento_tmp'       => 'string|max:255'
         ]);
-        MetodoPagamento::updateReg($id_metodo_pagamento, $request);
+        MetodoPagamento::updateReg($id_empresa, $id_metodo_pagamento, $request);
     }
 
-    public function delete(Int $id_metodo_pagamento) {
-        MetodoPagamento::deleteReg($id_metodo_pagamento);
+    public function delete(Int $id_metodo_pagamento, Request $request) {
+        $id_empresa = $request->header('id_empresa');
+        MetodoPagamento::deleteReg($id_empresa, $id_metodo_pagamento);
     }
 }

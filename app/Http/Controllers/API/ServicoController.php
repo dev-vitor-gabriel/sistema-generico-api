@@ -83,11 +83,13 @@ class ServicoController extends Controller
     // get
     public function get(Request $request, Int $id_servico = null)
     {
+        $id_empresa = $request->header('id_empresa');
+
         $Servico = new Servico();
         $filter = $request->only($Servico->getFillable());
 
         $filter = array_filter($filter, function($reg){ return mb_strtoupper($reg) != "NULL";});
-        $data = Servico::get($id_servico,$filter);
+        $data = Servico::get($id_empresa, $id_servico,$filter);
 
         $input_array = $data->toArray();
 
@@ -100,18 +102,24 @@ class ServicoController extends Controller
 
     public function getLast30Days(Request $request)
     {
-        $data = Servico::getLast30Days($request);
+        $id_empresa = $request->header('id_empresa');
+
+        $data = Servico::getLast30Days($id_empresa, $request);
         return response()->json($data);
     }
 
     public function getLast30DaysPerFunc(Request $request)
     {
-        $data = Servico::getLast30DaysPerFunc($request);
+        $id_empresa = $request->header('id_empresa');
+
+        $data = Servico::getLast30DaysPerFunc($id_empresa, $request);
         return response()->json($data);
     }
     public function getLast30DaysPerTipoServico(Request $request)
     {
-        $data = Servico::getLast30DaysPerTipoServico($request);
+        $id_empresa = $request->header('id_empresa');
+
+        $data = Servico::getLast30DaysPerTipoServico($id_empresa, $request);
         return response()->json($data);
     }
 
@@ -119,6 +127,8 @@ class ServicoController extends Controller
     // todo: ajustar
     public function update(Int $id_servico, Request $request)
     {
+        $id_empresa = $request->header('id_empresa');
+
         $request->validate([
             'txt_servico_ser'               => 'string|max:255',
             // 'vlr_servico_ser'               => 'integer',
@@ -129,10 +139,9 @@ class ServicoController extends Controller
         ]);
 
         $data = $request->only(['txt_servico_ser', 'vlr_servico_ser', 'dta_agendamento_ser', 'id_centro_custo_ser', 'id_funcionario_servico_ser', 'id_cliente_ser']);
-        $servico = Servico::updateReg($id_servico, $data);
+        $servico = Servico::updateReg($id_empresa, $id_servico, $data);
 
-
-        $serviceData = Servico::get($id_servico);
+        $serviceData = Servico::get($id_empresa, $id_servico);
 
         $input_array = $serviceData->toArray();
 
@@ -175,7 +184,11 @@ class ServicoController extends Controller
                     if (isset($tipo_servico['vlr_tipo_servico_rst'])) {
                         $value = $tipo_servico['vlr_tipo_servico_rst'];
                     } else {
-                        $value = ServicoTipo::select(['vlr_servico_tipo_stp'])->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])->get()[0]->vlr_servico_tipo_stp;
+                        $value = ServicoTipo::
+                        select(['vlr_servico_tipo_stp'])
+                        ->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])
+                        ->where('id_empresa', $id_empresa)
+                        ->get()[0]->vlr_servico_tipo_stp;
                     }
 
                     RelServicoTipoServico::create([
@@ -188,7 +201,11 @@ class ServicoController extends Controller
                     if (isset($tipo_servico['vlr_tipo_servico_rst'])) {
                         $value = $tipo_servico['vlr_tipo_servico_rst'];
                     } else {
-                        $value = ServicoTipo::select(['vlr_servico_tipo_stp'])->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])->get()[0]->vlr_servico_tipo_stp;
+                        $value = ServicoTipo::
+                        select(['vlr_servico_tipo_stp'])
+                         ->where('id_empresa', $id_empresa)
+                        ->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])
+                        ->get()[0]->vlr_servico_tipo_stp;
                     }
 
                     RelServicoTipoServico::where('id_servico_rst', $id_servico)
@@ -292,12 +309,16 @@ class ServicoController extends Controller
     }
 
 
-    public function finalizar(Int $id_servico) {
-        Servico::finalizarReg($id_servico);
+    public function finalizar(Request $request, Int $id_servico) {
+        $id_empresa = $request->header('id_empresa');
+
+        Servico::finalizarReg($id_empresa, $id_servico);
     }
 
-    public function delete(Int $id_servico) {
-        Servico::deleteReg($id_servico);
+    public function delete(Request $request, Int $id_servico) {
+        $id_empresa = $request->header('id_empresa');
+
+        Servico::deleteReg($id_empresa, $id_servico);
     }
 
 

@@ -33,32 +33,38 @@ class MaterialController extends Controller
         return response()->json($material,201);
     }
 
-    public function get(Int $id_material = null) {
+    public function get(Request $request, Int $id_material = null) {
+        $id_empresa = $request->header('id_empresa');
+
         if($id_material){
-            $data = Material::getById(($id_material));
+            $data = Material::getById($id_empresa, $id_material);
             $data_array = json_decode($data->content());
-           
+
             if(empty($data_array)){
                 return response()->json([
                     'error' => 'Material Não Existe',],400);
             }
             return $data;
         }
-        $data = Material::getAll();
+        $data = Material::getAll($id_empresa);
         return $data;
     }
 
     public function update(Int $id_material, Request $request) {
+        $id_empresa = $request->header('id_empresa');
+
         $request->validate([
             'id_unidade_mte' =>  'int',
             'des_material_mte' => 'string|max:255',
             'vlr_material_mte' => 'float'
         ]);
-        Material::updateReg($id_material, $request);
+        Material::updateReg($id_empresa, $id_material, $request);
     }
 
     // delete (inactivate)
-    public function delete(Int $id_material) {
-        Material::deleteReg($id_material);
+    public function delete(Request $request, Int $id_material) {
+        $id_empresa = $request->header('id_empresa');
+
+        Material::deleteReg($id_empresa, $id_material);
     }
 }

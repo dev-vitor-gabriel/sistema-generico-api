@@ -27,8 +27,10 @@ class EstoqueController extends Controller
     }
 
     public function get(Request $request, Int $id_estoque = null) {
+        $id_empresa = $request->header('id_empresa');
+
         if ($id_estoque) {
-            $data = Estoque::getById($id_estoque);
+            $data = Estoque::getById($id_empresa, $id_estoque);
             $data_array = json_decode($data->content());
 
             if (empty($data_array)) {
@@ -43,7 +45,7 @@ class EstoqueController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        return Estoque::getAll($per_page, $page_number);
+        return Estoque::getAll($id_empresa, $per_page, $page_number);
     }
 
     public function showEstoqueComValores()

@@ -19,7 +19,7 @@ class MaterialMovimentacao extends Model
         'id_empresa',
     ];
 
-    public static function get(Int $id_material = null) {
+    public static function get(Int $id_empresa, Int $id_material = null) {
         $data = MaterialMovimentacao::select([
             'tb_material_movimentacao.id_movimentacao_mov',
             'tb_centro_custo.id_centro_custo_cco',
@@ -49,20 +49,23 @@ class MaterialMovimentacao extends Model
             $data = $data->where('id_material_mte', $id_material);
         }
         $data = $data->where('is_ativo_mov', 1);
+        $data = $data->where('tb_material_movimentacao.id_empresa', $id_empresa);
         $data = $data->orderBy('tb_material_movimentacao.id_movimentacao_mov', 'desc')
         ->get();
         return $data;
     }
 
-    public static function updateReg(Int $id, $obj) {
+    public static function updateReg(Int $id_empresa, Int $id, $obj) {
         MaterialMovimentacao::where('id_movimentacao_mov', $id)
+        ->where('id_empresa', $id_empresa)
         ->update([
             'txt_movimentacao_mov' => $obj->txt_movimentacao_mov
         ]);
     }
 
-    public static function deleteReg($id) {
+    public static function deleteReg($id_empresa, $id) {
         MaterialMovimentacao::where('id_movimentacao_mov', $id)
+        ->where('id_empresa', $id_empresa)
         ->update([
             'is_ativo_mov' => 0
         ]);

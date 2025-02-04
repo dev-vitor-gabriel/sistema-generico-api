@@ -82,11 +82,13 @@ class VendaController extends Controller
     // get
     public function get(Request $request, Int $id_venda = null)
     {
+        $id_empresa = $request->header('id_empresa');
+
         $Venda = new Venda();
         $filter = $request->only($Venda->getFillable());
 
         $filter = array_filter($filter, function($reg){ return mb_strtoupper($reg) != "NULL";});
-        $data = Venda::get($request->header('id_empresa'), $id_venda, $filter);
+        $data = Venda::get($id_empresa, $id_venda, $filter);
 
         return response()->json($data);
     }
@@ -94,11 +96,13 @@ class VendaController extends Controller
     // get materiais
     public function getMateriais(Request $request, Int $id_venda = null)
     {
+        $id_empresa = $request->header('id_empresa');
+
         $Venda = new Venda();
         $filter = $request->only($Venda->getFillable());
 
         $filter = array_filter($filter, function($reg){ return mb_strtoupper($reg) != "NULL";});
-        $data = Venda::getMateriais($id_venda, $filter);
+        $data = Venda::getMateriais($id_empresa, $id_venda, $filter);
 
         return response()->json($data);
     }
@@ -106,6 +110,7 @@ class VendaController extends Controller
     // put
     public function update(Int $id_venda, Request $request)
     {
+        $id_empresa = $request->header('id_empresa');
         // {
         //     id_funcionario_vda,
         //     id_centro_custo_vda,
@@ -195,7 +200,7 @@ class VendaController extends Controller
             ], 400);
         }
 
-        Venda::updateReg($id_venda, [
+        Venda::updateReg($id_empresa, $id_venda, [
             'desc_venda_vda' => $request->desc_venda_vda,
             'id_centro_custo_vda' => $request->id_centro_custo_vda,
             'id_funcionario_vda' => $request->id_funcionario_vda,

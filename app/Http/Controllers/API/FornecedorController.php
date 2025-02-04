@@ -28,10 +28,11 @@ class FornecedorController extends Controller
         return response()->json($fornecedor,201);
     }
 
-    public function get(Int $id_fornecedor = null){
+    public function get(Request $request, Int $id_fornecedor = null){
+        $id_empresa = $request->header('id_empresa');
 
         if($id_fornecedor){
-            $data = Fornecedor::getById($id_fornecedor);
+            $data = Fornecedor::getById($id_empresa, $id_fornecedor);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -40,7 +41,7 @@ class FornecedorController extends Controller
             }
             return $data;
         }
-        $data = Fornecedor::getAll();
+        $data = Fornecedor::getAll($id_empresa);
         return $data;
     }
 

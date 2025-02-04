@@ -59,10 +59,11 @@ class Venda extends Model
         return $data;
     }
 
-    public static function getMateriais(Int $id_venda, $filtros = null)
+    public static function getMateriais(Int $id_empresa, Int $id_venda, $filtros = null)
     {
         $data = RelVendaMaterial::select([
             'rel_venda_material.id',
+            'rel_venda_material.id_venda_rvm',
             'tb_material.des_material_mte',
             'rel_venda_material.id_material_rvm',
             'rel_venda_material.vlr_unit_material_rvm',
@@ -72,8 +73,11 @@ class Venda extends Model
             ->where('id_venda_rvm', $id_venda)
             ->join('tb_material', 'rel_venda_material.id_material_rvm', '=', 'tb_material.id_material_mte')
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+            ->join('tb_venda', 'tb_venda.id_venda_vda', '=', 'rel_venda_material.id_venda_rvm')
+            ->where('tb_venda.id_empresa', $id_empresa)
             ->orderBy('rel_venda_material.id', 'desc')
             ->get();
+
         if ($filtros)
         {
             $data = $data->where($filtros);
@@ -90,8 +94,9 @@ class Venda extends Model
             ]);
     }
 
-    public static function updateReg(Int $id_venda_vda, $obj) {
+    public static function updateReg(Int $id_empresa, Int $id_venda_vda, $obj) {
         Venda::where('id_venda_vda', $id_venda_vda)
+        ->where('id_empresa', $id_empresa)
         ->update($obj);
     }
 }

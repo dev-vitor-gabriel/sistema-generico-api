@@ -96,9 +96,11 @@ class MaterialMovimentacaoController extends Controller
 
     }
 
-    public function get(Int $id_material = null)
+    public function get(Request $request, Int $id_material = null)
     {
-        $data = MaterialMovimentacao::get($id_material);
+        $id_empresa = $request->header('id_empresa');
+
+        $data = MaterialMovimentacao::get($id_empresa, $id_material);
 
         $input_array = $data->toArray();
 
@@ -108,16 +110,19 @@ class MaterialMovimentacaoController extends Controller
     }
 
     public function update(Int $id_movimentacao, Request $request) {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'txt_movimentacao_mov' => 'required|string'
         ]);
-        MaterialMovimentacao::updateReg($id_movimentacao, $request);
+        MaterialMovimentacao::updateReg($id_empresa, $id_movimentacao, $request);
     }
 
     // delete (inactivate)
-    public function delete(Int $id_movimentacao) {
-        MaterialMovimentacao::deleteReg($id_movimentacao);
+    public function delete(Request $request, Int $id_movimentacao) {
+        $id_empresa = $request->header('id_empresa');
+
+        MaterialMovimentacao::deleteReg($id_empresa, $id_movimentacao);
     }
 
     private function groupMovimentacaoMaterialByMovimentacaoMaterialItem($input_array){

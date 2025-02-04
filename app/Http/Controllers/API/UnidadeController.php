@@ -10,6 +10,7 @@ class UnidadeController extends Controller
 {
     public function create(Request $request)
     {
+        $id_empresa = $request->header('id_empresa');
 
         $request->validate([
             'des_unidade_und'       => 'required|string|max:255',
@@ -20,16 +21,18 @@ class UnidadeController extends Controller
             'des_unidade_und'       => $request->des_unidade_und,
             'des_reduz_unidade_und' => $request->des_reduz_unidade_und,
             'is_ativo_stp'          => 1,
+            'id_empresa'            => $id_empresa,
         ]);
 
         return response()->json($servico_tipo,201);
     }
 
-    public function get(Int $id_unidade_und = null) {
+    public function get(Request $request, Int $id_unidade_und = null) {
+        $id_empresa = $request->header('id_empresa');
         if($id_unidade_und){
             $data = Unidade::getById(($id_unidade_und));
             $data_array = json_decode($data->content());
-           
+
             if(empty($data_array)){
                 return response()->json([
                     'error' => 'Unidade Não Existe',],400);
@@ -41,15 +44,18 @@ class UnidadeController extends Controller
     }
 
     public function update(Int $id_unidade_und, Request $request) {
+        $id_empresa = $request->header('id_empresa');
         $request->validate([
             'des_unidade_und'       => 'string|max:255',
             'des_reduz_unidade_und' => 'string|max:255',
         ]);
-        Unidade::updateReg($id_unidade_und, $request);
+        Unidade::updateReg($id_empresa, $id_unidade_und, $request);
     }
 
-    public function delete(Int $id_unidade_und) {
-        Unidade::deleteReg($id_unidade_und);
+    public function delete(Int $id_unidade_und, Request $request) {
+        $id_empresa = $request->header('id_empresa');
+
+        Unidade::deleteReg($id_empresa, $id_unidade_und);
     }
 
 }

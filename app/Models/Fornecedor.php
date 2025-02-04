@@ -19,17 +19,27 @@ class Fornecedor extends Model
         'id_empresa'
     ];
 
-    public static function getAll(){
-        $data = Fornecedor::select(['*'])->where('is_ativo_frn', 1)->orderBy('id_fornecedor_frn', 'desc')->get();
+    public static function getAll(Int $id_empresa){
+        $data = Fornecedor::
+        select(['*'])
+        ->where('is_ativo_frn', 1)
+        ->orderBy('id_fornecedor_frn', 'desc')
+        ->where('id_empresa', $id_empresa)
+        ->get();
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null){
+    public static function getById(Int $id_empresa, Int $id = null){
         if($id){
-            $data = Fornecedor::select(['*'])->where('id_fornecedor_frn', $id)->where('is_ativo_frn', 1)->get();
+            $data = Fornecedor::
+            select(['*'])
+            ->where('id_fornecedor_frn', $id)
+            ->where('is_ativo_frn', 1)
+            ->where('id_empresa', $id_empresa)
+            ->get();
             return response()->json($data);
        }else{
-            $data = Fornecedor::getAll();
+            $data = Fornecedor::getAll($id_empresa);
        }
 
        return $data;
