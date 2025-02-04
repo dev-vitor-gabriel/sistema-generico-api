@@ -16,16 +16,18 @@ class MaterialController extends Controller
     public function create(Request $request) {
 
         $request->validate([
-            'id_unidade_mte' =>  'required|int',
-            'des_material_mte' => 'required|string|max:255',
-            'vlr_material_mte' => 'required|numeric'
+            'id_unidade_mte'        => 'required|int',
+            'des_material_mte'      => 'required|string|max:255',
+            'vlr_material_mte'      => 'required|numeric',
+            'id_centro_custo_mte'   => 'required|integer|',
         ]);
 
         $material = Material::create([
-            'id_unidade_mte' => $request->id_unidade_mte,
-            'des_material_mte' => $request->des_material_mte,
-            'vlr_material_mte' => $request->vlr_material_mte,
-            'is_ativo_mte' => 1,
+            'id_unidade_mte'        => $request->id_unidade_mte,
+            'des_material_mte'      => $request->des_material_mte,
+            'vlr_material_mte'      => $request->vlr_material_mte,
+            'id_centro_custo_mte'   => $request->id_centro_custo_mte,
+            'is_ativo_mte'          => 1,
         ]);
 
         return response()->json($material,201);
@@ -48,9 +50,10 @@ class MaterialController extends Controller
 
     public function update(Int $id_material, Request $request) {
         $request->validate([
-            'id_unidade_mte' =>  'int',
-            'des_material_mte' => 'string|max:255',
-            'vlr_material_mte' => 'float'
+            'id_unidade_mte'        => 'int',
+            'des_material_mte'      => 'string|max:255',
+            'id_centro_custo_mte'   => 'integer',
+            'vlr_material_mte'      => 'float'
         ]);
         Material::updateReg($id_material, $request);
     }

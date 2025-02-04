@@ -15,6 +15,7 @@ class Material extends Model
         'id_unidade_mte',
         'des_material_mte',
         'vlr_material_mte',
+        'id_centro_custo_mte',
         'is_ativo_mte'
     ];
 
@@ -27,9 +28,11 @@ class Material extends Model
             'tb_unidade.des_reduz_unidade_und',
             'tb_material.is_ativo_mte',
             'tb_material.created_at',
-            'tb_material.updated_at'
+            'tb_material.updated_at',
+            'tb_centro_custo.des_centro_custo_cco',
         ])
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
             ->where('is_ativo_mte', 1)
             ->orderBy('id_material_mte', 'desc')
             ->get();
@@ -46,9 +49,11 @@ class Material extends Model
                 'tb_unidade.des_reduz_unidade_und',
                 'tb_material.is_ativo_mte',
                 'tb_material.created_at',
-                'tb_material.updated_at'
+                'tb_material.updated_at',
+                'tb_centro_custo.des_centro_custo_cco',
             ])
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+                ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
                 ->where('id_material_mte', $id)
                 ->where('is_ativo_mte', 1)
                 ->get();
@@ -61,9 +66,11 @@ class Material extends Model
                 'tb_unidade.des_reduz_unidade_und',
                 'tb_material.is_ativo_mte',
                 'tb_material.created_at',
-                'tb_material.updated_at'
+                'tb_material.updated_at',
+                'tb_centro_custo.des_centro_custo_cco',
             ])
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+                ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
                 ->where('is_ativo_mte', 1)
                 ->orderBy('id_material_mte', 'desc')
                 ->get();
