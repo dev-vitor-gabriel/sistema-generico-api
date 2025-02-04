@@ -13,11 +13,9 @@ return new class extends Migration
     {
         Schema::create('tb_servico_tipo', function (Blueprint $table) {
             $table->id('id_servico_tipo_stp');
-            $table->unsignedBigInteger('id_centro_custo_stp');
             $table->string('des_servico_tipo_stp');
             $table->integer('vlr_servico_tipo_stp');
             $table->boolean('is_ativo_stp')->default(true);
-            $table->foreign('id_centro_custo_stp')->references('id_centro_custo_cco')->on('tb_centro_custo');
             $table->timestamps();
         });
     }
