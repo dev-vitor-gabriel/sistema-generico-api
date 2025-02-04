@@ -16,7 +16,7 @@ class MaterialController extends Controller
     public function create(Request $request) {
 
         $request->validate([
-            'id_unidade_mte'        => 'required|int',
+            'id_unidade_mte'        => 'required|integer',
             'des_material_mte'      => 'required|string|max:255',
             'vlr_material_mte'      => 'required|numeric',
             'id_centro_custo_mte'   => 'required|integer|',
@@ -50,11 +50,12 @@ class MaterialController extends Controller
 
     public function update(Int $id_material, Request $request) {
         $request->validate([
-            'id_unidade_mte'        => 'int',
+            'id_unidade_mte'        => 'integer',
             'des_material_mte'      => 'string|max:255',
             'id_centro_custo_mte'   => 'integer',
-            'vlr_material_mte'      => 'float'
+            'vlr_material_mte'      => 'numeric'
         ]);
+      
         Material::updateReg($id_material, $request);
     }
 

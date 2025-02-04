@@ -29,10 +29,10 @@ class Material extends Model
             'tb_material.is_ativo_mte',
             'tb_material.created_at',
             'tb_material.updated_at',
-            'tb_centro_custo.des_centro_custo_cco',
+            'tb_centro_custo.des_centro_custo_cco'
         ])
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
-            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
+            ->leftjoin('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
             ->where('is_ativo_mte', 1)
             ->orderBy('id_material_mte', 'desc')
             ->get();
@@ -50,7 +50,7 @@ class Material extends Model
                 'tb_material.is_ativo_mte',
                 'tb_material.created_at',
                 'tb_material.updated_at',
-                'tb_centro_custo.des_centro_custo_cco',
+                'tb_centro_custo.des_centro_custo_cco'
             ])
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
                 ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
@@ -67,7 +67,7 @@ class Material extends Model
                 'tb_material.is_ativo_mte',
                 'tb_material.created_at',
                 'tb_material.updated_at',
-                'tb_centro_custo.des_centro_custo_cco',
+                'tb_centro_custo.des_centro_custo_cco'
             ])
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
                 ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
@@ -82,7 +82,10 @@ class Material extends Model
     {
         Material::where('id_material_mte', $id_material)
             ->update([
-                'des_material_mte' => $obj->des_material_mte
+                'des_material_mte'      => $obj->des_material_mte,
+                'id_unidade_mte'        => $obj->id_unidade_mte,
+                'vlr_material_mte'      => $obj->vlr_material_mte,
+                'id_centro_custo_mte'   => $obj->id_centro_custo_mte,
             ]);
     }
 
