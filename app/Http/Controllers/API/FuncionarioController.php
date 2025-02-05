@@ -14,25 +14,27 @@ class FuncionarioController extends Controller
         $id_empresa = $request->header('id_empresa');
 
         $request->validate([
-            'id_funcionario_cargo_tfu' => 'required|int|max:255',
-            'desc_funcionario_tfu' => 'required|string|max:255',
+            'id_funcionario_cargo_tfu'  => 'required|int|max:255',
+            'desc_funcionario_tfu'      => 'required|string|max:255',
             'documento_funcionario_tfu' => 'required|string|max:255',
-            'telefone_funcionario_tfu' => 'required|string|max:255',
-            'endereco_funcionario_tfu' => 'required|string|max:255'
+            'telefone_funcionario_tfu'  => 'required|string|max:255',
+            'endereco_funcionario_tfu'  => 'required|string|max:255',
+            'id_centro_custo_tfu'       => 'required|integer|'
         ]);
 
         $funcionario = Funcionario::create([
-            'id_funcionario_cargo_tfu' => $request->id_funcionario_cargo_tfu,
-            'desc_funcionario_tfu' => $request->desc_funcionario_tfu,
-            'documento_funcionario_tfu' => $request->documento_funcionario_tfu,
-            'telefone_funcionario_tfu' => $request->telefone_funcionario_tfu,
-            'endereco_funcionario_tfu' => $request->endereco_funcionario_tfu,
-            'id_empresa' => $id_empresa,
+            'id_funcionario_cargo_tfu'   => $request->id_funcionario_cargo_tfu,
+            'desc_funcionario_tfu'       => $request->desc_funcionario_tfu,
+            'documento_funcionario_tfu'  => $request->documento_funcionario_tfu,
+            'telefone_funcionario_tfu'   => $request->telefone_funcionario_tfu,
+            'endereco_funcionario_tfu'   => $request->endereco_funcionario_tfu, 
+            'id_centro_custo_tfu'        => $request->id_centro_custo_tfu, 
+            'id_empresa'                 => $id_empresa
         ]);
         if($request->tipos_servico){
             foreach ($request->tipos_servico as $tipo_servico) {
                 RelFuncionarioTipoServico::create([
-                    'id_funcionario_rft' => $funcionario->id,
+                    'id_funcionario_rft'  => $funcionario->id,
                     'id_tipo_servico_rft' => $tipo_servico['value']
                 ]);
             }
@@ -65,11 +67,12 @@ class FuncionarioController extends Controller
         $id_empresa = $request->header('id_empresa');
 
         $request->validate([
-            'id_funcionario_cargo_tfu' => 'required|int|max:255',
-            'desc_funcionario_tfu' => 'required|string|max:255',
+            'id_funcionario_cargo_tfu'  => 'required|int|max:255',
+            'desc_funcionario_tfu'      => 'required|string|max:255',
             'documento_funcionario_tfu' => 'required|string|max:255',
-            'telefone_funcionario_tfu' => 'required|string|max:255',
-            'endereco_funcionario_tfu' => 'required|string|max:255'
+            'telefone_funcionario_tfu'  => 'required|string|max:255',
+            'endereco_funcionario_tfu'  => 'required|string|max:255',
+            'id_centro_custo_tfu'       => 'integer'
         ]);
         Funcionario::updateReg($id_empresa, $id_funcionario, $request);
 
