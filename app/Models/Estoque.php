@@ -18,7 +18,7 @@ class Estoque extends Model
         'id_empresa',
     ];
 
-    public static function getAll($id_empresa, $perPage = 10, $pageNumber = 1) {
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) {
 
         $paginator = Estoque::select([
             'tb_estoque.id_estoque_est',
@@ -29,6 +29,7 @@ class Estoque extends Model
         ])
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
         ->where('is_ativo_est', 1)
+        ->where('tb_estoque.des_estoque_est', 'like', '%'.$filter.'%')
         ->where('tb_estoque.id_empresa', $id_empresa)
         ->orderBy('tb_estoque.id_estoque_est', 'desc')
         ->paginate($perPage, ['*'], 'page', $pageNumber);

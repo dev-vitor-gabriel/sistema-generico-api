@@ -13,31 +13,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tb_empresa', function (Blueprint $table) {
-            Schema::create('tb_empresa', function (Blueprint $table) {
-                $table->id('id_empresa_emp');
-                $table->string('des_empresa_emp');
-                $table->string('cod_empresa_emp');
-                $table->string('des_endereco_emp');
-                $table->string('des_cidade_emp');
-                $table->string('des_cep_emp');
-                $table->string('des_tel_emp');
-                $table->string('lnk_whatsapp_emp')->nullable();
-                $table->string('lnk_instagram_emp')->nullable();
-                $table->string('lnk_facebook_emp')->nullable();
-                $table->string('img_empresa_emp')->nullable();
-                $table->boolean('is_ativo_emp')->default(true);
-                $table->timestamps();
-            });
+            $table->id('id_empresa_emp');
+            $table->string('des_empresa_emp');
+            $table->string('razao_social_empresa_emp');
+            $table->string('cnpj_empresa_emp');
+            $table->string('des_endereco_emp');
+            $table->string('des_cidade_emp');
+            $table->string('des_cep_emp');
+            $table->string('des_tel_emp');
+            $table->string('lnk_whatsapp_emp')->nullable();
+            $table->string('lnk_instagram_emp')->nullable();
+            $table->string('lnk_facebook_emp')->nullable();
+            $table->string('img_empresa_emp')->nullable();
+            $table->boolean('is_ativo_emp')->default(true);
+            $table->timestamps();
         });
-
-        DB::table('tb_empresa')->insert([
-            'name' => 'Empresa Default',
-            'cnpj' => '00.000.000/0000-00',
-            'social_reason' => 'Razão Social Default',
-            'deleted' => false,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
     }
 
     /**

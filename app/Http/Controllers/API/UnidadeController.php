@@ -39,7 +39,7 @@ class UnidadeController extends Controller
             }
             return $data;
         }
-        $data = Unidade::getAll();
+        $data = Unidade::getAll($id_empresa);
         return $data;
     }
 
