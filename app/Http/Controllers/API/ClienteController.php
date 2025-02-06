@@ -5,19 +5,29 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use App\Helpers\ValidateString;
+use Illuminate\Support\Facades\Validator;
+
 
 class ClienteController extends Controller
 {
     public function create(Request $request) {
         $id_empresa = $request->header('id_empresa');
-
-        $request->validate([
-            'des_cliente_cli'      => 'required|string|max:255',
-            'telefone_cliente_cli' => 'required|string|max:11',
-            'email_cliente_cli'    => 'required|string|max:255',
-            'documento_cliente_cli'=> 'string|max:11',
-            'endereco_cliente_cli' => 'string|max:255',
+    
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli);
+        $request->merge(['documento_cliente_cli' => $document_formated]);
+        $validator = Validator::make($request->all(), [
+            'des_cliente_cli'       => 'required|string|max:255',
+            'telefone_cliente_cli'  => 'required|string|max:11',
+            'email_cliente_cli'     => 'required|string|max:255',
+            'documento_cliente_cli' => 'string|max:11',
+            'endereco_cliente_cli'  => 'string|max:255',
+            'id_centro_custo_cli'   => 'required|integer',
         ]);
+        
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $cliente = Cliente::create([
             'des_cliente_cli'       => $request->des_cliente_cli,
@@ -25,9 +35,11 @@ class ClienteController extends Controller
             'email_cliente_cli'     => $request->email_cliente_cli,
             'documento_cliente_cli' => $request->documento_cliente_cli,
             'endereco_cliente_cli'  => $request->endereco_cliente_cli,
-            'id_empresa' => $id_empresa,
-            'is_ativo_cli' => 1,
+            'id_centro_custo_cli'   => $request->id_centro_custo_cli,
+            'id_empresa'            => $id_empresa,
+            'is_ativo_cli'          => 1,
         ]);
+        
 
         return response()->json($cliente,201);
     }
@@ -53,11 +65,12 @@ class ClienteController extends Controller
         $id_empresa = $request->header('id_empresa');
 
         $request->validate([
-            'des_cliente_cli'      => 'required|string|max:255',
-            'telefone_cliente_cli' => 'required|string|max:11',
-            'email_cliente_cli'    => 'required|string|max:255',
-            'documento_cliente_cli'=> 'string|max:11',
-            'endereco_cliente_cli' => 'string|max:255',
+            'des_cliente_cli'       => 'required|string|max:255',
+            'telefone_cliente_cli'  => 'required|string|max:11',
+            'email_cliente_cli'     => 'required|string|max:255',
+            'documento_cliente_cli' => 'string|max:11',
+            'endereco_cliente_cli'  => 'string|max:255',
+            'id_centro_custo_cli'   => 'integer',
         ]);
         Cliente::updateReg($id_empresa, $id_cliente, $request);
     }
