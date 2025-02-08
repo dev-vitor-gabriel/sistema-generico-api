@@ -90,7 +90,7 @@ class Estoque extends Model
                     COALESCE(SUM(
                         CASE
                             WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
-                            WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN -tmmi.qtd_material_mit
+                            WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
                             ELSE 0
                         END
                     ), 0) as quantidade_em_estoque
@@ -100,7 +100,7 @@ class Estoque extends Model
                         COALESCE(SUM(
                             CASE
                                 WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
-                                WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN -tmmi.qtd_material_mit
+                                WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
                                 ELSE 0
                             END
                         ), 0) * tm.vlr_material_mte
