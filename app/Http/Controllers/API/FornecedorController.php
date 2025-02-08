@@ -9,8 +9,14 @@ use App\Helpers\ValidateString;
 
 class FornecedorController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request){
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'desc_fornecedor_frn'      => 'required|string|',
@@ -22,14 +28,14 @@ class FornecedorController extends Controller
             'desc_fornecedor_frn'      => $request->desc_fornecedor_frn,
             'tel_fornecedor_frn'       => ValidateString::removeCharacterSpecial($request->tel_fornecedor_frn),
             'documento_fornecedor_frn' => ValidateString::removeCharacterSpecial($request->documento_fornecedor_frn),
-            'id_empresa' => $id_empresa,
+            'id_empresa_frn' => $id_empresa,
         ]);
 
         return response()->json($fornecedor,201);
     }
 
     public function get(Request $request, Int $id_fornecedor = null){
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         if($id_fornecedor){
             $data = Fornecedor::getById($id_empresa, $id_fornecedor);
@@ -46,16 +52,20 @@ class FornecedorController extends Controller
     }
 
     public function update(Int $id_fornecedor, Request $request){
+        $id_empresa = $this->getIdEmpresa($request);
+
         $request->validate([
             'desc_fornecedor_frn'      => 'string',
             'tel_fornecedor_frn'       => 'string',
             'documento_fornecedor_frn' => 'string',
         ]);
-        Fornecedor::updateReg($id_fornecedor, $request);
+        Fornecedor::updateReg($id_fornecedor,$id_empresa, $request);
     }
 
     // delete (inactivate)
-    public function delete(Int $id_fornecedor){
-        Fornecedor::deleteReg($id_fornecedor);
+    public function delete(Request $request, Int $id_fornecedor) {
+        $id_empresa = $this->getIdEmpresa($request);
+
+        Fornecedor::deleteReg($id_fornecedor, $id_empresa);
     }
 }

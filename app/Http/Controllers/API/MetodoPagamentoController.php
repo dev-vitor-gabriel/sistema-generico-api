@@ -8,8 +8,14 @@ use Illuminate\Http\Request;
 
 class MetodoPagamentoController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'desc_metodo_pagamento_tmp'       => 'required|string|max:255'
@@ -18,14 +24,14 @@ class MetodoPagamentoController extends Controller
         $metodoPagamento = MetodoPagamento::create([
             'desc_metodo_pagamento_tmp'       => $request->desc_metodo_pagamento_tmp,
             'is_ativo_tmp'                    => 1,
-            'id_empresa' => $id_empresa,
+            'id_empresa_tmp' => $id_empresa,
         ]);
 
         return response()->json($metodoPagamento,201);
     }
 
     public function get(Request $request, Int $id_metodo_pagamento = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         if($id_metodo_pagamento){
             $data = MetodoPagamento::getById($id_empresa, $id_metodo_pagamento);
@@ -42,7 +48,7 @@ class MetodoPagamentoController extends Controller
     }
 
     public function update(Int $id_metodo_pagamento, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'desc_metodo_pagamento_tmp'       => 'string|max:255'
@@ -51,7 +57,7 @@ class MetodoPagamentoController extends Controller
     }
 
     public function delete(Int $id_metodo_pagamento, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
         MetodoPagamento::deleteReg($id_empresa, $id_metodo_pagamento);
     }
 }

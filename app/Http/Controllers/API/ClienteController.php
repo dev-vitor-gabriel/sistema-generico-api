@@ -8,8 +8,14 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_cliente_cli'      => 'required|string|max:255',
@@ -33,7 +39,7 @@ class ClienteController extends Controller
     }
 
     public function get(Request $request, Int $id_cliente = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         if($id_cliente){
             $data = Cliente::getById($id_empresa, $id_cliente);
@@ -50,7 +56,7 @@ class ClienteController extends Controller
     }
 
     public function update(Int $id_cliente, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_cliente_cli'      => 'required|string|max:255',
@@ -64,7 +70,7 @@ class ClienteController extends Controller
 
     // delete (inactivate)
     public function delete(Int $id_cliente, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         Cliente::deleteReg($id_empresa, $id_cliente);
     }

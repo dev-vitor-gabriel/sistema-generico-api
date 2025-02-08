@@ -8,8 +8,14 @@ use Illuminate\Http\Request;
 
 class ServicoTipoController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_servico_tipo_stp' => 'required|string|max:255',
@@ -19,15 +25,15 @@ class ServicoTipoController extends Controller
         $servico_tipo = ServicoTipo::create([
             'des_servico_tipo_stp' => $request->des_servico_tipo_stp,
             'vlr_servico_tipo_stp' => $request->vlr_servico_tipo_stp,
-            'is_ativo_stp' => 1,
-            'id_empresa' => $id_empresa,
+            'is_ativo_stp'         => 1,
+            'id_empresa_stp'       => $id_empresa,
         ]);
 
         return response()->json($servico_tipo,201);
     }
 
     public function get(Request $request, Int $id_servico_tipo = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         if($id_servico_tipo){
             $data = ServicoTipo::getById($id_empresa, $id_servico_tipo);
@@ -44,17 +50,19 @@ class ServicoTipoController extends Controller
     }
 
     public function update(Int $id_servico_tipo, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
+
         $request->validate([
             'des_servico_tipo_stp' => 'required|string|max:255',
             'vlr_servico_tipo_stp' => 'required|string|max:255',
         ]);
+
         ServicoTipo::updateReg($id_empresa, $id_servico_tipo, $request);
     }
 
     // delete (inactivate)
     public function delete(Int $id_servico_tipo, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
         ServicoTipo::deleteReg($id_empresa, $id_servico_tipo);
     }
 }

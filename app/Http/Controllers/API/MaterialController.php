@@ -13,8 +13,14 @@ class MaterialController extends Controller
         $this->middleware('auth:api', ['except' => []]);
     }
 
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'id_unidade_mte' =>  'required|int',
@@ -23,18 +29,18 @@ class MaterialController extends Controller
         ]);
 
         $material = Material::create([
-            'id_unidade_mte' => $request->id_unidade_mte,
-            'des_material_mte' => $request->des_material_mte,
-            'vlr_material_mte' => $request->vlr_material_mte,
-            'is_ativo_mte' => 1,
-            'id_empresa' => $id_empresa,
+            'id_unidade_mte'    => $request->id_unidade_mte,
+            'des_material_mte'  => $request->des_material_mte,
+            'vlr_material_mte'  => $request->vlr_material_mte,
+            'is_ativo_mte'      => 1,
+            'id_empresa_mte'    => $id_empresa,
         ]);
 
         return response()->json($material,201);
     }
 
     public function get(Request $request, Int $id_material = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         if($id_material){
             $data = Material::getById($id_empresa, $id_material);
@@ -51,7 +57,7 @@ class MaterialController extends Controller
     }
 
     public function update(Int $id_material, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'id_unidade_mte' =>  'int',
@@ -63,7 +69,7 @@ class MaterialController extends Controller
 
     // delete (inactivate)
     public function delete(Request $request, Int $id_material) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         Material::deleteReg($id_empresa, $id_material);
     }

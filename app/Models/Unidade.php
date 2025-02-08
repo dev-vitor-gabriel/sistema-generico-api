@@ -13,6 +13,7 @@ class Unidade extends Model
     protected $fillable = [
         'des_unidade_und',
         'des_reduz_unidade_und',
+        'id_empresa_und',
         'is_ativo_und'
     ];
 
@@ -20,7 +21,7 @@ class Unidade extends Model
         $data = Unidade::
         select(['*'])
         ->where('is_ativo_und', 1)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_und', $id_empresa)
         ->orderBy('id_unidade_und', 'desc')
         ->get();
         return response()->json($data);
@@ -32,14 +33,14 @@ class Unidade extends Model
             select(['*'])
             ->where('id_unidade_und', $id)
             ->where('is_ativo_und', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_und', $id_empresa)
             ->orderBy('id_unidade_und', 'desc')
             ->get();
         }else{
             $data = Unidade::
             select(['*'])
             ->where('is_ativo_und', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_und', $id_empresa)
             ->orderBy('id_unidade_und', 'desc')
             ->get();
         }
@@ -49,7 +50,7 @@ class Unidade extends Model
     public static function updateReg(Int $id_empresa, Int $id_unidade_und, $obj) {
         Unidade::
         where('id_unidade_und', $id_unidade_und)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_und', $id_empresa)
         ->update([
             'des_unidade_und'       => $obj->des_unidade_und,
             'des_reduz_unidade_und' => $obj->des_reduz_unidade_und
@@ -59,7 +60,7 @@ class Unidade extends Model
     public static function deleteReg($id_empresa, $id_unidade_und) {
         Unidade::
         where('id_unidade_und', $id_unidade_und)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_und', $id_empresa)
         ->update([
             'is_ativo_und' => 0
         ]);

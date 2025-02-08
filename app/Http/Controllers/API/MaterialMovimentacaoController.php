@@ -11,8 +11,15 @@ use Illuminate\Http\Request;
 
 class MaterialMovimentacaoController extends Controller
 {
+
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request, $tipo_movimentacao) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'id_estoque'             => 'required|int',
@@ -25,7 +32,7 @@ class MaterialMovimentacaoController extends Controller
             'id_estoque_saida_mov'   => $tipo_movimentacao == 'saida'   ? $request->id_estoque : null,
             'id_centro_custo_mov'    => $request->id_centro_custo_mov,
             'is_ativo_mov'           => 1,
-            'id_empresa' => $id_empresa,
+            'id_empresa_mov'         => $id_empresa,
         ]);
 
         if($tipo_movimentacao == 'entrada'){
@@ -98,7 +105,7 @@ class MaterialMovimentacaoController extends Controller
 
     public function get(Request $request, Int $id_material = null)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $data = MaterialMovimentacao::get($id_empresa, $id_material);
 
@@ -110,7 +117,7 @@ class MaterialMovimentacaoController extends Controller
     }
 
     public function update(Int $id_movimentacao, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'txt_movimentacao_mov' => 'required|string'
@@ -120,7 +127,7 @@ class MaterialMovimentacaoController extends Controller
 
     // delete (inactivate)
     public function delete(Request $request, Int $id_movimentacao) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         MaterialMovimentacao::deleteReg($id_empresa, $id_movimentacao);
     }

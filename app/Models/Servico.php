@@ -21,7 +21,7 @@ class Servico extends Model
         'id_funcionario_servico_ser',
         'id_cliente_ser',
         'is_ativo_ser',
-        'id_empresa',
+        'id_empresa_ser',
     ];
 
     public static function get(Int $id_empresa, Int $id_servico = null, $filtros = null) {
@@ -49,7 +49,7 @@ class Servico extends Model
         ->join('tb_funcionarios', 'id_funcionario_servico_ser', '=', 'id_funcionario_tfu')
         ->join('tb_cliente', 'id_cliente_ser', '=', 'id_cliente_cli')
         ->join('tb_situacao', 'id_situacao_ser', '=', 'id_situacao_tsi')
-        ->where('tb_servico.id_empresa', $id_empresa)
+        ->where('tb_servico.id_empresa_ser', $id_empresa)
         ->leftJoin('rel_servico_tipo_servico', 'id_servico_ser', '=', 'id_servico_rst')
         ->leftJoin('tb_servico_tipo', 'id_tipo_servico_rst', '=', 'id_servico_tipo_stp')
         ->leftJoin('rel_servico_material', 'id_servico_ser', '=', 'id_servico_rsm')
@@ -71,7 +71,7 @@ class Servico extends Model
         $data = Servico::
         selectRaw('COUNT(1) as qtd, DATE_FORMAT(dta_agendamento_ser, "%d/%m/%Y") as dta_agendamento')
         ->where('dta_agendamento_ser', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-        ->where('tb_servico.id_empresa', $id_empresa)
+        ->where('tb_servico.id_empresa_ser', $id_empresa)
         ->where('id_situacao_ser', 2);
         if(isset($request->centrocusto) && !empty($request->centrocusto)){
             $centroCusto = explode(',', $request->centrocusto);
@@ -88,7 +88,7 @@ class Servico extends Model
         $data = Servico::selectRaw('COUNT(1) as qtd, desc_funcionario_tfu')
         ->join('tb_funcionarios', 'id_funcionario_servico_ser', '=', 'id_funcionario_tfu')
         ->where('dta_agendamento_ser', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-        ->where('tb_servico.id_empresa', $id_empresa)
+        ->where('tb_servico.id_empresa_ser', $id_empresa)
         ->where('id_situacao_ser', 2);
         if(isset($request->centrocusto) && !empty($request->centrocusto)){
             $centroCusto = explode(',', $request->centrocusto);
@@ -107,7 +107,7 @@ class Servico extends Model
         ->join('rel_servico_tipo_servico', 'id_servico_ser', '=', 'id_servico_rst')
         ->join('tb_servico_tipo', 'id_tipo_servico_rst', '=', 'id_servico_tipo_stp')
         ->where('dta_agendamento_ser', '>=', DB::raw('DATE_SUB(CURDATE(), INTERVAL 30 DAY)'))
-        ->where('tb_servico.id_empresa', $id_empresa)
+        ->where('tb_servico.id_empresa_ser', $id_empresa)
         ->where('id_situacao_ser', 2);
         if(isset($request->centrocusto) && !empty($request->centrocusto)){
             $centroCusto = explode(',', $request->centrocusto);
@@ -136,20 +136,20 @@ class Servico extends Model
 
     public static function updateReg(Int $id_empresa, Int $id_servico, $obj) {
         Servico::where('id_servico_ser', $id_servico)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_ser', $id_empresa)
         ->update($obj);
     }
 
     public static function deleteReg(Int $id_empresa, $id_servico) {
         Servico::where('id_servico_ser', $id_servico)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_ser', $id_empresa)
         ->update([
             'is_ativo_ser' => 0
         ]);
     }
     public static function finalizarReg(Int $id_empresa, $id_servico) {
         Servico::where('id_servico_ser', $id_servico)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_ser', $id_empresa)
         ->update([
             'id_situacao_ser' => 2
         ]);

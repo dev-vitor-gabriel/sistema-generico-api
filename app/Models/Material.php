@@ -16,7 +16,7 @@ class Material extends Model
         'des_material_mte',
         'vlr_material_mte',
         'is_ativo_mte',
-        'id_empresa',
+        'id_empresa_mte',
     ];
 
     public static function getAll($id_empresa)
@@ -32,7 +32,7 @@ class Material extends Model
         ])
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
             ->where('is_ativo_mte', 1)
-            ->where('tb_material.id_empresa', $id_empresa)
+            ->where('tb_material.id_empresa_mte', $id_empresa)
             ->orderBy('id_material_mte', 'desc')
             ->get();
         return response()->json($data);
@@ -53,7 +53,7 @@ class Material extends Model
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
                 ->where('id_material_mte', $id)
                 ->where('is_ativo_mte', 1)
-                ->where('tb_material.id_empresa', $id_empresa)
+                ->where('tb_material.id_empresa_mte', $id_empresa)
                 ->get();
             return response()->json($data);
         } else {
@@ -68,7 +68,7 @@ class Material extends Model
             ])
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
                 ->where('is_ativo_mte', 1)
-                ->where('tb_material.id_empresa', $id_empresa)
+                ->where('tb_material.id_empresa_mte', $id_empresa)
                 ->orderBy('id_material_mte', 'desc')
                 ->get();
             return response()->json($data);
@@ -78,7 +78,7 @@ class Material extends Model
     public static function updateReg(Int $id_empresa, Int $id_material, $obj)
     {
         Material::where('id_material_mte', $id_material)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_mte', $id_empresa)
             ->update([
                 'des_material_mte' => $obj->des_material_mte
             ]);
@@ -87,7 +87,7 @@ class Material extends Model
     public static function deleteReg($id_empresa, $id_material)
     {
         Material::where('id_material_mte', $id_material)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_mte', $id_empresa)
             ->update([
                 'is_ativo_mte' => 0
             ]);

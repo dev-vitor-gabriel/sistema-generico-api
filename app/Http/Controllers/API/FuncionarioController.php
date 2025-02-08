@@ -10,8 +10,14 @@ use Illuminate\Http\Request;
 
 class FuncionarioController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'id_funcionario_cargo_tfu' => 'required|int|max:255',
@@ -22,12 +28,12 @@ class FuncionarioController extends Controller
         ]);
 
         $funcionario = Funcionario::create([
-            'id_funcionario_cargo_tfu' => $request->id_funcionario_cargo_tfu,
-            'desc_funcionario_tfu' => $request->desc_funcionario_tfu,
+            'id_funcionario_cargo_tfu'  => $request->id_funcionario_cargo_tfu,
+            'desc_funcionario_tfu'      => $request->desc_funcionario_tfu,
             'documento_funcionario_tfu' => $request->documento_funcionario_tfu,
-            'telefone_funcionario_tfu' => $request->telefone_funcionario_tfu,
-            'endereco_funcionario_tfu' => $request->endereco_funcionario_tfu,
-            'id_empresa' => $id_empresa,
+            'telefone_funcionario_tfu'  => $request->telefone_funcionario_tfu,
+            'endereco_funcionario_tfu'  => $request->endereco_funcionario_tfu,
+            'id_empresa_tfu'            => $id_empresa,
         ]);
         if($request->tipos_servico){
             foreach ($request->tipos_servico as $tipo_servico) {
@@ -42,7 +48,7 @@ class FuncionarioController extends Controller
     }
 
     public function get(Request $request, Int $id_funcionario = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
         if($id_funcionario){
             $data = Funcionario::getById(($id_funcionario));
             $data_array = json_decode($data);
@@ -62,7 +68,7 @@ class FuncionarioController extends Controller
     }
 
     public function update(Int $id_funcionario, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'id_funcionario_cargo_tfu' => 'required|int|max:255',
@@ -122,7 +128,7 @@ class FuncionarioController extends Controller
     }
 
     public function delete(Request $request, Int $id_funcionario) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
         Funcionario::deleteReg($id_empresa, $id_funcionario);
     }
 

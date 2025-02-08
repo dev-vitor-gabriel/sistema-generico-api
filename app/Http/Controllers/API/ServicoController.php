@@ -16,10 +16,16 @@ class ServicoController extends Controller
     {
         $this->middleware('auth:api', ['except' => []]);
     }
-    // create
+
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'txt_servico_ser'               => 'string|max:255',
@@ -38,7 +44,7 @@ class ServicoController extends Controller
             'id_funcionario_servico_ser'    => $request->id_funcionario_servico_ser,
             'id_cliente_ser'                => $request->id_cliente_ser,
             'is_ativo_ser'                  => 1,
-            'id_empresa'                    => $id_empresa,
+            'id_empresa_ser'                => $id_empresa,
         ]);
 
         foreach ($request->tipos_servico as $tipo_servico) {
@@ -83,7 +89,7 @@ class ServicoController extends Controller
     // get
     public function get(Request $request, Int $id_servico = null)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $Servico = new Servico();
         $filter = $request->only($Servico->getFillable());
@@ -102,7 +108,7 @@ class ServicoController extends Controller
 
     public function getLast30Days(Request $request)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $data = Servico::getLast30Days($id_empresa, $request);
         return response()->json($data);
@@ -110,14 +116,14 @@ class ServicoController extends Controller
 
     public function getLast30DaysPerFunc(Request $request)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $data = Servico::getLast30DaysPerFunc($id_empresa, $request);
         return response()->json($data);
     }
     public function getLast30DaysPerTipoServico(Request $request)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $data = Servico::getLast30DaysPerTipoServico($id_empresa, $request);
         return response()->json($data);
@@ -127,7 +133,7 @@ class ServicoController extends Controller
     // todo: ajustar
     public function update(Int $id_servico, Request $request)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'txt_servico_ser'               => 'string|max:255',
@@ -187,7 +193,7 @@ class ServicoController extends Controller
                         $value = ServicoTipo::
                         select(['vlr_servico_tipo_stp'])
                         ->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])
-                        ->where('id_empresa', $id_empresa)
+                        ->where('id_empresa_stp', $id_empresa)
                         ->get()[0]->vlr_servico_tipo_stp;
                     }
 
@@ -203,7 +209,7 @@ class ServicoController extends Controller
                     } else {
                         $value = ServicoTipo::
                         select(['vlr_servico_tipo_stp'])
-                         ->where('id_empresa', $id_empresa)
+                        ->where('id_empresa_stp', $id_empresa)
                         ->where('id_servico_tipo_stp', $tipo_servico['id_servico_tipo_stp'])
                         ->get()[0]->vlr_servico_tipo_stp;
                     }
@@ -310,13 +316,13 @@ class ServicoController extends Controller
 
 
     public function finalizar(Request $request, Int $id_servico) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         Servico::finalizarReg($id_empresa, $id_servico);
     }
 
     public function delete(Request $request, Int $id_servico) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         Servico::deleteReg($id_empresa, $id_servico);
     }

@@ -8,9 +8,15 @@ use Illuminate\Http\Request;
 
 class UnidadeController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_unidade_und'       => 'required|string|max:255',
@@ -28,7 +34,8 @@ class UnidadeController extends Controller
     }
 
     public function get(Request $request, Int $id_unidade_und = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
+
         if($id_unidade_und){
             $data = Unidade::getById(($id_unidade_und));
             $data_array = json_decode($data->content());
@@ -44,7 +51,8 @@ class UnidadeController extends Controller
     }
 
     public function update(Int $id_unidade_und, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
+
         $request->validate([
             'des_unidade_und'       => 'string|max:255',
             'des_reduz_unidade_und' => 'string|max:255',
@@ -53,7 +61,7 @@ class UnidadeController extends Controller
     }
 
     public function delete(Int $id_unidade_und, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         Unidade::deleteReg($id_empresa, $id_unidade_und);
     }

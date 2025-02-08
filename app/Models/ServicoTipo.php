@@ -15,13 +15,13 @@ class ServicoTipo extends Model
         'des_servico_tipo_stp',
         'vlr_servico_tipo_stp',
         'is_ativo_stp',
-        'id_empresa'
+        'id_empresa_stp'
     ];
 
     public static function getAll($id_empresa) {
         $data = ServicoTipo::select(['*'])
         ->where('is_ativo_stp', 1)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_stp', $id_empresa)
         ->orderBy('id_servico_tipo_stp', 'desc')
         ->get();
         return response()->json($data);
@@ -32,14 +32,14 @@ class ServicoTipo extends Model
             $data = ServicoTipo::
             select(['*'])
             ->where('id_servico_tipo_stp', $id)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_stp', $id_empresa)
             ->orderBy('id_servico_tipo_stp', 'desc')
             ->get();
         }else{
             $data = ServicoTipo::
             select(['*'])
             ->where('is_ativo_stp', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_stp', $id_empresa)
             ->orderBy('id_servico_tipo_stp', 'desc')
             ->get();
         }
@@ -48,7 +48,7 @@ class ServicoTipo extends Model
 
     public static function updateReg(Int $id_empresa, Int $id_tipo_servico, $obj) {
         ServicoTipo::where('id_servico_tipo_stp', $id_tipo_servico)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_stp', $id_empresa)
         ->update([
             'des_servico_tipo_stp' => $obj->des_servico_tipo_stp,
             'vlr_servico_tipo_stp' => $obj->vlr_servico_tipo_stp
@@ -57,7 +57,7 @@ class ServicoTipo extends Model
 
     public static function deleteReg($id_empresa, $id_tipo_servico) {
         ServicoTipo::where('id_servico_tipo_stp', $id_tipo_servico)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_stp', $id_empresa)
         ->update([
             'is_ativo_stp' => 0
         ]);

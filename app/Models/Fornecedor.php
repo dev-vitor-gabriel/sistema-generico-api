@@ -16,7 +16,7 @@ class Fornecedor extends Model
         'tel_fornecedor_frn',
         'documento_fornecedor_frn',
         'is_ativo_frn',
-        'id_empresa'
+        'id_empresa_frn'
     ];
 
     public static function getAll(Int $id_empresa){
@@ -24,7 +24,7 @@ class Fornecedor extends Model
         select(['*'])
         ->where('is_ativo_frn', 1)
         ->orderBy('id_fornecedor_frn', 'desc')
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_frn', $id_empresa)
         ->get();
         return response()->json($data);
     }
@@ -35,7 +35,7 @@ class Fornecedor extends Model
             select(['*'])
             ->where('id_fornecedor_frn', $id)
             ->where('is_ativo_frn', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_frn', $id_empresa)
             ->get();
             return response()->json($data);
        }else{
@@ -45,8 +45,9 @@ class Fornecedor extends Model
        return $data;
     }
 
-    public static function updateReg(Int $id_fornecedor, $obj) {
+    public static function updateReg(Int $id_fornecedor, $id_empresa, $obj) {
         Fornecedor::where('id_fornecedor_frn', $id_fornecedor)
+        ->where('id_empresa_frn', $id_empresa)
         ->update([
             'desc_fornecedor_frn'       => $obj->desc_fornecedor_frn,
             'tel_fornecedor_frn'        => $obj->tel_fornecedor_frn,
@@ -55,8 +56,9 @@ class Fornecedor extends Model
         ]);
     }
 
-    public static function deleteReg($id_fornecedor) {
+    public static function deleteReg($id_empresa,$id_fornecedor) {
         Fornecedor::where('id_fornecedor_frn', $id_fornecedor)
+        ->where('id_empresa_frn', $id_empresa)
         ->update([
             'is_ativo_frn' => 0
         ]);
