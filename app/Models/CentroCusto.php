@@ -13,32 +13,53 @@ class CentroCusto extends Model
 
     protected $fillable = [
         'des_centro_custo_cco',
-        'is_ativo_cco'
+        'is_ativo_cco',
+        'id_empresa_cco',
     ];
 
-    public static function getAll() {
-        $data = CentroCusto::select(['*'])->where('is_ativo_cco', 1)->orderBy('id_centro_custo_cco', 'desc')->get();
-        return response()->json($data);
+    public static function getAll(Int $id_empresa) {
+        $data = CentroCusto::select(['*'])
+        ->where('is_ativo_cco', 1)
+        ->where('id_empresa_cco', $id_empresa)
+        ->orderBy('id_centro_custo_cco', 'desc')
+        ->get();
+        return response()
+        ->json($data);
     }
 
-    public static function getById(Int $id = null) {    
-        if($id) {
-            $data = CentroCusto::select(['*'])->where('id_centro_custo_cco', $id)->where('is_ativo_cco', 1)->orderBy('id_centro_custo_cco', 'desc')->get();
-        }else{
-            $data = CentroCusto::select(['*'])->where('is_ativo_cco', 1)->orderBy('id_centro_custo_cco', 'desc')->get();
+    public static function getById(Int $id_empresa, Int $id = null) {
+        if ($id) {
+            $data = CentroCusto::select(['*'])
+            ->where('id_centro_custo_cco', $id)
+            ->where('is_ativo_cco', 1)
+            ->where('id_empresa_cco', $id_empresa)
+            ->orderBy('id_centro_custo_cco', 'desc')
+            ->get();
+        } else{
+            $data = CentroCusto::select(['*'])
+            ->where('is_ativo_cco', 1)
+            ->where('id_empresa_cco', $id_empresa)
+            ->orderBy('id_centro_custo_cco', 'desc')
+            ->get();
         }
-        return response()->json($data);
+        return response()
+        ->json($data);
     }
 
-    public static function updateReg(Int $id_centro_custo, $obj) {
-        CentroCusto::where('id_centro_custo_cco', $id_centro_custo)
+    public static function updateReg(Int $id_empresa, Int $id_centro_custo, $obj) {
+        CentroCusto::
+        where('id_centro_custo_cco', $id_centro_custo)
+        ->where('id_empresa_cco', $id_empresa)
         ->update([
-            'des_centro_custo_cco' => $obj->des_centro_custo_cco
+            'des_centro_custo_cco' => $obj
+            ->des_centro_custo_cco
         ]);
     }
 
-    public static function deleteReg($id_cliente) {
-        CentroCusto::where('id_centro_custo_cco', $id_cliente)
+    public static function deleteReg($id_empresa, $id_cliente) {
+        CentroCusto::
+        where('id_centro_custo_cco', $id_cliente)
+        ->where('id_empresa_cco', $id_empresa)
         ->update([
             'is_ativo_cco' => 0
         ]);

@@ -8,7 +8,14 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_cliente_cli'      => 'required|string|max:255',
@@ -24,28 +31,33 @@ class ClienteController extends Controller
             'email_cliente_cli'     => $request->email_cliente_cli,
             'documento_cliente_cli' => $request->documento_cliente_cli,
             'endereco_cliente_cli'  => $request->endereco_cliente_cli,
+            'id_empresa' => $id_empresa,
             'is_ativo_cli' => 1,
         ]);
 
         return response()->json($cliente,201);
     }
 
-    public function get(Int $id_cliente = null) {
+    public function get(Request $request, Int $id_cliente = null) {
+        $id_empresa = $this->getIdEmpresa($request);
+
         if($id_cliente){
-            $data = Cliente::getById(($id_cliente));
+            $data = Cliente::getById($id_empresa, $id_cliente);
             $data_array = json_decode($data->content());
-           
+
             if(empty($data_array)){
                 return response()->json([
                     'error' => 'Cliente Não Existe',],400);
             }
             return $data;
         }
-        $data = Cliente::getAll();
+        $data = Cliente::getAll($id_empresa);
         return $data;
     }
 
     public function update(Int $id_cliente, Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
+
         $request->validate([
             'des_cliente_cli'      => 'required|string|max:255',
             'telefone_cliente_cli' => 'required|string|max:11',
@@ -53,11 +65,13 @@ class ClienteController extends Controller
             'documento_cliente_cli'=> 'string|max:11',
             'endereco_cliente_cli' => 'string|max:255',
         ]);
-        Cliente::updateReg($id_cliente, $request);
+        Cliente::updateReg($id_empresa, $id_cliente, $request);
     }
 
     // delete (inactivate)
-    public function delete(Int $id_cliente) {
-        Cliente::deleteReg($id_cliente);
+    public function delete(Int $id_cliente, Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
+
+        Cliente::deleteReg($id_empresa, $id_cliente);
     }
 }
