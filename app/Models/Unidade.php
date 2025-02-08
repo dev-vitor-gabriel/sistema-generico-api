@@ -17,31 +17,41 @@ class Unidade extends Model
         'is_ativo_und'
     ];
 
-    public static function getAll() {
+    public static function getAll($id_empresa) {
         $data = Unidade::select('tb_unidade.*', 'tb_centro_custo.des_centro_custo_cco')
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_unidade.id_centro_custo_und')
         ->where('is_ativo_und', 1)
-        ->orderBy('id_unidade_und', 'desc')->get();
+        ->where('id_empresa_und', $id_empresa)
+        ->orderBy('id_unidade_und', 'desc')
+        ->get();
+      
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null) {
+    public static function getById(Int $id_empresa, Int $id = null) {
         if($id) {
             $data = Unidade::select('tb_unidade.*', 'tb_centro_custo.des_centro_custo_cco')
             ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_unidade.id_centro_custo_und')
             ->where('id_unidade_und', $id)
-            ->where('is_ativo_und', 1)->orderBy('id_unidade_und', 'desc')->get();
+            ->where('is_ativo_und', 1)
+            ->where('id_empresa_und', $id_empresa)
+            ->orderBy('id_unidade_und', 'desc')
+            ->get();
         }else{
-            $data = Unidade::select('tb_unidade.*', 'tb_centro_custo.des_centro_custo_cco')
+            Unidade::select('tb_unidade.*', 'tb_centro_custo.des_centro_custo_cco')
             ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_unidade.id_centro_custo_und')
             ->where('is_ativo_und', 1)
-            ->orderBy('id_unidade_und', 'desc')->get();
+            ->where('id_empresa_und', $id_empresa)
+            ->orderBy('id_unidade_und', 'desc')
+            ->get();
         }
         return response()->json($data);
     }
 
-    public static function updateReg(Int $id_unidade_und, $obj) {
-        Unidade::where('id_unidade_und', $id_unidade_und)
+    public static function updateReg(Int $id_empresa, Int $id_unidade_und, $obj) {
+        Unidade::
+        where('id_unidade_und', $id_unidade_und)
+        ->where('id_empresa_und', $id_empresa)
         ->update([
             'des_unidade_und'       => $obj->des_unidade_und,
             'des_reduz_unidade_und' => $obj->des_reduz_unidade_und,
@@ -49,8 +59,10 @@ class Unidade extends Model
         ]);
     }
 
-    public static function deleteReg($id_unidade_und) {
-        Unidade::where('id_unidade_und', $id_unidade_und)
+    public static function deleteReg($id_empresa, $id_unidade_und) {
+        Unidade::
+        where('id_unidade_und', $id_unidade_und)
+        ->where('id_empresa_und', $id_empresa)
         ->update([
             'is_ativo_und' => 0
         ]);

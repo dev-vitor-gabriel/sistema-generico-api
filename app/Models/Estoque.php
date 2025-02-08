@@ -14,25 +14,33 @@ class Estoque extends Model
     protected $fillable = [
         'des_estoque_est',
         'id_centro_custo_est',
-        'is_ativo_est'
+        'is_ativo_est',
+        'id_empresa_est',
     ];
 
-    public static function getAll() {
-        $data = Estoque::select([
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) {
+
+        $paginator = Estoque::select([
             'tb_estoque.id_estoque_est',
             'tb_estoque.des_estoque_est',
             'tb_centro_custo.des_centro_custo_cco',
-            'tb_estoque.created_at' ,
+            'tb_estoque.created_at',
             'tb_estoque.updated_at'
         ])
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
         ->where('is_ativo_est', 1)
+        ->where('tb_estoque.des_estoque_est', 'like', '%'.$filter.'%')
+        ->where('tb_estoque.id_empresa_est', $id_empresa)
         ->orderBy('tb_estoque.id_estoque_est', 'desc')
-        ->get();
-        return response()->json($data);
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
-    public static function getById(Int $id = null) {
+    public static function getById(Int $id_empresa, Int $id = null) {
         if($id) {
             $data = Estoque::select([
                 'tb_estoque.id_estoque_est',
@@ -43,8 +51,9 @@ class Estoque extends Model
             ])
             ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
             ->where('is_ativo_est', 1)
-            ->orderBy('tb_estoque.id_estoque_est', 'desc')
             ->where('id_estoque_est', $id)
+            ->where('tb_estoque.id_empresa_est', $id_empresa)
+            ->orderBy('tb_estoque.id_estoque_est', 'desc')
             ->get();
         } else {
             $data = Estoque::select([
@@ -56,6 +65,7 @@ class Estoque extends Model
             ])
             ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
             ->where('is_ativo_est', 1)
+            ->where('tb_estoque.id_empresa_est', $id_empresa)
             ->orderBy('tb_estoque.id_estoque_est', 'desc')
             ->get();
         }
@@ -80,7 +90,7 @@ class Estoque extends Model
                     COALESCE(SUM(
                         CASE
                             WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
-                            WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN -tmmi.qtd_material_mit
+                            WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
                             ELSE 0
                         END
                     ), 0) as quantidade_em_estoque
@@ -90,7 +100,7 @@ class Estoque extends Model
                         COALESCE(SUM(
                             CASE
                                 WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
-                                WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN -tmmi.qtd_material_mit
+                                WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
                                 ELSE 0
                             END
                         ), 0) * tm.vlr_material_mte
@@ -132,8 +142,9 @@ class Estoque extends Model
             ->get();
     }
 
-    public static function deleteReg($id_estoque_est) {
+    public static function deleteReg($id_estoque_est, $id_empresa) {
         Estoque::where('id_estoque_est', $id_estoque_est)
+        ->where('id_empresa_est', $id_empresa)
         ->update([
             'is_ativo_est' => 0
         ]);

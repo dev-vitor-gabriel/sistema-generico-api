@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -14,7 +15,8 @@ return new class extends Migration
         Schema::create('tb_empresa', function (Blueprint $table) {
             $table->id('id_empresa_emp');
             $table->string('des_empresa_emp');
-            $table->string('cod_empresa_emp');
+            $table->string('razao_social_empresa_emp');
+            $table->string('cnpj_empresa_emp');
             $table->string('des_endereco_emp');
             $table->string('des_cidade_emp');
             $table->string('des_cep_emp');
@@ -22,7 +24,7 @@ return new class extends Migration
             $table->string('lnk_whatsapp_emp')->nullable();
             $table->string('lnk_instagram_emp')->nullable();
             $table->string('lnk_facebook_emp')->nullable();
-            $table->longText('img_empresa_emp')->nullable();
+            $table->string('img_empresa_emp')->nullable();
             $table->boolean('is_ativo_emp')->default(true);
             $table->timestamps();
         });

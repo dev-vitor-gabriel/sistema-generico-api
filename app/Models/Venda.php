@@ -19,10 +19,11 @@ class Venda extends Model
         'id_funcionario_vda',
         'id_centro_custo_vda',
         'id_cliente_vda',
-        'desc_venda_vda'
+        'desc_venda_vda',
+        'id_empresa_vda'
     ];
 
-    public static function get(Int $id = null, $filtros = null)
+    public static function get(Int $id_empresa, Int $id = null, $filtros = null)
     {
         $data = Venda::select([
             'tb_venda.id_venda_vda',
@@ -41,6 +42,7 @@ class Venda extends Model
             ->join('tb_centro_custo', 'tb_venda.id_centro_custo_vda', '=', 'tb_centro_custo.id_centro_custo_cco')
             ->join('rel_venda_material', 'tb_venda.id_venda_vda', '=', 'rel_venda_material.id_venda_rvm')
             ->where('tb_venda.is_deleted', 0)
+            ->where('tb_venda.id_empresa_vda', $id_empresa)
             ->groupBy('tb_venda.id_venda_vda', 'tb_venda.id_funcionario_vda', 'tb_funcionarios.desc_funcionario_tfu')
             ->orderBy('id_venda_vda', 'desc')
             ->get();
@@ -57,10 +59,11 @@ class Venda extends Model
         return $data;
     }
 
-    public static function getMateriais(Int $id_venda, $filtros = null)
+    public static function getMateriais(Int $id_empresa, Int $id_venda, $filtros = null)
     {
         $data = RelVendaMaterial::select([
             'rel_venda_material.id',
+            'rel_venda_material.id_venda_rvm',
             'tb_material.des_material_mte',
             'rel_venda_material.id_material_rvm',
             'rel_venda_material.vlr_unit_material_rvm',
@@ -70,8 +73,11 @@ class Venda extends Model
             ->where('id_venda_rvm', $id_venda)
             ->join('tb_material', 'rel_venda_material.id_material_rvm', '=', 'tb_material.id_material_mte')
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+            ->join('tb_venda', 'tb_venda.id_venda_vda', '=', 'rel_venda_material.id_venda_rvm')
+            ->where('tb_venda.id_empresa_vda', $id_empresa)
             ->orderBy('rel_venda_material.id', 'desc')
             ->get();
+
         if ($filtros)
         {
             $data = $data->where($filtros);
@@ -80,16 +86,18 @@ class Venda extends Model
         return $data;
     }
 
-    public static function deleteReg($id_venda)
+    public static function deleteReg(Int $id_empresa,Int $id_venda)
     {
         Venda::where('id_venda_vda', $id_venda)
+            ->where('id_empresa_vda', $id_empresa)
             ->update([
-                'is_deleted' => 1
+                'is_deleted' => 0
             ]);
     }
 
-    public static function updateReg(Int $id_venda_vda, $obj) {
+    public static function updateReg(Int $id_empresa, Int $id_venda_vda, $obj) {
         Venda::where('id_venda_vda', $id_venda_vda)
+        ->where('id_empresa_vda', $id_empresa)
         ->update($obj);
     }
 }
