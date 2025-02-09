@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\OrigemStatusEnum;
+use App\Enums\StatusVendaEnum;
 use App\Http\Controllers\Controller;
 use App\Models\CentroCusto;
 use App\Models\Funcionario;
 use App\Models\Material;
+use App\Models\Status;
 use App\Models\Venda;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,6 +46,7 @@ class VendaController extends Controller
         //     id_centro_custo_vda,
         //     id_cliente_ser,
         //     desc_venda_vda,
+        //     id_status_vda,
         //     materiais: [
         //         { id_material_rvm,  vlr_unit_material_rvm, qtd_material_rvm  }
         //     ]
@@ -64,6 +68,7 @@ class VendaController extends Controller
                 'desc_venda_vda' => $request->desc_venda_vda,
                 'id_centro_custo_vda' => $request->id_centro_custo_vda,
                 'id_empresa_vda' => $id_empresa,
+                'id_status_vda' => $request->id_status_vda,
              ]
         );
 
@@ -75,6 +80,7 @@ class VendaController extends Controller
                     'id_material_rvm' => $material_venda['id_material_rvm'],
                     'vlr_unit_material_rvm' => $material_venda['vlr_unit_material_rvm'],
                     'qtd_material_rvm' => $material_venda['qtd_material_rvm'],
+                    'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
                     ]
                 );
         }
@@ -128,7 +134,7 @@ class VendaController extends Controller
         // }
 
 
-        $data = $request->only(['id_funcionario_vda', 'id_centro_custo_vda', 'id_cliente_ser', 'desc_venda_vda' ]);
+        $data = $request->only(['id_funcionario_vda', 'id_centro_custo_vda', 'id_cliente_ser', 'desc_venda_vda', 'id_status_vda' ]);
 
         if (!$data['id_funcionario_vda'])
         {
@@ -144,7 +150,14 @@ class VendaController extends Controller
             ], 400);
         }
 
-        $venda = Venda::get($id_venda, null);
+        if (!$data['id_status_vda'])
+        {
+            return response()->json([
+                'error' => 'Status é um campo obrigatório.'
+            ], 400);
+        }
+
+        $venda = Venda::get($id_empresa, $id_venda, null);
 
         if (!$venda)
         {
@@ -153,9 +166,12 @@ class VendaController extends Controller
             ], 400);
         }
 
-        if ($venda->id_status_venda == 3)
+        $status = Status::getById($venda->id_status_vda);
+        if ($status->status_sts == StatusVendaEnum::Finalizada->value)
         {
-
+            return response()->json([
+                'error' => 'A venda já foi finalizada e não pode ser alterada.'
+            ], 400);
         }
 
         $materiaisExcluir = $request->input('idsMateriaisExcluir');
@@ -180,6 +196,7 @@ class VendaController extends Controller
                         'id_material_rvm' => $material_venda['id_material_rvm'],
                         'vlr_unit_material_rvm' => $material_venda['vlr_unit_material_rvm'],
                         'qtd_material_rvm' => $material_venda['qtd_material_rvm'],
+                        'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
                         ]
                     );
             }
@@ -196,6 +213,7 @@ class VendaController extends Controller
                         'id_material_rvm' => $material_venda['id_material_rvm'],
                         'vlr_unit_material_rvm' => $material_venda['vlr_unit_material_rvm'],
                         'qtd_material_rvm' => $material_venda['qtd_material_rvm'],
+                        'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
                         ]
                     );
             }
@@ -210,9 +228,9 @@ class VendaController extends Controller
                 'error' => 'A venda deverá ter ao menos um material.'
             ], 400);
         }
-
         Venda::updateReg($id_empresa, $id_venda, [
             'desc_venda_vda'      => $request->desc_venda_vda,
+            'id_status_vda'       => $request->id_status_vda,
             'id_centro_custo_vda' => $request->id_centro_custo_vda,
             'id_funcionario_vda'  => $request->id_funcionario_vda,
             'id_cliente_vda'      => $request->id_cliente_vda,
@@ -221,14 +239,28 @@ class VendaController extends Controller
         DB::commit();
 
         return response()->json([
-            'error' => 'Venda atualizada com sucesso.'
+            'message' => 'Venda atualizada com sucesso.'
         ], 201);
     }
 
-    public function finalizar(Request $request, Int $id_venda) {
-        $id_empresa = $request->header('id_empresa');
+    public function finalizar(Int $id_venda, Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
 
-        Venda::finalizarReg($id_empresa, $id_venda);
+        $origem = OrigemStatusEnum::Venda->value;
+        $status = StatusVendaEnum::Finalizada->value;
+        $status = Status::getByOrigemStatus($origem, $status);
+
+        Venda::atualizarStatus($id_empresa, $id_venda, $status->id_status_sts);
+    }
+
+    public function cancelar(Int $id_venda, Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
+
+        $origem = OrigemStatusEnum::Venda->value;
+        $status = StatusVendaEnum::Cancelada->value;
+        $status = Status::getByOrigemStatus($origem, $status);
+
+        Venda::atualizarStatus($id_empresa, $id_venda, $status->id_status_sts);
     }
 
 }

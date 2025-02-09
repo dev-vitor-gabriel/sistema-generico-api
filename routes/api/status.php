@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\VendaController;
+use App\Http\Controllers\StatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,12 +16,6 @@ use App\Http\Controllers\API\VendaController;
 |
 */
 
-Route::controller(VendaController::class)->group(function () {
-    Route::post('', 'create');
-    Route::get('', 'get');
-    Route::get('{id_venda}', 'get');
-    Route::get('{id_venda}/materiais', 'getMateriais');
-    Route::put('{id_venda}', 'update');
-    Route::patch('{id_venda}/finalizar', 'finalizar');
-    Route::patch('{id_venda}/cancelar', 'cancelar');
+Route::controller(StatusController::class)->group(function () {
+    Route::get('{origem}/getByOrigem', 'getByOrigem');
 });

@@ -11,6 +11,8 @@ class Status extends Model
 {
     use HasFactory;
 
+    protected $table = "tb_status";
+
     protected $fillable = [
         'origem_sts',
         'status_sts',
@@ -19,7 +21,7 @@ class Status extends Model
     ];
 
 
-    public static function getByOrigem(OrigemStatusEnum $origem)
+    public static function getByOrigem(int $origem)
     {
         $data = Status::
         where('origem_sts', $origem)
@@ -30,8 +32,17 @@ class Status extends Model
     public static function getById(Int $id_status)
     {
         return Status::
-        where('id_status_sts', $id_status)
-        ->get();
+        select(['*'])
+        ->where('id_status_sts', $id_status)
+        ->get()[0];
+    }
+
+    public static function getByOrigemStatus(Int $origem, Int $status)
+    {
+        return Status::
+        where('origem_sts', $origem)
+        ->where('status_sts', $status)
+        ->first();
     }
 
 }

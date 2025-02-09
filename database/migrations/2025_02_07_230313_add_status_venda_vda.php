@@ -13,10 +13,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tb_venda', function (Blueprint $table){
-            $table->unsignedBigInteger('id_status_venda_vda')->default(1);
-            $table->foreign('id_status_venda_vda')
-            ->references('id_status_venda_svd')
-            ->on('tb_status_venda')
+            $table->unsignedBigInteger('id_status_vda');
+            $table->foreign('id_status_vda')
+            ->references('id_status_sts')
+            ->on('tb_status')
             ->onDelete('restrict');
         });
     }
@@ -27,8 +27,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tb_venda', function (Blueprint $table){
-            $table->dropForeign('id_status_venda_vda');
-            $table->dropColumn('id_status_venda_vda');
+            $table->dropForeign(['id_status_vda']);
+            $table->dropColumn('id_status_vda');
         });
     }
 };

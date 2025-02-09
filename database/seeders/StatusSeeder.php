@@ -2,7 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Enums\OrigemStatusEnum;
+use App\Enums\StatusVendaEnum;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -15,17 +16,29 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('tb_status_venda')->insert([
-            'des_status_venda_svd' => 'Aberta',
-            'is_ativo_svd' => true,
+        DB::table('tb_status')->insert([
+            'des_status_sts' => 'Aberta',
+            'origem_sts' => OrigemStatusEnum::Venda->value,
+            'status_sts' => StatusVendaEnum::Aberta->value,
+            'is_ativo_sts' => true,
         ]);
-        DB::table('tb_status_venda')->insert([
-            'des_status_venda_svd' => 'Em processo',
-            'is_ativo_svd' => true,
+        DB::table('tb_status')->insert([
+            'des_status_sts' => 'Negociando',
+            'origem_sts' => OrigemStatusEnum::Venda->value,
+            'status_sts' => StatusVendaEnum::Negociando->value,
+            'is_ativo_sts' => true,
         ]);
-        DB::table('tb_status_venda')->insert([
-            'des_status_venda_svd' => 'Fechada',
-            'is_ativo_svd' => true,
+        DB::table('tb_status')->insert([
+            'des_status_sts' => 'Finalizada',
+            'origem_sts' => OrigemStatusEnum::Venda->value,
+            'status_sts' => StatusVendaEnum::Finalizada->value,
+            'is_ativo_sts' => true,
+        ]);
+        DB::table('tb_status')->insert([
+            'des_status_sts' => 'Cancelada',
+            'origem_sts' => OrigemStatusEnum::Venda->value,
+            'status_sts' => StatusVendaEnum::Cancelada->value,
+            'is_ativo_sts' => true,
         ]);
     }
 }

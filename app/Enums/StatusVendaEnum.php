@@ -2,9 +2,10 @@
 
 namespace App\Enums;
 
-enum StatusVendaEnum: string
+enum StatusVendaEnum: int
 {
     case Aberta = 0;
     case Negociando = 1;
-    case Fechada = 2;
+    case Finalizada = 2;
+    case Cancelada = 3;
 }
