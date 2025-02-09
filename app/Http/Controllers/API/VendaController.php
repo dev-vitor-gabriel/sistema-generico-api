@@ -153,6 +153,11 @@ class VendaController extends Controller
             ], 400);
         }
 
+        if ($venda->id_status_venda == 3)
+        {
+
+        }
+
         $materiaisExcluir = $request->input('idsMateriaisExcluir');
         $materiaisAtualizar = $request->input('materiaisAtualizar');
         $materiaisInserir = $request->input('materiaisInserir');
@@ -218,6 +223,12 @@ class VendaController extends Controller
         return response()->json([
             'error' => 'Venda atualizada com sucesso.'
         ], 201);
+    }
+
+    public function finalizar(Request $request, Int $id_venda) {
+        $id_empresa = $request->header('id_empresa');
+
+        Venda::finalizarReg($id_empresa, $id_venda);
     }
 
 }

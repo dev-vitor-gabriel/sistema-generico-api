@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_status_venda', function (Blueprint $table) {
-            $table->id('id_status_venda_svd');
-            $table->string('des_status_venda_svd');
-            $table->boolean('is_ativo_svd');
+        Schema::create('tb_status', function (Blueprint $table) {
+            $table->id('id_status_sts');
+            $table->tinyInteger('origem_sts');
+            $table->tinyInteger('status_sts');
+            $table->string('des_status_sts');
+            $table->boolean('is_ativo_sts')->default(true);
             $table->timestamps();
         });
     }

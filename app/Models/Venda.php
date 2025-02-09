@@ -13,14 +13,14 @@ class Venda extends Model
 
     protected $table = "tb_venda";
 
-
     protected $fillable = [
         'id_venda_vda',
         'id_funcionario_vda',
         'id_centro_custo_vda',
         'id_cliente_vda',
         'desc_venda_vda',
-        'id_empresa_vda'
+        'id_empresa_vda',
+        'id_status_venda_vda',
     ];
 
     public static function get(Int $id_empresa, Int $id = null, $filtros = null)
@@ -35,9 +35,11 @@ class Venda extends Model
             'tb_cliente.des_cliente_cli',
             'tb_cliente.telefone_cliente_cli',
             'tb_cliente.documento_cliente_cli',
+            'tb_status_venda.des_status_venda_svd',
             DB::raw('SUM(rel_venda_material.vlr_unit_material_rvm * rel_venda_material.qtd_material_rvm) as total_vlr_material')
             ])
             ->join('tb_funcionarios', 'tb_venda.id_funcionario_vda', '=', 'tb_funcionarios.id_funcionario_tfu')
+            ->join('tb_status_venda', 'tb_venda.id_status_venda_vda', '=', 'tb_status_venda.id_status_venda_svd')
             ->leftJoin('tb_cliente', 'tb_venda.id_cliente_vda', '=', 'tb_cliente.id_cliente_cli')
             ->join('tb_centro_custo', 'tb_venda.id_centro_custo_vda', '=', 'tb_centro_custo.id_centro_custo_cco')
             ->join('rel_venda_material', 'tb_venda.id_venda_vda', '=', 'rel_venda_material.id_venda_rvm')
@@ -99,5 +101,14 @@ class Venda extends Model
         Venda::where('id_venda_vda', $id_venda_vda)
         ->where('id_empresa_vda', $id_empresa)
         ->update($obj);
+    }
+
+    public static function finalizarReg(Int $id_empresa, Int $id_venda)
+    {
+        Venda::where('id_venda_vda', $id_venda)
+        ->where('id_empresa_vda', $id_empresa)
+        ->update([
+            'id_status_venda_vda' => 3
+        ]);
     }
 }
