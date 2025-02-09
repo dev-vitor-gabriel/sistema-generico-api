@@ -80,7 +80,7 @@ class VendaController extends Controller
                     'id_material_rvm' => $material_venda['id_material_rvm'],
                     'vlr_unit_material_rvm' => $material_venda['vlr_unit_material_rvm'],
                     'qtd_material_rvm' => $material_venda['qtd_material_rvm'],
-                    'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
+                    // 'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
                     ]
                 );
         }
@@ -97,12 +97,15 @@ class VendaController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         $Venda = new Venda();
+
         $filter = $request->only($Venda->getFillable());
 
         $filter = array_filter($filter, function($reg){ return mb_strtoupper($reg) != "NULL";});
-        $data = Venda::get($id_empresa, $id_venda, $filter);
 
-        return response()->json($data);
+        $per_page = $request->query('per_page', 10);
+        $page_number = $request->query('page_number', 1);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
+        return Venda::get($id_empresa, $id_venda, $filter, $per_page, $page_number);
     }
 
     // get materiais
@@ -196,7 +199,7 @@ class VendaController extends Controller
                         'id_material_rvm' => $material_venda['id_material_rvm'],
                         'vlr_unit_material_rvm' => $material_venda['vlr_unit_material_rvm'],
                         'qtd_material_rvm' => $material_venda['qtd_material_rvm'],
-                        'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
+                        // 'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
                         ]
                     );
             }
@@ -213,7 +216,7 @@ class VendaController extends Controller
                         'id_material_rvm' => $material_venda['id_material_rvm'],
                         'vlr_unit_material_rvm' => $material_venda['vlr_unit_material_rvm'],
                         'qtd_material_rvm' => $material_venda['qtd_material_rvm'],
-                        'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
+                        // 'id_estoque_rvm' => $material_venda['id_estoque_rvm'],
                         ]
                     );
             }

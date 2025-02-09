@@ -23,9 +23,9 @@ class Venda extends Model
         'id_status_vda',
     ];
 
-    public static function get(Int $id_empresa, Int $id = null, $filtros = null)
+    public static function get(Int $id_empresa, Int $id = null, $filtros = null, $per_page = 1, $page_number = 0)
     {
-        $data = Venda::select([
+        $paginator = Venda::select([
             'tb_venda.id_venda_vda',
             'tb_venda.id_funcionario_vda',
             'tb_funcionarios.desc_funcionario_tfu',
@@ -49,19 +49,23 @@ class Venda extends Model
             ->where('tb_venda.id_empresa_vda', $id_empresa)
             ->groupBy('tb_venda.id_venda_vda', 'tb_venda.id_funcionario_vda', 'tb_funcionarios.desc_funcionario_tfu')
             ->orderBy('id_venda_vda', 'desc')
-            ->get();
+            ->paginate($per_page, ['*'], 'page', $page_number);
+
         if ($filtros)
         {
-            $data = $data->where($filtros);
+            $paginator = $paginator->where($filtros);
         }
 
         if ($id)
         {
-            $data = $data->where('id_venda_vda', $id);
-            return $data->first();
+            $paginator = $paginator->where('id_venda_vda', $id);
+            return $paginator->first();
         }
 
-        return $data;
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getMateriais(Int $id_empresa, Int $id_venda, $filtros = null)
