@@ -46,7 +46,7 @@ class FuncionarioController extends Controller
     public function get(Request $request, Int $id_funcionario = null) {
         $id_empresa = $request->header('id_empresa');
         if($id_funcionario){
-            $data = Funcionario::getById(($id_funcionario));
+            $data = Funcionario::getById($id_empresa,$id_funcionario);
             $data_array = json_decode($data);
 
             if(empty($data_array)){

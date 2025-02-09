@@ -49,6 +49,7 @@ class Funcionario extends Model
     }
 
     public static function getById(Int $id_empresa, Int $id = null) {
+        
         if($id) {
             $data = Funcionario::select([
                 'id_funcionario_tfu',
