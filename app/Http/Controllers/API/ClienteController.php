@@ -64,7 +64,9 @@ class ClienteController extends Controller
     public function update(Int $id_cliente, Request $request) {
         $id_empresa = $request->header('id_empresa');
 
-        $request->validate([
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli);
+        $request->merge(['documento_cliente_cli' => $document_formated]);
+        $validator = Validator::make($request->all(),[
             'des_cliente_cli'       => 'required|string|max:255',
             'telefone_cliente_cli'  => 'required|string|max:11',
             'email_cliente_cli'     => 'required|string|max:255',
@@ -72,7 +74,12 @@ class ClienteController extends Controller
             'endereco_cliente_cli'  => 'string|max:255',
             'id_centro_custo_cli'   => 'integer',
         ]);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+        
         Cliente::updateReg($id_empresa, $id_cliente, $request);
+        
     }
 
     // delete (inactivate)
