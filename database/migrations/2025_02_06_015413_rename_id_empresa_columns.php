@@ -12,7 +12,6 @@ return new class extends Migration
         ['name' => 'tb_cliente', 'id' => 'id_cliente_cli'],
         ['name' => 'tb_conta', 'id' => 'id_conta_con'],
         ['name' => 'tb_conta_tipo', 'id' => 'id_conta_tipo_ctp'],
-        ['name' => 'tb_empresa', 'id' => 'id_empresa_emp'],
         ['name' => 'tb_estoque', 'id' => 'id_estoque_est'],
         ['name' => 'tb_fornecedor', 'id' => 'id_fornecedor_Frn'],
         ['name' => 'tb_funcionarios', 'id' => 'id_funcionario_tfu'],
@@ -61,10 +60,12 @@ return new class extends Migration
             $suffix = substr($idColumn, strrpos($idColumn, '_') + 1);
             $empresaColumn = "id_empresa_$suffix";
 
-            Schema::table($schemaTable['name'], function (Blueprint $table) use ($empresaColumn, $schemaTable) {
-                $table->dropForeign($schemaTable['name'] . '_' . $empresaColumn . '_foreign');
-                $table->dropColumn($empresaColumn);
-            });
+            if (!Schema::hasColumn($schemaTable['name'], $empresaColumn)) {
+                Schema::table($schemaTable['name'], function (Blueprint $table) use ($empresaColumn, $schemaTable) {
+                    $table->dropForeign($schemaTable['name'] . '_' . $empresaColumn . '_foreign');
+                    $table->dropColumn($empresaColumn);
+                });
+            }
         }
     }
 };

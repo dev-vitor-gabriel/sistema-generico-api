@@ -7,6 +7,7 @@ use App\Models\Estoque;
 use App\Models\MaterialMovimentacaoItem;
 
 use App\Http\Controllers\Controller;
+use App\Models\EstoqueItem;
 use Illuminate\Http\Request;
 
 class MaterialMovimentacaoController extends Controller
@@ -50,6 +51,22 @@ class MaterialMovimentacaoController extends Controller
                     'vlr_material_mit'                      => $value,
                     'tipo_movimentacao_mit'                 => 'entrada'
                 ]);
+
+                $estoque_item = EstoqueItem::get($id_empresa, $materialMov->id_estoque_entrada_mov, $material['id_material_mte'], $request->id_centro_custo_mov);
+
+                if ($estoque_item)
+                {
+                    $estoque_item->qtd_estoque_item_eti += $material['qtd_material_mit'];
+                    EstoqueItem::updateReg($id_empresa, $estoque_item->id_estoque_item_eti, $estoque_item);
+                } else {
+                    $estoque_item = EstoqueItem::create([
+                        'id_material_eti' => $material['id_material_mte'],
+                        'id_empresa_eti' => $id_empresa,
+                        'id_estoque_eti' => $materialMov->id_estoque_entrada_mov,
+                        'id_centro_custo_eti' => $request->id_centro_custo_mov,
+                        'qtd_estoque_item_eti' =>  $material['qtd_material_mit'],
+                    ]);
+                }
             }
 
             return response()->json($materialMov,201);
@@ -97,8 +114,11 @@ class MaterialMovimentacaoController extends Controller
                     'tipo_movimentacao_mit'     =>  'saida',
                 ]);
 
-                return response()->json($materialMov,201);
+                $estoque_item = EstoqueItem::get($id_empresa, $materialMov->id_estoque_saida_mov, $material['id_material_mte'], $request->id_centro_custo_mov);
+                $estoque_item->qtd_estoque_item_eti -= $quantidade_solicitada;
+                EstoqueItem::updateReg($id_empresa, $estoque_item->id_estoque_item_eti, $estoque_item);
             }
+            return response()->json($materialMov,201);
         }
 
     }
