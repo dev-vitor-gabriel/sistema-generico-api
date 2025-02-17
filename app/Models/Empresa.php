@@ -25,14 +25,20 @@ class Empresa extends Model
         'img_empresa_emp'
     ];
 
-    public static function getAll(Int $perPage = 10, Int $pageNumber = 1, $filter)
-    {
+    public static function getAll(Int $perPage = 10, Int $pageNumber = 1, $filter) {
         $paginator = Empresa::select([
             'id_empresa_emp',
             'des_empresa_emp',
             'razao_social_empresa_emp',
             'cnpj_empresa_emp',
             'des_endereco_emp',
+            'des_cidade_emp',
+            'des_cep_emp',
+            'des_tel_emp',
+            'lnk_whatsapp_emp',
+            'lnk_instagram_emp',
+            'lnk_facebook_emp',
+            'img_empresa_emp',
         ])
         ->where('tb_empresa.des_empresa_emp', 'like', '%'.$filter.'%')
         ->orderBy('tb_empresa.id_empresa_emp', 'desc')
@@ -47,6 +53,12 @@ class Empresa extends Model
     public static function findByCodigo($codigo) {
         $data = Empresa::select(['*'])->where('cod_empresa_emp', $codigo)->where('is_ativo_emp', 1)->get();
         return $data;
+    }
+
+    public static function updateReg($id_empresa_emp, $obj) {
+        Empresa::
+        where('id_empresa_emp', $id_empresa_emp)
+        ->update($obj);
     }
 
     public static function validateCNPJ($cnpj)

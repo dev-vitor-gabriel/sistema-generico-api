@@ -16,5 +16,6 @@ use App\Http\Controllers\API\EmpresaController;
 
 Route::controller(EmpresaController::class)->group(function () {
     Route::post('', 'create');
+    Route::put('/{id_empresa_emp}', 'update');
     Route::get('', 'getAll');
 });

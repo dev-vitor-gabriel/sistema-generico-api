@@ -22,10 +22,7 @@ class EmpresaController extends Controller
      */
     public function create(Request $request)
     {
-
-        $request->merge([
-            'cnpj_empresa_emp' => preg_replace('/\D/', '', $request->cnpj_empresa_emp)
-        ]);
+        $cnpj = $request->cnpj_empresa_emp;
 
         $messages = [
             'des_empresa_emp.required' => 'Nome da Empresa é obrigatório.',
@@ -40,7 +37,7 @@ class EmpresaController extends Controller
         $rules = [
             'des_empresa_emp' => 'required|string|max:255',
             'razao_social_empresa_emp' => 'required|string|max:255',
-            'cnpj_empresa_emp' => ['required', 'string', 'size:14', function ($attribute, $value, $fail) {
+            'cnpj_empresa_emp' => ['required', 'string', function ($attribute, $value, $fail) {
                 if (!Empresa::validateCNPJ($value)) {
                     $fail('O CNPJ informado é inválido.');
                 }
@@ -66,7 +63,7 @@ class EmpresaController extends Controller
         $empresa = Empresa::create([
             'des_empresa_emp' => $request->des_empresa_emp,
             'razao_social_empresa_emp' => $request->razao_social_empresa_emp,
-            'cnpj_empresa_emp' => $request->cnpj_empresa_emp,
+            'cnpj_empresa_emp' => $cnpj,
             'des_endereco_emp' => $request->des_endereco_emp,
             'des_cidade_emp' => $request->des_cidade_emp,
             'des_cep_emp' => $request->des_cep_emp,
@@ -95,16 +92,70 @@ class EmpresaController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Empresa $empresa)
+    public function update(Request $request, $id_empresa_emp)
     {
-        //
+        $empresa = Empresa::where('id_empresa_emp', $id_empresa_emp)->first();
+
+        if (!$empresa) {
+            return response()->json(['error' => 'Empresa não encontrada.'], 404);
+        }
+
+        $messages = [
+            'des_empresa_emp.required' => 'Nome da Empresa é obrigatório.',
+            'razao_social_empresa_emp.required' => 'Razão Social é obrigatório.',
+            'cnpj_empresa_emp.required' => 'CNPJ é obrigatório.',
+            'des_endereco_emp.required' => 'Endereço é obrigatório.',
+            'des_cidade_emp.required' => 'Cidade é obrigatório.',
+            'des_cep_emp.required' => 'CEP é obrigatório.',
+            'des_tel_emp.required' => 'Telefone é obrigatório.',
+        ];
+
+        $rules = [
+            'des_empresa_emp' => 'required|string|max:255',
+            'razao_social_empresa_emp' => 'required|string|max:255',
+            'cnpj_empresa_emp' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) use ($empresa) {
+                    if (!Empresa::validateCNPJ($value)) {
+                        $fail('O CNPJ informado é inválido.');
+                    }
+                    if (Empresa::where('cnpj_empresa_emp', $value)->where('id_empresa_emp', '!=', $empresa->id_empresa_emp)->exists()) {
+                        $fail('O CNPJ informado já está cadastrado.');
+                    }
+                }
+            ],
+            'des_endereco_emp' => 'required|string|max:255',
+            'des_cidade_emp' => 'required|string|max:255',
+            'des_cep_emp' => 'required|string|max:9',
+            'des_tel_emp' => 'required|string|max:20',
+            'lnk_whatsapp_emp' => 'nullable|url',
+            'lnk_instagram_emp' => 'nullable|url',
+            'lnk_facebook_emp' => 'nullable|url',
+            'img_empresa_emp' => 'nullable|string|max:255',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        Empresa::updateReg($id_empresa_emp, [
+            'des_empresa_emp' => $request->des_empresa_emp,
+            'razao_social_empresa_emp' => $request->razao_social_empresa_emp,
+            'cnpj_empresa_emp' => $request->cnpj_empresa_emp,
+            'des_endereco_emp' => $request->des_endereco_emp,
+            'des_cidade_emp' => $request->des_cidade_emp,
+            'des_cep_emp' => $request->des_cep_emp,
+            'des_tel_emp' => $request->des_tel_emp,
+            'lnk_whatsapp_emp' => $request->lnk_whatsapp_emp,
+            'lnk_instagram_emp' => $request->lnk_instagram_emp,
+            'lnk_facebook_emp' => $request->lnk_facebook_emp,
+            'img_empresa_emp' => $request->img_empresa_emp,
+        ]);
+
+        return response()->json(['message' => 'Empresa atualizada com sucesso.', 'empresa' => $empresa], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Empresa $empresa)
-    {
-        //
-    }
 }
