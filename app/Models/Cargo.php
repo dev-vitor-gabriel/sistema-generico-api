@@ -16,14 +16,14 @@ class Cargo extends Model
     protected $fillable = [
         'desc_cargo_tcg',
         'is_ativo_tcg',
-        'id_empresa'
+        'id_empresa_tcg'
     ];
 
-    public static function getAll(Int $id_empresa) {
+    public static function getAll($id_empresa) {
         $data = Cargo::
             select(['*'])
             ->where('is_ativo_tcg', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_tcg', $id_empresa)
             ->orderBy('id_cargo_tcg', 'desc')
             ->get();
         return response()->json($data);
@@ -34,13 +34,13 @@ class Cargo extends Model
             $data = Cargo::select(['*'])
             ->where('id_cargo_tcg', $id)
             ->where('is_ativo_tcg', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_tcg', $id_empresa)
             ->orderBy('id_cargo_tcg', 'desc')
             ->get();
         }else{
             $data = Cargo::select(['*'])
             ->where('is_ativo_tcg', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_tcg', $id_empresa)
             ->orderBy('id_cargo_tcg', 'desc')
             ->get();
         }
@@ -51,7 +51,7 @@ class Cargo extends Model
     public static function updateReg(Int $id_empresa, Int $id_cargo, $obj) {
         Cargo::
         where('id_cargo_tcg', $id_cargo)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_tcg', $id_empresa)
         ->update([
             'desc_cargo_tcg' => $obj->desc_cargo_tcg
         ]);
@@ -64,7 +64,7 @@ class Cargo extends Model
         // ]);
         $delete = Cargo::
         where('id_cargo_tcg', $id_cargo)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_tcg', $id_empresa)
         ->first();
         $delete->delete();
     }

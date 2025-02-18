@@ -18,13 +18,13 @@ class Cliente extends Model
         'documento_cliente_cli',
         'endereco_cliente_cli',
         'is_ativo_cli',
-        'id_empresa',
+        'id_empresa_cli',
     ];
 
     public static function getAll(Int $id_empresa) {
         $data = Cliente::select(['*'])
         ->where('is_ativo_cli', 1)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_cli', $id_empresa)
         ->orderBy('id_cliente_cli', 'desc')
         ->get();
         return response()
@@ -35,14 +35,14 @@ class Cliente extends Model
         if($id) {
             $data = Cliente::select(['*'])
             ->where('id_cliente_cli', $id)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_cli', $id_empresa)
             ->where('is_ativo_cli', 1)
             ->orderBy('id_cliente_cli', 'desc')
             ->get();
         }else{
             $data = Cliente::select(['*'])
             ->where('is_ativo_cli', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_cli', $id_empresa)
             ->orderBy('id_cliente_cli', 'desc')
             ->get();
         }
@@ -53,8 +53,7 @@ class Cliente extends Model
     public static function updateReg(Int $id_empresa, Int $id_cliente, $obj) {
         Cliente::
         where('id_cliente_cli', $id_cliente)
-        ->where('id_empresa', $id_empresa)
-
+        ->where('id_empresa_cli', $id_empresa)
         ->update([
             'des_cliente_cli'       => $obj->des_cliente_cli,
             'telefone_cliente_cli'  => $obj->telefone_cliente_cli,
@@ -67,7 +66,7 @@ class Cliente extends Model
     public static function deleteReg($id_empresa, $id_cliente) {
         Cliente::
         where('id_cliente_cli', $id_cliente)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_cli', $id_empresa)
         ->update([
             'is_ativo_cli' => 0
         ]);

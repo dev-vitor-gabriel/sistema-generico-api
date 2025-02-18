@@ -8,8 +8,13 @@ use Illuminate\Http\Request;
 
 class CentroCustoController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
     public function create(Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_centro_custo_cco' => 'required|string|max:255'
@@ -17,14 +22,14 @@ class CentroCustoController extends Controller
 
         $cliente = CentroCusto::create([
             'des_centro_custo_cco' => $request->des_centro_custo_cco,
-            'id_empresa' => $id_empresa,
+            'id_empresa_cco' => $id_empresa,
         ]);
 
         return response()->json($cliente,201);
     }
 
     public function get(Request $request, Int $id_centro_custo = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         if($id_centro_custo){
             $data = CentroCusto::getById($id_empresa, $id_centro_custo);
@@ -41,7 +46,7 @@ class CentroCustoController extends Controller
     }
 
     public function update(Int $id_centro_custo, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_centro_custo_cco' => 'required|string|max:255'
@@ -50,7 +55,7 @@ class CentroCustoController extends Controller
     }
 
     public function delete(Int $id_centro_custo, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
         CentroCusto::deleteReg($id_empresa, $id_centro_custo);
     }
 }

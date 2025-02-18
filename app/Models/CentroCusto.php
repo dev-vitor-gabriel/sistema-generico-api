@@ -14,13 +14,13 @@ class CentroCusto extends Model
     protected $fillable = [
         'des_centro_custo_cco',
         'is_ativo_cco',
-        'id_empresa',
+        'id_empresa_cco',
     ];
 
     public static function getAll(Int $id_empresa) {
         $data = CentroCusto::select(['*'])
         ->where('is_ativo_cco', 1)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_cco', $id_empresa)
         ->orderBy('id_centro_custo_cco', 'desc')
         ->get();
         return response()
@@ -32,13 +32,13 @@ class CentroCusto extends Model
             $data = CentroCusto::select(['*'])
             ->where('id_centro_custo_cco', $id)
             ->where('is_ativo_cco', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_cco', $id_empresa)
             ->orderBy('id_centro_custo_cco', 'desc')
             ->get();
         } else{
             $data = CentroCusto::select(['*'])
             ->where('is_ativo_cco', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_cco', $id_empresa)
             ->orderBy('id_centro_custo_cco', 'desc')
             ->get();
         }
@@ -49,7 +49,7 @@ class CentroCusto extends Model
     public static function updateReg(Int $id_empresa, Int $id_centro_custo, $obj) {
         CentroCusto::
         where('id_centro_custo_cco', $id_centro_custo)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_cco', $id_empresa)
         ->update([
             'des_centro_custo_cco' => $obj
             ->des_centro_custo_cco
@@ -59,7 +59,7 @@ class CentroCusto extends Model
     public static function deleteReg($id_empresa, $id_cliente) {
         CentroCusto::
         where('id_centro_custo_cco', $id_cliente)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_cco', $id_empresa)
         ->update([
             'is_ativo_cco' => 0
         ]);

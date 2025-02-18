@@ -8,18 +8,26 @@ use Illuminate\Http\Request;
 
 class UnidadeController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request)
     {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_unidade_und'       => 'required|string|max:255',
             'des_reduz_unidade_und' => 'required|string|max:255',
+            'id_centro_custo_und'   => 'required|integer|',
         ]);
 
         $servico_tipo = Unidade::create([
             'des_unidade_und'       => $request->des_unidade_und,
             'des_reduz_unidade_und' => $request->des_reduz_unidade_und,
+            'id_centro_custo_und'   => $request->id_centro_custo_und,
             'is_ativo_stp'          => 1,
             'id_empresa'            => $id_empresa,
         ]);
@@ -28,7 +36,8 @@ class UnidadeController extends Controller
     }
 
     public function get(Request $request, Int $id_unidade_und = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
+
         if($id_unidade_und){
             $data = Unidade::getById(($id_unidade_und));
             $data_array = json_decode($data->content());
@@ -39,21 +48,23 @@ class UnidadeController extends Controller
             }
             return $data;
         }
-        $data = Unidade::getAll();
+        $data = Unidade::getAll($id_empresa);
         return $data;
     }
 
     public function update(Int $id_unidade_und, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
+
         $request->validate([
             'des_unidade_und'       => 'string|max:255',
             'des_reduz_unidade_und' => 'string|max:255',
+            'id_centro_custo_und'   => 'integer',
         ]);
         Unidade::updateReg($id_empresa, $id_unidade_und, $request);
     }
 
     public function delete(Int $id_unidade_und, Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         Unidade::deleteReg($id_empresa, $id_unidade_und);
     }

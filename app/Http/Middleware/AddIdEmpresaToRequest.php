@@ -26,9 +26,8 @@ class SetEmpresaHeader
             // Decodifica o token JWT
             try {
                 $decoded = JWT::decode($token, new Key(config('jwt.secret'), 'HS256'));
-
-                if (isset($decoded->id_empresa)) {
-                    $request->headers->set('id_empresa', $decoded->id_empresa);
+                if (isset($decoded->id_empresa_d)) {
+                    $request->headers->set('id_empresa_d', $decoded->id_empresa_d);
                 }
             } catch (\Exception $e) {
                 return response()->json(['error' => 'Token inválido'], 401);

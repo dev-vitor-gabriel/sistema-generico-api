@@ -8,8 +8,13 @@ use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
     public function create(Request $request) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'desc_cargo_tcg' => 'required|string|max:255'
@@ -24,7 +29,7 @@ class CargoController extends Controller
     }
 
     public function get(Request $request, Int $id_cargo = null) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         if($id_cargo){
             $data = Cargo::getById($id_cargo, $id_empresa);
@@ -41,7 +46,7 @@ class CargoController extends Controller
     }
 
     public function update(Request $request, Int $id_cargo) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'desc_cargo_tcg' => 'required|string|max:255'
@@ -50,7 +55,7 @@ class CargoController extends Controller
     }
 
     public function delete(Request $request, Int $id_cargo) {
-        $id_empresa = $request->header('id_empresa');
+        $id_empresa = $this->getIdEmpresa($request);
         Cargo::deleteReg($id_empresa, $id_cargo);
     }
 

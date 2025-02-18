@@ -14,7 +14,7 @@ class InstituicaoPagamento extends Model
     protected $fillable = [
         'desc_instituicao_pagamento_tip',
         'is_ativo_tip',
-        'id_empresa'
+        'id_empresa_tip'
     ];
 
     public static function getAll($id_empresa)
@@ -22,7 +22,7 @@ class InstituicaoPagamento extends Model
         $data = InstituicaoPagamento::
         select(['*'])
         ->where('is_ativo_tip', 1)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_tip', $id_empresa)
         ->orderBy('id_instituicao_pagamento_tip', 'desc')
         ->get();
         return response()->json($data);
@@ -34,7 +34,7 @@ class InstituicaoPagamento extends Model
             select(['*'])
             ->where('desc_instituicao_pagamento_tip', $id)
             ->where('is_ativo_tip', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_tip', $id_empresa)
             ->orderBy('id_instituicao_pagamento_tip', 'desc')
             ->get();
         }else{
@@ -42,7 +42,7 @@ class InstituicaoPagamento extends Model
             select(['*'])
             ->where('is_ativo_tip', 1)
             ->orderBy('id_instituicao_pagamento_tip', 'desc')
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_tip', $id_empresa)
             ->get();
         }
         return response()->json($data);
@@ -52,7 +52,7 @@ class InstituicaoPagamento extends Model
     {
         InstituicaoPagamento::
         where('id_instituicao_pagamento_tip', $id_instituicao_pagamento)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_tip', $id_empresa)
             ->update([
                 'desc_instituicao_pagamento_tip' => $obj->desc_instituicao_pagamento_tip
             ]);
@@ -62,7 +62,7 @@ class InstituicaoPagamento extends Model
     {
         InstituicaoPagamento::
         where('id_instituicao_pagamento_tip', $id_instituicao_pagamento)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_tip', $id_empresa)
             ->update([
                 'is_ativo_tip' => 0
             ]);

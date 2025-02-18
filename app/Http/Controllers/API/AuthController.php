@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -45,18 +46,18 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        if(strlen($request->password) <= 6){
-            return response()->json([
-                'message' => 'Sua senha deve ter pelo menos 6 caracteres.',
-            ], 400);
-        }
+        $request_formatted = current((array)$request->request);
 
-        $request->validate([
+        $validator = Validator::make(($request_formatted),[
             'name'         => 'required|string|max:255',
             'email'        => 'required|string|email|max:255|unique:users',
             'password'     => 'required|string|min:6',
             'url_img_user' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         $filePath = null;
         if ($request->hasFile('url_img_user')) {
@@ -64,9 +65,9 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $request_formatted['name'],
+            'email' => $request_formatted['email'],
+            'password' => Hash::make($request_formatted['password']),
             'url_img_user' => $filePath
         ]);
 
