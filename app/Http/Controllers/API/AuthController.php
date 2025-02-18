@@ -46,8 +46,9 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $request_formatted = current((array)$request->request);
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make(($request_formatted),[
             'name'         => 'required|string|max:255',
             'email'        => 'required|string|email|max:255|unique:users',
             'password'     => 'required|string|min:6',
@@ -64,9 +65,9 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $request_formatted['name'],
+            'email' => $request_formatted['email'],
+            'password' => Hash::make($request_formatted['password']),
             'url_img_user' => $filePath
         ]);
 
