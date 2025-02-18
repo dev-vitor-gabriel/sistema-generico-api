@@ -21,4 +21,6 @@ Route::controller(VendaController::class)->group(function () {
     Route::get('{id_venda}', 'get');
     Route::get('{id_venda}/materiais', 'getMateriais');
     Route::put('{id_venda}', 'update');
+    Route::patch('{id_venda}/finalizar', 'finalizar');
+    Route::patch('{id_venda}/cancelar', 'cancelar');
 });

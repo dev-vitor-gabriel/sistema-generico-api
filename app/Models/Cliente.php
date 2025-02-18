@@ -19,18 +19,18 @@ class Cliente extends Model
         'endereco_cliente_cli',
         'id_centro_custo_cli',
         'is_ativo_cli',
-        'id_empresa',
+        'id_empresa_cli',
     ];
 
-    public static function getAll(Int $id_empresa) {
+    public static function getAll(Int $id_empresa) 
+    {
         $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
         ->where('is_ativo_cli', 1)
-        ->where('tb_cliente.id_empresa', $id_empresa)
+        ->where('id_empresa_cli', $id_empresa)
         ->orderBy('id_cliente_cli', 'desc')
         ->get();
-        return response()
-        ->json($data);
+        return response()->json($data);
     }
 
     public static function getById(Int $id_empresa, Int $id = null) {
@@ -38,7 +38,7 @@ class Cliente extends Model
             $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
             ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
             ->where('id_cliente_cli', $id)
-            ->where('tb_cliente.id_empresa', $id_empresa)
+            ->where('id_empresa_cli', $id_empresa)
             ->where('is_ativo_cli', 1)
             ->orderBy('id_cliente_cli', 'desc')
             ->get();
@@ -46,7 +46,7 @@ class Cliente extends Model
             $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
             ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
             ->where('is_ativo_cli', 1)
-            ->where('tb_cliente.id_empresa', $id_empresa)
+            ->where('id_empresa_cli', $id_empresa)
             ->orderBy('id_cliente_cli', 'desc')
             ->get();
         }
@@ -57,8 +57,7 @@ class Cliente extends Model
     public static function updateReg(Int $id_empresa, Int $id_cliente, $obj) {
         Cliente::
         where('id_cliente_cli', $id_cliente)
-        ->where('id_empresa', $id_empresa)
-
+        ->where('id_empresa_cli', $id_empresa)
         ->update([
             'des_cliente_cli'       => $obj->des_cliente_cli,
             'telefone_cliente_cli'  => $obj->telefone_cliente_cli,
@@ -72,7 +71,7 @@ class Cliente extends Model
     public static function deleteReg($id_empresa, $id_cliente) {
         Cliente::
         where('id_cliente_cli', $id_cliente)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_cli', $id_empresa)
         ->update([
             'is_ativo_cli' => 0
         ]);

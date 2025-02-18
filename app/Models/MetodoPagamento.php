@@ -13,14 +13,14 @@ class MetodoPagamento extends Model
 
     protected $fillable = [
         'desc_metodo_pagamento_tmp',
-        'id_empresa'
+        'id_empresa_tmp'
     ];
 
     public static function getAll(Int $id_empresa)
     {
         $data = MetodoPagamento::select(['*'])
         ->where('is_ativo_tmp', 1)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_tmp', $id_empresa)
         ->orderBy('id_metodo_pagamento_tmp', 'desc')
         ->get();
         return response()->json($data);
@@ -31,13 +31,13 @@ class MetodoPagamento extends Model
             $data = MetodoPagamento::select(['*'])
             ->where('id_metodo_pagamento_tmp', $id)
             ->where('is_ativo_tmp', 1)
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_tmp', $id_empresa)
             ->orderBy('id_metodo_pagamento_tmp', 'desc')->get();
         }else{
             $data = MetodoPagamento::select(['*'])
             ->where('is_ativo_tmp', 1)
             ->orderBy('id_metodo_pagamento_tmp', 'desc')
-            ->where('id_empresa', $id_empresa)
+            ->where('id_empresa_tmp', $id_empresa)
             ->get();
         }
         return response()->json($data);
@@ -47,7 +47,7 @@ class MetodoPagamento extends Model
     {
         MetodoPagamento::
         where('id_metodo_pagamento_tmp', $id_metodo_pagamento)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_tmp', $id_empresa)
             ->update([
                 'desc_metodo_pagamento_tmp' => $obj->desc_metodo_pagamento_tmp
             ]);
@@ -57,7 +57,7 @@ class MetodoPagamento extends Model
     {
         MetodoPagamento::
         where('id_metodo_pagamento_tmp', $id_metodo_pagamento)
-        ->where('id_empresa', $id_empresa)
+        ->where('id_empresa_tmp', $id_empresa)
             ->update([
                 'is_ativo_tmp' => 0
             ]);

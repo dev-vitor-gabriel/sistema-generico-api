@@ -38,11 +38,14 @@ return new class extends Migration
     public function up(): void
     {
         foreach ($this->tables as $schemaTable) {
+            $idColumn = $schemaTable['id'];
+            $suffix = substr($idColumn, strrpos($idColumn, '_') + 1);
+            $empresaColumn = "id_empresa_$suffix";
 
-            if (!Schema::hasColumn($schemaTable['name'], 'id_empresa')) {
-                Schema::table($schemaTable['name'], function (Blueprint $table) use ($schemaTable) {
-                    $table->unsignedBigInteger('id_empresa')->default(1)->after($schemaTable['id']);
-                    $table->foreign('id_empresa')->references('id_empresa_emp')->on('tb_empresa')->onDelete('cascade');
+            if (!Schema::hasColumn($schemaTable['name'], $empresaColumn)) {
+                Schema::table($schemaTable['name'], function (Blueprint $table) use ($empresaColumn, $idColumn) {
+                    $table->unsignedBigInteger($empresaColumn)->default(1)->after($idColumn);
+                    $table->foreign($empresaColumn)->references('id_empresa_emp')->on('tb_empresa')->onDelete('cascade');
                 });
             }
         }
@@ -54,9 +57,13 @@ return new class extends Migration
     public function down(): void
     {
         foreach ($this->tables as $schemaTable) {
-            Schema::table($schemaTable['name'], function (Blueprint $table) use ($schemaTable)  {
-                $table->dropForeign($schemaTable['name'] . '_' . 'id_empresa' . '_foreign');
-                $table->dropColumn('id_empresa');
+            $idColumn = $schemaTable['id'];
+            $suffix = substr($idColumn, strrpos($idColumn, '_') + 1);
+            $empresaColumn = "id_empresa_$suffix";
+
+            Schema::table($schemaTable['name'], function (Blueprint $table) use ($empresaColumn, $schemaTable) {
+                $table->dropForeign($schemaTable['name'] . '_' . $empresaColumn . '_foreign');
+                $table->dropColumn($empresaColumn);
             });
         }
     }
