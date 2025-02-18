@@ -251,5 +251,19 @@ class MenuSeeder extends Seeder
             'path_menu_mnu' => '/gráficos',
             'num_ordem_mnu' => 2,
         ]);
+        DB::table('tb_menu')->insert([
+            'id_father_mnu' => null,
+            'des_menu_mnu' => 'Empresa',
+            'icon_menu_mnu' => 'FilePlus',
+            'path_menu_mnu' => '/empresa',
+            'num_ordem_mnu' => 32+1,
+        ]);
+        DB::table('tb_menu')->insert([
+            'id_father_mnu' => 35,
+            'des_menu_mnu' => 'Empresas',
+            'icon_menu_mnu' => 'FilePlus',
+            'path_menu_mnu' => '/empresas',
+            'num_ordem_mnu' => 1,
+        ]);
     }
 }

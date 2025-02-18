@@ -8,8 +8,14 @@ use Illuminate\Http\Request;
 
 class EstoqueController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
 
     public function create(Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'des_estoque_est'     => 'required|string|max:255',
@@ -18,15 +24,18 @@ class EstoqueController extends Controller
 
         $estoque = Estoque::create([
             'des_estoque_est'            => $request->des_estoque_est,
-            'id_centro_custo_est'        => $request->id_centro_custo_est
+            'id_centro_custo_est'        => $request->id_centro_custo_est,
+            'id_empresa_est'             => $id_empresa,
         ]);
 
         return response()->json($estoque,201);
     }
 
     public function get(Request $request, Int $id_estoque = null) {
+        $id_empresa = $this->getIdEmpresa($request);
+
         if ($id_estoque) {
-            $data = Estoque::getById($id_estoque);
+            $data = Estoque::getById($id_empresa, $id_estoque);
             $data_array = json_decode($data->content());
 
             if (empty($data_array)) {
@@ -38,11 +47,11 @@ class EstoqueController extends Controller
         }
 
         $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        $data = Estoque::paginate($per_page);
-
-        return response()->json($data);
+        return Estoque::getAll($id_empresa, $filter, $per_page, $page_number);
     }
 
     public function showEstoqueComValores()
@@ -101,7 +110,10 @@ class EstoqueController extends Controller
     //     return response()->json($response);
     // }
 
-    public function delete(Int $id_estoque) {
-        Estoque::deleteReg($id_estoque);
+    public function delete(Request $request, Int $id_estoque) {
+        $id_empresa = $this->getIdEmpresa($request);
+
+        Estoque::deleteReg($id_estoque, $id_empresa);
     }
+
 }

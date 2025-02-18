@@ -15,36 +15,57 @@ class Cargo extends Model
 
     protected $fillable = [
         'desc_cargo_tcg',
-        'is_ativo_tcg'
+        'is_ativo_tcg',
+        'id_empresa_tcg'
     ];
 
-    public static function getAll() {
-        $data = Cargo::select(['*'])->where('is_ativo_tcg', 1)->orderBy('id_cargo_tcg', 'desc')->get();
+    public static function getAll($id_empresa) {
+        $data = Cargo::
+            select(['*'])
+            ->where('is_ativo_tcg', 1)
+            ->where('id_empresa_tcg', $id_empresa)
+            ->orderBy('id_cargo_tcg', 'desc')
+            ->get();
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null) {
+    public static function getById(Int $id_empresa, Int $id = null) {
         if($id) {
-            $data = Cargo::select(['*'])->where('id_cargo_tcg', $id)->where('is_ativo_tcg', 1)->orderBy('id_cargo_tcg', 'desc')->get();
+            $data = Cargo::select(['*'])
+            ->where('id_cargo_tcg', $id)
+            ->where('is_ativo_tcg', 1)
+            ->where('id_empresa_tcg', $id_empresa)
+            ->orderBy('id_cargo_tcg', 'desc')
+            ->get();
         }else{
-            $data = Cargo::select(['*'])->where('is_ativo_tcg', 1)->orderBy('id_cargo_tcg', 'desc')->get();
+            $data = Cargo::select(['*'])
+            ->where('is_ativo_tcg', 1)
+            ->where('id_empresa_tcg', $id_empresa)
+            ->orderBy('id_cargo_tcg', 'desc')
+            ->get();
         }
-        return response()->json($data);
+        return response()
+        ->json($data);
     }
 
-    public static function updateReg(Int $id_cargo, $obj) {
-        Cargo::where('id_cargo_tcg', $id_cargo)
+    public static function updateReg(Int $id_empresa, Int $id_cargo, $obj) {
+        Cargo::
+        where('id_cargo_tcg', $id_cargo)
+        ->where('id_empresa_tcg', $id_empresa)
         ->update([
             'desc_cargo_tcg' => $obj->desc_cargo_tcg
         ]);
     }
 
-    public static function deleteReg($id_cargo) {
+    public static function deleteReg($id_empresa, $id_cargo) {
         // Cargo::where('id_cargo_tcg', $id_cargo)
         // ->update([
         //     'is_ativo_tcg' => 0
         // ]);
-        $delete = Cargo::where('id_cargo_tcg', $id_cargo)->first();
+        $delete = Cargo::
+        where('id_cargo_tcg', $id_cargo)
+        ->where('id_empresa_tcg', $id_empresa)
+        ->first();
         $delete->delete();
     }
 

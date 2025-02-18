@@ -17,9 +17,12 @@ class Material extends Model
         'vlr_material_mte',
         'id_centro_custo_mte',
         'is_ativo_mte'
+        'id_empresa_mte',
+        'is_ativo_mte',
+        'id_empresa_mte',
     ];
 
-    public static function getAll()
+    public static function getAll($id_empresa)
     {
         $data = Material::select([
             'tb_material.id_material_mte',
@@ -34,12 +37,13 @@ class Material extends Model
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
             ->leftjoin('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
             ->where('is_ativo_mte', 1)
+            ->where('tb_material.id_empresa_mte', $id_empresa)
             ->orderBy('id_material_mte', 'desc')
             ->get();
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null)
+    public static function getById(Int $id_empresa, Int $id = null)
     {
         if ($id) {
             $data = Material::select([
@@ -56,6 +60,7 @@ class Material extends Model
                 ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
                 ->where('id_material_mte', $id)
                 ->where('is_ativo_mte', 1)
+                ->where('tb_material.id_empresa_mte', $id_empresa)
                 ->get();
             return response()->json($data);
         } else {
@@ -72,15 +77,17 @@ class Material extends Model
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
                 ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
                 ->where('is_ativo_mte', 1)
+                ->where('tb_material.id_empresa_mte', $id_empresa)
                 ->orderBy('id_material_mte', 'desc')
                 ->get();
             return response()->json($data);
         }
     }
 
-    public static function updateReg(Int $id_material, $obj)
+    public static function updateReg(Int $id_empresa, Int $id_material, $obj)
     {
         Material::where('id_material_mte', $id_material)
+            ->where('id_empresa_mte', $id_empresa)
             ->update([
                 'des_material_mte'      => $obj->des_material_mte,
                 'id_unidade_mte'        => $obj->id_unidade_mte,
@@ -89,9 +96,10 @@ class Material extends Model
             ]);
     }
 
-    public static function deleteReg($id_material)
+    public static function deleteReg($id_empresa, $id_material)
     {
         Material::where('id_material_mte', $id_material)
+            ->where('id_empresa_mte', $id_empresa)
             ->update([
                 'is_ativo_mte' => 0
             ]);

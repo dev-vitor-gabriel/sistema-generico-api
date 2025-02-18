@@ -7,11 +7,20 @@ use App\Models\Estoque;
 use App\Models\MaterialMovimentacaoItem;
 
 use App\Http\Controllers\Controller;
+use App\Models\EstoqueItem;
 use Illuminate\Http\Request;
 
 class MaterialMovimentacaoController extends Controller
 {
+
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     public function create(Request $request, $tipo_movimentacao) {
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'id_estoque'             => 'required|int',
@@ -24,6 +33,7 @@ class MaterialMovimentacaoController extends Controller
             'id_estoque_saida_mov'   => $tipo_movimentacao == 'saida'   ? $request->id_estoque : null,
             'id_centro_custo_mov'    => $request->id_centro_custo_mov,
             'is_ativo_mov'           => 1,
+            'id_empresa_mov'         => $id_empresa,
         ]);
 
         if($tipo_movimentacao == 'entrada'){
@@ -41,6 +51,22 @@ class MaterialMovimentacaoController extends Controller
                     'vlr_material_mit'                      => $value,
                     'tipo_movimentacao_mit'                 => 'entrada'
                 ]);
+
+                $estoque_item = EstoqueItem::get($id_empresa, $materialMov->id_estoque_entrada_mov, $material['id_material_mte'], $request->id_centro_custo_mov);
+
+                if ($estoque_item)
+                {
+                    $estoque_item->qtd_estoque_item_eti += $material['qtd_material_mit'];
+                    EstoqueItem::updateReg($id_empresa, $estoque_item->id_estoque_item_eti, $estoque_item);
+                } else {
+                    $estoque_item = EstoqueItem::create([
+                        'id_material_eti' => $material['id_material_mte'],
+                        'id_empresa_eti' => $id_empresa,
+                        'id_estoque_eti' => $materialMov->id_estoque_entrada_mov,
+                        'id_centro_custo_eti' => $request->id_centro_custo_mov,
+                        'qtd_estoque_item_eti' =>  $material['qtd_material_mit'],
+                    ]);
+                }
             }
 
             return response()->json($materialMov,201);
@@ -88,15 +114,20 @@ class MaterialMovimentacaoController extends Controller
                     'tipo_movimentacao_mit'     =>  'saida',
                 ]);
 
-                return response()->json($materialMov,201);
+                $estoque_item = EstoqueItem::get($id_empresa, $materialMov->id_estoque_saida_mov, $material['id_material_mte'], $request->id_centro_custo_mov);
+                $estoque_item->qtd_estoque_item_eti -= $quantidade_solicitada;
+                EstoqueItem::updateReg($id_empresa, $estoque_item->id_estoque_item_eti, $estoque_item);
             }
+            return response()->json($materialMov,201);
         }
 
     }
 
-    public function get(Int $id_material = null)
+    public function get(Request $request, Int $id_material = null)
     {
-        $data = MaterialMovimentacao::get($id_material);
+        $id_empresa = $this->getIdEmpresa($request);
+
+        $data = MaterialMovimentacao::get($id_empresa, $id_material);
 
         $input_array = $data->toArray();
 
@@ -106,16 +137,19 @@ class MaterialMovimentacaoController extends Controller
     }
 
     public function update(Int $id_movimentacao, Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'txt_movimentacao_mov' => 'required|string'
         ]);
-        MaterialMovimentacao::updateReg($id_movimentacao, $request);
+        MaterialMovimentacao::updateReg($id_empresa, $id_movimentacao, $request);
     }
 
     // delete (inactivate)
-    public function delete(Int $id_movimentacao) {
-        MaterialMovimentacao::deleteReg($id_movimentacao);
+    public function delete(Request $request, Int $id_movimentacao) {
+        $id_empresa = $this->getIdEmpresa($request);
+
+        MaterialMovimentacao::deleteReg($id_empresa, $id_movimentacao);
     }
 
     private function groupMovimentacaoMaterialByMovimentacaoMaterialItem($input_array){
