@@ -15,6 +15,9 @@ class Material extends Model
         'id_unidade_mte',
         'des_material_mte',
         'vlr_material_mte',
+        'id_centro_custo_mte',
+        'is_ativo_mte'
+        'id_empresa_mte',
         'is_ativo_mte',
         'id_empresa_mte',
     ];
@@ -28,9 +31,11 @@ class Material extends Model
             'tb_unidade.des_reduz_unidade_und',
             'tb_material.is_ativo_mte',
             'tb_material.created_at',
-            'tb_material.updated_at'
+            'tb_material.updated_at',
+            'tb_centro_custo.des_centro_custo_cco'
         ])
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+            ->leftjoin('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
             ->where('is_ativo_mte', 1)
             ->where('tb_material.id_empresa_mte', $id_empresa)
             ->orderBy('id_material_mte', 'desc')
@@ -48,9 +53,11 @@ class Material extends Model
                 'tb_unidade.des_reduz_unidade_und',
                 'tb_material.is_ativo_mte',
                 'tb_material.created_at',
-                'tb_material.updated_at'
+                'tb_material.updated_at',
+                'tb_centro_custo.des_centro_custo_cco'
             ])
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+                ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
                 ->where('id_material_mte', $id)
                 ->where('is_ativo_mte', 1)
                 ->where('tb_material.id_empresa_mte', $id_empresa)
@@ -64,9 +71,11 @@ class Material extends Model
                 'tb_unidade.des_reduz_unidade_und',
                 'tb_material.is_ativo_mte',
                 'tb_material.created_at',
-                'tb_material.updated_at'
+                'tb_material.updated_at',
+                'tb_centro_custo.des_centro_custo_cco'
             ])
                 ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+                ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
                 ->where('is_ativo_mte', 1)
                 ->where('tb_material.id_empresa_mte', $id_empresa)
                 ->orderBy('id_material_mte', 'desc')
@@ -80,7 +89,10 @@ class Material extends Model
         Material::where('id_material_mte', $id_material)
             ->where('id_empresa_mte', $id_empresa)
             ->update([
-                'des_material_mte' => $obj->des_material_mte
+                'des_material_mte'      => $obj->des_material_mte,
+                'id_unidade_mte'        => $obj->id_unidade_mte,
+                'vlr_material_mte'      => $obj->vlr_material_mte,
+                'id_centro_custo_mte'   => $obj->id_centro_custo_mte,
             ]);
     }
 
