@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 class ValidateString
 {
-    public static function removeCharacterSpecial($string)
+    public static function removeCharacterSpecial(string $string)
     {
         
          $string = preg_replace('/[^\p{L}\p{N}\s]/u', '', $string); 

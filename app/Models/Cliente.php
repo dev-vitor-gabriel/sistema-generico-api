@@ -17,30 +17,34 @@ class Cliente extends Model
         'email_cliente_cli',
         'documento_cliente_cli',
         'endereco_cliente_cli',
+        'id_centro_custo_cli',
         'is_ativo_cli',
         'id_empresa_cli',
     ];
 
-    public static function getAll(Int $id_empresa) {
-        $data = Cliente::select(['*'])
+    public static function getAll(Int $id_empresa) 
+    {
+        $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
+        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
         ->where('is_ativo_cli', 1)
         ->where('id_empresa_cli', $id_empresa)
         ->orderBy('id_cliente_cli', 'desc')
         ->get();
-        return response()
-        ->json($data);
+        return response()->json($data);
     }
 
     public static function getById(Int $id_empresa, Int $id = null) {
         if($id) {
-            $data = Cliente::select(['*'])
+            $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
+            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
             ->where('id_cliente_cli', $id)
             ->where('id_empresa_cli', $id_empresa)
             ->where('is_ativo_cli', 1)
             ->orderBy('id_cliente_cli', 'desc')
             ->get();
         }else{
-            $data = Cliente::select(['*'])
+            $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
+            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
             ->where('is_ativo_cli', 1)
             ->where('id_empresa_cli', $id_empresa)
             ->orderBy('id_cliente_cli', 'desc')
@@ -59,7 +63,8 @@ class Cliente extends Model
             'telefone_cliente_cli'  => $obj->telefone_cliente_cli,
             'email_cliente_cli'     => $obj->email_cliente_cli,
             'documento_cliente_cli' => $obj->documento_cliente_cli,
-            'endereco_cliente_cli'  => $obj->endereco_cliente_cli
+            'endereco_cliente_cli'  => $obj->endereco_cliente_cli,
+            'id_centro_custo_cli'   => $obj->id_centro_custo_cli
         ]);
     }
 
