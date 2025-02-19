@@ -18,8 +18,6 @@ class Material extends Model
         'id_centro_custo_mte',
         'is_ativo_mte',
         'id_empresa_mte',
-        'is_ativo_mte',
-        'id_empresa_mte',
     ];
 
     public static function getAll($id_empresa)
