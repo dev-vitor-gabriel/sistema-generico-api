@@ -17,10 +17,10 @@ class EmpresaSeeder extends Seeder
             'des_empresa_emp' => 'Empresa Default',
             'razao_social_empresa_emp' => 'Razão Social Default',
             'cnpj_empresa_emp' => '00.000.000/0000-00',
-            'des_endereco_emp' => '',
-            'des_cidade_emp' => '',
+            'des_endereco_emp' => 'Rua Tal',
+            'des_cidade_emp' => 'Fortaleza',
             'des_cep_emp' => '60789941',
-            'des_tel_emp' => '',
+            'des_tel_emp' => '911112222',
             'created_at' => now(),
             'updated_at' => now(),
         ]);

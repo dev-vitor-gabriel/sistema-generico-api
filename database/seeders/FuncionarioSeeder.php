@@ -18,21 +18,30 @@ class FuncionarioSeeder extends Seeder
             'desc_funcionario_tfu'=>'João',
             'telefone_funcionario_tfu'=>'85900000000',
             'documento_funcionario_tfu'=>'200000',
-            'endereco_funcionario_tfu'=>'Rua XYZ'
+            'endereco_funcionario_tfu'=>'Rua XYZ',
+            'created_at' => now(),
+            'updated_at' => now(),
+            'id_centro_custo_tfu'  => 1,
         ]);
         DB::table('tb_funcionarios')->insert([
             'id_funcionario_cargo_tfu'=>1,
             'desc_funcionario_tfu'=>'Pedro',
             'telefone_funcionario_tfu'=>'85900000000',
             'documento_funcionario_tfu'=>'200000',
-            'endereco_funcionario_tfu'=>'Rua XYZ'
+            'endereco_funcionario_tfu'=>'Rua XYZ',
+            'created_at' => now(),
+            'updated_at' => now(),
+            'id_centro_custo_tfu'  => 2,
         ]);
         DB::table('tb_funcionarios')->insert([
             'id_funcionario_cargo_tfu'=>3,
             'desc_funcionario_tfu'=>'Marcos',
             'telefone_funcionario_tfu'=>'85900000000',
             'documento_funcionario_tfu'=>'200000',
-            'endereco_funcionario_tfu'=>'Rua XYZ'
+            'endereco_funcionario_tfu'=>'Rua XYZ',
+            'created_at' => now(),
+            'updated_at' => now(),
+            'id_centro_custo_tfu'  => 1,
         ]);
     }
 }

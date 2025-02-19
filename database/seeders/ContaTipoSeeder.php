@@ -15,9 +15,13 @@ class ContaTipoSeeder extends Seeder
     {
         DB::table('tb_conta_tipo')->insert([
             'des_conta_tipo_ctp'  => 'entrada',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
         DB::table('tb_conta_tipo')->insert([
             'des_conta_tipo_ctp'  => 'saida',
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 }
