@@ -17,14 +17,18 @@ class CentroCusto extends Model
         'id_empresa_cco',
     ];
 
-    public static function getAll(Int $id_empresa) {
-        $data = CentroCusto::select(['*'])
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) {
+        $paginator = CentroCusto::select(['*'])
         ->where('is_ativo_cco', 1)
+        ->where('des_centro_custo_cco', 'like', '%'.$filter.'%')
         ->where('id_empresa_cco', $id_empresa)
         ->orderBy('id_centro_custo_cco', 'desc')
-        ->get();
-        return response()
-        ->json($data);
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getById(Int $id_empresa, Int $id = null) {
