@@ -16,14 +16,19 @@ class MetodoPagamento extends Model
         'id_empresa_tmp'
     ];
 
-    public static function getAll(Int $id_empresa)
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1)
     {
-        $data = MetodoPagamento::select(['*'])
+        $paginator = MetodoPagamento::select(['*'])
         ->where('is_ativo_tmp', 1)
+        ->where('desc_metodo_pagamento_tmp', 'like', '%'.$filter.'%')
         ->where('id_empresa_tmp', $id_empresa)
-        ->orderBy('id_metodo_pagamento_tmp', 'desc')
-        ->get();
-        return response()->json($data);
+        ->orderBy('id_fornecedor_tmp', 'desc')
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getById(Int $id_empresa, Int $id = null) {

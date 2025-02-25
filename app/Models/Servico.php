@@ -49,12 +49,12 @@ class Servico extends Model
         ->join('tb_funcionarios', 'id_funcionario_servico_ser', '=', 'id_funcionario_tfu')
         ->join('tb_cliente', 'id_cliente_ser', '=', 'id_cliente_cli')
         ->join('tb_situacao', 'id_situacao_ser', '=', 'id_situacao_tsi')
-        ->where('tb_servico.id_empresa_ser', $id_empresa)
         ->leftJoin('rel_servico_tipo_servico', 'id_servico_ser', '=', 'id_servico_rst')
         ->leftJoin('tb_servico_tipo', 'id_tipo_servico_rst', '=', 'id_servico_tipo_stp')
         ->leftJoin('rel_servico_material', 'id_servico_ser', '=', 'id_servico_rsm')
         ->leftJoin('tb_material', 'id_material_rsm', '=', 'id_material_mte')
-        ->leftJoin('tb_unidade', 'id_unidade_mte', '=', 'id_unidade_und');
+        ->leftJoin('tb_unidade', 'id_unidade_mte', '=', 'id_unidade_und')
+        ->where('tb_servico.id_empresa_ser', $id_empresa);
 
         if($id_servico){
             $data = $data->where('id_servico_ser', $id_servico);

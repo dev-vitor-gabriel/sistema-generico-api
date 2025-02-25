@@ -17,7 +17,6 @@ class Material extends Model
         'vlr_material_mte',
         'id_centro_custo_mte',
         'is_ativo_mte',
-        'is_ativo_mte',
         'id_empresa_mte',
     ];
 

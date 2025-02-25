@@ -42,8 +42,12 @@ class InstituicaoPagamentoController extends Controller
             }
             return $data;
         }
-        $data = InstituicaoPagamento::getAll($id_empresa);
-        return $data;
+        $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
+
+        return InstituicaoPagamento::getAll($id_empresa, $filter, $per_page, $page_number);
     }
 
     public function update(Int $id_instituicao_pagamento, Request $request) {

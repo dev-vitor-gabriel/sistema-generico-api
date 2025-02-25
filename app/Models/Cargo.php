@@ -19,14 +19,19 @@ class Cargo extends Model
         'id_empresa_tcg'
     ];
 
-    public static function getAll($id_empresa) {
-        $data = Cargo::
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) {
+        $paginator = Cargo::
             select(['*'])
             ->where('is_ativo_tcg', 1)
+            ->where('desc_cargo_tcg', 'like', '%'.$filter.'%')
             ->where('id_empresa_tcg', $id_empresa)
             ->orderBy('id_cargo_tcg', 'desc')
-            ->get();
-        return response()->json($data);
+            ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getById(Int $id_empresa, Int $id = null) {

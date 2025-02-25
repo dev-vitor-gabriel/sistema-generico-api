@@ -22,15 +22,20 @@ class Cliente extends Model
         'id_empresa_cli',
     ];
 
-    public static function getAll(Int $id_empresa) 
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) 
     {
-        $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
+        $paginator = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
         ->where('is_ativo_cli', 1)
+        ->where('des_cliente_cli', 'like', '%'.$filter.'%')
         ->where('id_empresa_cli', $id_empresa)
         ->orderBy('id_cliente_cli', 'desc')
-        ->get();
-        return response()->json($data);
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getById(Int $id_empresa, Int $id = null) {

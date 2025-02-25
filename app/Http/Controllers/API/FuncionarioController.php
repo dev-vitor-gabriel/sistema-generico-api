@@ -61,12 +61,23 @@ class FuncionarioController extends Controller
             }
             return $data;
         }
-        $data = Funcionario::getAll($id_empresa);
 
-        $input_array = $data->toArray();
+        $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        $data = $this->groupByTypeService($input_array);
-        return $data;
+        $data = Funcionario::getAll($id_empresa, $filter, $per_page, $page_number);
+
+        $data = json_decode($data->content(), true); 
+
+        $itemsArray = $data['items']; 
+        $itemsGrouped = $this->groupByTypeService($itemsArray);
+
+        // Mantém os metadados de paginação e substitui os itens processados
+        $data['items'] = $itemsGrouped;
+
+        return response()->json($data);
     }
 
     public function update(Int $id_funcionario, Request $request) {

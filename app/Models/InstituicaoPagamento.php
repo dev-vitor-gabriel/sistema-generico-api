@@ -17,15 +17,20 @@ class InstituicaoPagamento extends Model
         'id_empresa_tip'
     ];
 
-    public static function getAll($id_empresa)
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1)
     {
-        $data = InstituicaoPagamento::
+        $paginator = InstituicaoPagamento::
         select(['*'])
         ->where('is_ativo_tip', 1)
+        ->where('desc_instituicao_pagamento_tip', 'like', '%'.$filter.'%')
         ->where('id_empresa_tip', $id_empresa)
         ->orderBy('id_instituicao_pagamento_tip', 'desc')
-        ->get();
-        return response()->json($data);
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getById(Int $id_empresa, Int $id = null) {

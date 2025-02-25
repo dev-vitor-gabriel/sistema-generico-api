@@ -19,14 +19,20 @@ class Fornecedor extends Model
         'id_empresa_frn'
     ];
 
-    public static function getAll(Int $id_empresa){
-        $data = Fornecedor::
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1)
+    {
+        $paginator = Fornecedor::
         select(['*'])
         ->where('is_ativo_frn', 1)
-        ->orderBy('id_fornecedor_frn', 'desc')
+        ->where('desc_fornecedor_frn', 'like', '%'.$filter.'%')
         ->where('id_empresa_frn', $id_empresa)
-        ->get();
-        return response()->json($data);
+        ->orderBy('id_fornecedor_frn', 'desc')
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getById(Int $id_empresa, Int $id = null){
@@ -38,11 +44,7 @@ class Fornecedor extends Model
             ->where('id_empresa_frn', $id_empresa)
             ->get();
             return response()->json($data);
-       }else{
-            $data = Fornecedor::getAll($id_empresa);
-       }
-
-       return $data;
+        }
     }
 
     public static function updateReg(Int $id_fornecedor, $id_empresa, $obj) {
