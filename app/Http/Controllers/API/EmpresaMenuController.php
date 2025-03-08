@@ -27,23 +27,30 @@ class EmpresaMenuController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $existingRecords = RelEmpresaMenu::where('id_empresa_emn', $request->id_empresa_emn)
-        ->whereIn('id_menu_emn', $request->id_menu_emn)
-        ->pluck('id_menu_emn')
-        ->toArray();
+        $empresaId = $request->id_empresa_emn;
+        $menusEnviados = $request->id_menu_emn;
 
-        $newRecords = array_diff($request->id_menu_emn, $existingRecords);
+        $existingRecords = RelEmpresaMenu::where('id_empresa_emn', $empresaId)
+            ->pluck('id_menu_emn')
+            ->toArray();
 
+        $menusParaRemover = array_diff($existingRecords, $menusEnviados);
+        RelEmpresaMenu::where('id_empresa_emn', $empresaId)
+            ->whereIn('id_menu_emn', $menusParaRemover)
+            ->delete();
+
+        $menusParaAdicionar = array_diff($menusEnviados, $existingRecords);
         $rel_empresa_menu = [];
-        foreach ($newRecords as $menu_id) {
+        foreach ($menusParaAdicionar as $menu_id) {
             $rel_empresa_menu[] = RelEmpresaMenu::create([
                 'id_menu_emn'    => $menu_id,
-                'id_empresa_emn' => $request->id_empresa_emn
+                'id_empresa_emn' => $empresaId
             ]);
         }
 
         return response()->json($rel_empresa_menu, 201);
     }
+
 
     public function getMenuByIdEmpresa(Request $request)
     {

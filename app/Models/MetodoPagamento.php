@@ -22,7 +22,7 @@ class MetodoPagamento extends Model
         ->where('is_ativo_tmp', 1)
         ->where('desc_metodo_pagamento_tmp', 'like', '%'.$filter.'%')
         ->where('id_empresa_tmp', $id_empresa)
-        ->orderBy('id_fornecedor_tmp', 'desc')
+        ->orderBy('id_metodo_pagamento_tmp', 'desc')
         ->paginate($perPage, ['*'], 'page', $pageNumber);
 
         return response()->json([
