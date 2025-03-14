@@ -13,6 +13,7 @@ class CargoController extends Controller
 
         return $id_empresa;
     }
+
     public function create(Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -28,6 +29,17 @@ class CargoController extends Controller
         return response()->json($cargo,201);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/cargos",
+     *     summary="Lista todos os cargos",
+     *     tags={"Cargos"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de cargos retornada com sucesso",
+     *     )
+     * )
+     */
     public function get(Request $request, Int $id_cargo = null) {
         $id_empresa = $this->getIdEmpresa($request);
 

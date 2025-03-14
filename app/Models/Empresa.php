@@ -25,7 +25,7 @@ class Empresa extends Model
         'img_empresa_emp'
     ];
 
-    public static function getAll(Int $perPage = 10, Int $pageNumber = 1, $filter) {
+    public static function getAll(Int $filter, $perPage = 10, Int $pageNumber = 1,) {
         $paginator = Empresa::select([
             'id_empresa_emp',
             'des_empresa_emp',

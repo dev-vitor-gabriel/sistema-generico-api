@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
-class SetEmpresaHeader
+class AddIdEmpresaToRequest
 {
     /**
      * Handle an incoming request.

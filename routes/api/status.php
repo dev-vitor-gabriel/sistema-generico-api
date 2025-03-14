@@ -2,8 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\VendaController;
-use App\Http\Controllers\StatusController;
+use App\Http\Controllers\API\StatusController;
 
 /*
 |--------------------------------------------------------------------------

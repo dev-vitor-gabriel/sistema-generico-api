@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+/**
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT"
+ * )
+ */
 class AuthController extends Controller
 {
     public function __construct()
@@ -17,6 +25,36 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/login",
+     *     summary="Login do usuário",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"email", "password"},
+     *             @OA\Property(property="email", type="string", example="user@example.com"),
+     *             @OA\Property(property="password", type="string", example="password123")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuário logado com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
+     *             @OA\Property(property="authorization", type="object", @OA\Property(property="token", type="string"), @OA\Property(property="type", type="string"))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Não autorizado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Não autorizado")
+     *         )
+     *     )
+     * )
+     */
     public function login(Request $request)
     {
         $request->validate([
@@ -44,6 +82,52 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/register",
+     *     summary="Registrar um novo usuário",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 type="object",
+     *                 required={"name", "email", "password"},
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string",
+     *                     description="Nome do usuário"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string",
+     *                     description="Email do usuário"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string",
+     *                     description="Senha do usuário"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="avatar",
+     *                     type="string",
+     *                     format="binary",
+     *                     description="Avatar do usuário (opcional)"
+     *                 ),
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuário registrado com sucesso",
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro na validação dos dados",
+     *     )
+     * )
+     */
     public function register(Request $request)
     {
         $request_formatted = current((array)$request->request);
@@ -77,8 +161,20 @@ class AuthController extends Controller
         ], 200, [], JSON_UNESCAPED_UNICODE);
     }
 
-
-
+    /**
+     * @OA\Post(
+     *     path="/auth/logout",
+     *     summary="Logout do usuário",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuário deslogado com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Desconectado com sucesso")
+     *         )
+     *     )
+     * )
+     */
     public function logout()
     {
         Auth::logout();
@@ -87,6 +183,21 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/auth/refresh",
+     *     summary="Atualiza o token de autorização",
+     *     tags={"Auth"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Token atualizado com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="user", type="object", ref="#/components/schemas/User"),
+     *             @OA\Property(property="authorization", type="object", @OA\Property(property="token", type="string"), @OA\Property(property="type", type="string"))
+     *         )
+     *     )
+     * )
+     */
     public function refresh()
     {
         return response()->json([
@@ -98,15 +209,72 @@ class AuthController extends Controller
         ]);
     }
 
-    public function get(Int $id_user = null) {
-        if($id_user){
-            $data = User::getById(($id_user));
-            return $data;
+    /**
+     * @OA\Get(
+     *     path="/user/{id_user}",
+     *     summary="Obtém os dados de um usuário",
+     *     tags={"Auth"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id_user",
+     *         in="path",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Dados do usuário",
+     *         @OA\JsonContent(ref="#/components/schemas/User")
+     *     )
+     * )
+     */
+    public function get($id_usuario = null) {
+        if ($id_usuario) {
+            $id_usuario = (int) $id_usuario;
+            $data = User::getById($id_usuario);
+            return response()->json($data->original);
         }
+
         $data = User::getAll();
-        return $data;
+        return response()->json($data->original);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/user/{id}",
+     *     summary="Atualiza os dados de um usuário",
+     *     tags={"Auth"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "email", "password"},
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="email", type="string"),
+     *             @OA\Property(property="password", type="string"),
+     *             @OA\Property(property="url_img_user", type="string", format="uri")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuário atualizado com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Usuário atualizado com sucesso")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validação falhou",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     */
     public function update(Int $id, Request $request) {
         $request->validate([
             'name'         => 'required|string|max:255',
@@ -117,6 +285,26 @@ class AuthController extends Controller
         User::updateReg($id, $request);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/user/{id}",
+     *     summary="Deleta um usuário",
+     *     tags={"Auth"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Usuário deletado com sucesso",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Usuário deletado com sucesso")
+     *         )
+     *     )
+     * )
+     */
     public function delete(Int $id) {
         User::deleteReg($id);
     }

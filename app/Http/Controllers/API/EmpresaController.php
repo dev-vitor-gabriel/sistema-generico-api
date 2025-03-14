@@ -86,7 +86,7 @@ class EmpresaController extends Controller
         $filter = $request->query('filter', '');
         $page_number = $request->query('page_number', 1);
 
-        return Empresa::getAll($per_page, $page_number, $filter);
+        return Empresa::getAll($filter,$per_page, $page_number);
     }
 
     /**
