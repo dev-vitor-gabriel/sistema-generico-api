@@ -9,13 +9,6 @@ use App\Models\Empresa;
 
 class EmpresaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * @OA\Post(

@@ -37,40 +37,55 @@ class EmpresaMenuController extends Controller
      * )
      */
     public function create(Request $request) {
-        $validator = Validator::make($request->all(), [
-            'id_menu_emn' => 'required|array',
-            'id_menu_emn.*' => 'required|int|exists:tb_menu,id_menu_mnu',
-            'id_empresa_emn' => 'required|int|exists:tb_empresa,id_empresa_emp'
-        ]);
+        foreach ($request->all() as $empresa) {
+            $empresaId = $empresa['id_empresa_emn'];
+            $menusEnviados = $empresa['id_menu_emn'];
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            $existingRecords = RelEmpresaMenu::where('id_empresa_emn', $empresaId)
+                ->pluck('id_menu_emn')
+                ->toArray();
+
+            $menusParaRemover = array_diff($existingRecords, $menusEnviados);
+            RelEmpresaMenu::where('id_empresa_emn', $empresaId)
+                ->whereIn('id_menu_emn', $menusParaRemover)
+                ->delete();
+
+            $menusParaAdicionar = array_diff($menusEnviados, $existingRecords);
+            $rel_empresa_menu = [];
+            foreach ($menusParaAdicionar as $menu_id) {
+                $rel_empresa_menu[] = RelEmpresaMenu::create([
+                    'id_menu_emn'    => $menu_id,
+                    'id_empresa_emn' => $empresaId
+                ]);
+            }
         }
 
-        $empresaId = $request->id_empresa_emn;
-        $menusEnviados = $request->id_menu_emn;
-
-        $existingRecords = RelEmpresaMenu::where('id_empresa_emn', $empresaId)
-            ->pluck('id_menu_emn')
-            ->toArray();
-
-        $menusParaRemover = array_diff($existingRecords, $menusEnviados);
-        RelEmpresaMenu::where('id_empresa_emn', $empresaId)
-            ->whereIn('id_menu_emn', $menusParaRemover)
-            ->delete();
-
-        $menusParaAdicionar = array_diff($menusEnviados, $existingRecords);
-        $rel_empresa_menu = [];
-        foreach ($menusParaAdicionar as $menu_id) {
-            $rel_empresa_menu[] = RelEmpresaMenu::create([
-                'id_menu_emn'    => $menu_id,
-                'id_empresa_emn' => $empresaId
-            ]);
-        }
-
-        return response()->json($rel_empresa_menu, 201);
+        return response()->json([], 201);
     }
 
+
+    /**
+     * @OA\Get(
+     *     path="/empresaMenu",
+     *     summary="Obtém os menus associados a empresa logada",
+     *     tags={"EmpresaMenu"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Menus encontrados para a empresa",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/EmpresaMenu")
+     *         )
+     *     )
+     * )
+     */
+    public function getMenuEmpresa(Request $request)
+    {
+        $id_empresa = $this->getIdEmpresa($request);
+        $data = RelEmpresaMenu::getMenuByIdEmpresa($id_empresa);
+
+        return response()->json($data, 200);
+    }
 
     /**
      * @OA\Get(
@@ -84,22 +99,13 @@ class EmpresaMenuController extends Controller
      *             type="array",
      *             @OA\Items(ref="#/components/schemas/EmpresaMenu")
      *         )
-     *     ),
-     *     @OA\Response(
-     *         response=400,
-     *         description="Empresa não encontrada"
      *     )
      * )
      */
     public function getMenuByIdEmpresa(Request $request)
     {
-        $id_empresa = $this->getIdEmpresa($request);
-
+        $id_empresa = $request->id_empresa;
         $data = RelEmpresaMenu::getMenuByIdEmpresa($id_empresa);
-
-        if ($data->isEmpty()) {
-            return response()->json(['error' => 'Empresa não encontrada ou sem menus'], 400);
-        }
 
         return response()->json($data, 200);
     }

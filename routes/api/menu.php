@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\API\EmpresaMenuController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\MenuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(EmpresaMenuController::class)->group(function () {
-    Route::post('', 'create');
-    Route::get('', 'getMenuEmpresa');
-    Route::get('/{id_empresa}', 'getMenuByIdEmpresa');
+Route::controller(MenuController::class)->group(function () {
+    Route::get('', 'getAll');
 });

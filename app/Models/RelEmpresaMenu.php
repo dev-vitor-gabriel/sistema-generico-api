@@ -20,14 +20,34 @@ class RelEmpresaMenu extends Model
         $menus = RelEmpresaMenu::where('id_empresa_emn', $id_empresa)
         ->join('tb_menu as tm', 'rel_empresa_menu.id_menu_emn', '=', 'tm.id_menu_mnu')
         ->select([
-            'tm.des_menu_mnu',
-            'tm.icon_menu_mnu',
-            'tm.id_father_mnu',
-            'tm.id_menu_mnu',
-            'tm.path_menu_mnu'
+           'id_menu_mnu', 'id_father_mnu', 'des_menu_mnu', 'icon_menu_mnu', 'path_menu_mnu'
         ])
+        ->orderby('num_ordem_mnu', 'DESC')
         ->get();
 
-        return $menus;
+        $arr = $menus->toArray();
+        $map = array_column($arr, null, 'id_menu_mnu');
+
+        foreach ($arr as &$item) {
+            if ($item['id_father_mnu'] !== null) {
+                $map[$item['id_father_mnu']]['children'][] = $map[$item['id_menu_mnu']];
+                unset($map[$item['id_menu_mnu']]);
+            }
+        }
+        $map = array_reverse($map);
+        $map = RelEmpresaMenu::revertMenuChildren($map);
+        return $map;
+    }
+
+    private static function revertMenuChildren($arr)
+    {
+        foreach ($arr as &$item) {
+            if (isset($item['children'])) {
+                $item['children'] = array_reverse($item['children']);
+                $item['children'] = RelEmpresaMenu::revertMenuChildren($item['children']);
+            }
+        }
+
+        return $arr;
     }
 }
