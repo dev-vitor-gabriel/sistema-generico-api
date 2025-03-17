@@ -14,6 +14,25 @@ class CargoController extends Controller
         return $id_empresa;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/cargo",
+     *     summary="Cria um novo cargo",
+     *     tags={"Cargo"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"desc_cargo_tcg"},
+     *             @OA\Property(property="desc_cargo_tcg", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Cargo criado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/Cargo")
+     *     )
+     * )
+     */
     public function create(Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -31,16 +50,38 @@ class CargoController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/cargos",
+     *     path="/cargo",
      *     summary="Lista todos os cargos",
-     *     tags={"Cargos"},
+     *     tags={"Cargo"},
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Quantidade de itens por página",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=10)
+     *     ),
+     *     @OA\Parameter(
+     *         name="filter",
+     *         in="query",
+     *         description="Filtro para buscar cargos",
+     *         required=false,
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="page_number",
+     *         in="query",
+     *         description="Número da página",
+     *         required=false,
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Lista de cargos retornada com sucesso",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Cargo"))
      *     )
      * )
      */
-    public function get(Request $request, Int $id_cargo = null) {
+    public function get(Request $request, $id_cargo = null) {
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_cargo){
@@ -62,6 +103,31 @@ class CargoController extends Controller
         return Cargo::getAll($id_empresa, $filter, $per_page, $page_number);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/cargo/{id_cargo}",
+     *     summary="Atualiza um cargo existente",
+     *     tags={"Cargo"},
+     *     @OA\Parameter(
+     *         name="id_cargo",
+     *         in="path",
+     *         description="ID do cargo a ser atualizado",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"desc_cargo_tcg"},
+     *             @OA\Property(property="desc_cargo_tcg", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cargo atualizado com sucesso"
+     *     )
+     * )
+     */
     public function update(Request $request, Int $id_cargo) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -71,6 +137,24 @@ class CargoController extends Controller
         Cargo::updateReg($id_empresa, $id_cargo, $request);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/cargo/{id_cargo}",
+     *     summary="Remove um cargo",
+     *     tags={"Cargo"},
+     *     @OA\Parameter(
+     *         name="id_cargo",
+     *         in="path",
+     *         description="ID do cargo a ser removido",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Cargo removido com sucesso"
+     *     )
+     * )
+     */
     public function delete(Request $request, Int $id_cargo) {
         $id_empresa = $this->getIdEmpresa($request);
         Cargo::deleteReg($id_empresa, $id_cargo);

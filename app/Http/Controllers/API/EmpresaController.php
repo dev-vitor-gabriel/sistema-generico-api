@@ -18,7 +18,36 @@ class EmpresaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/empresa",
+     *     summary="Cria uma nova empresa",
+     *     tags={"Empresa"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"des_empresa_emp", "razao_social_empresa_emp", "cnpj_empresa_emp", "des_endereco_emp", "des_cidade_emp", "des_cep_emp", "des_tel_emp"},
+     *             @OA\Property(property="des_empresa_emp", type="string"),
+     *             @OA\Property(property="razao_social_empresa_emp", type="string"),
+     *             @OA\Property(property="cnpj_empresa_emp", type="string"),
+     *             @OA\Property(property="des_endereco_emp", type="string"),
+     *             @OA\Property(property="des_cidade_emp", type="string"),
+     *             @OA\Property(property="des_cep_emp", type="string"),
+     *             @OA\Property(property="des_tel_emp", type="string"),
+     *             @OA\Property(property="lnk_whatsapp_emp", type="string", nullable=true),
+     *             @OA\Property(property="lnk_instagram_emp", type="string", nullable=true),
+     *             @OA\Property(property="lnk_facebook_emp", type="string", nullable=true),
+     *             @OA\Property(property="img_empresa_emp", type="string", nullable=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Empresa criada com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação"
+     *     )
+     * )
      */
     public function create(Request $request)
     {
@@ -78,7 +107,33 @@ class EmpresaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/empresas",
+     *     summary="Lista todas as empresas",
+     *     tags={"Empresa"},
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Quantidade de registros por página",
+     *         @OA\Schema(type="integer", default=10)
+     *     ),
+     *     @OA\Parameter(
+     *         name="filter",
+     *         in="query",
+     *         description="Filtro para busca",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="page_number",
+     *         in="query",
+     *         description="Número da página",
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de empresas retornada com sucesso"
+     *     )
+     * )
      */
     public function getAll(Request $request)
     {
@@ -90,7 +145,47 @@ class EmpresaController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/empresa/{id_empresa_emp}",
+     *     summary="Atualiza uma empresa existente",
+     *     tags={"Empresa"},
+     *     @OA\Parameter(
+     *         name="id_empresa_emp",
+     *         in="path",
+     *         required=true,
+     *         description="ID da empresa",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"des_empresa_emp", "razao_social_empresa_emp", "cnpj_empresa_emp", "des_endereco_emp", "des_cidade_emp", "des_cep_emp", "des_tel_emp"},
+     *             @OA\Property(property="des_empresa_emp", type="string"),
+     *             @OA\Property(property="razao_social_empresa_emp", type="string"),
+     *             @OA\Property(property="cnpj_empresa_emp", type="string"),
+     *             @OA\Property(property="des_endereco_emp", type="string"),
+     *             @OA\Property(property="des_cidade_emp", type="string"),
+     *             @OA\Property(property="des_cep_emp", type="string"),
+     *             @OA\Property(property="des_tel_emp", type="string"),
+     *             @OA\Property(property="lnk_whatsapp_emp", type="string", nullable=true),
+     *             @OA\Property(property="lnk_instagram_emp", type="string", nullable=true),
+     *             @OA\Property(property="lnk_facebook_emp", type="string", nullable=true),
+     *             @OA\Property(property="img_empresa_emp", type="string", nullable=true)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Empresa atualizada com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Empresa não encontrada"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação"
+     *     )
+     * )
      */
     public function update(Request $request, $id_empresa_emp)
     {

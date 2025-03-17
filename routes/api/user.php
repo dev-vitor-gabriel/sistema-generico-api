@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +15,7 @@ use App\Http\Controllers\API\AuthController;
 |
 */
 
-Route::controller(AuthController::class)->group(function () {
+Route::controller(UserController::class)->group(function () {
     Route::get('{id_usuario?}', 'get');
     Route::get('', 'get');
     Route::put('{id_usuario}', 'update');

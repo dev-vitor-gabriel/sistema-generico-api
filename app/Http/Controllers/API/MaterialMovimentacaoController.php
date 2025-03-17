@@ -19,6 +19,42 @@ class MaterialMovimentacaoController extends Controller
         return $id_empresa;
     }
 
+     /**
+     * @OA\Post(
+     *     path="/material-movimentacao/{tipo_movimentacao}/create",
+     *     summary="Criar movimentação de material",
+     *     description="Cria uma movimentação de material de entrada ou saída",
+     *     @OA\Parameter(
+     *         name="tipo_movimentacao",
+     *         in="path",
+     *         required=true,
+     *         description="Tipo de movimentação (entrada ou saída)"
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"txt_movimentacao_mov", "id_estoque", "id_centro_custo_mov", "materiais"},
+     *             @OA\Property(property="txt_movimentacao_mov", type="string", description="Descrição da movimentação"),
+     *             @OA\Property(property="id_estoque", type="integer", description="ID do estoque"),
+     *             @OA\Property(property="id_centro_custo_mov", type="integer", description="ID do centro de custo"),
+     *             @OA\Property(property="materiais", type="array", @OA\Items(
+     *                 @OA\Property(property="id_material_mte", type="integer", description="ID do material"),
+     *                 @OA\Property(property="qtd_material_mit", type="integer", description="Quantidade do material"),
+     *                 @OA\Property(property="vlr_material_mit", type="number", format="float", description="Valor do material")
+     *             ))
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Movimentação criada com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/MaterialMovimentacao")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro de validação"
+     *     )
+     * )
+     */
     public function create(Request $request, $tipo_movimentacao) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -123,7 +159,29 @@ class MaterialMovimentacaoController extends Controller
 
     }
 
-    public function get(Request $request, Int $id_material = null)
+    /**
+     * @OA\Get(
+     *     path="/material-movimentacao/{id_material}",
+     *     summary="Obter movimentação de material",
+     *     description="Obtém a movimentação de materiais por ID ou lista de todas",
+     *     @OA\Parameter(
+     *         name="id_material",
+     *         in="path",
+     *         required=false,
+     *         description="ID do material",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de movimentações",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/MaterialMovimentacao")
+     *         )
+     *     )
+     * )
+     */
+    public function get(Request $request, $id_material = null)
     {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -136,6 +194,35 @@ class MaterialMovimentacaoController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/material-movimentacao/{id_movimentacao}/update",
+     *     summary="Atualizar movimentação de material",
+     *     description="Atualiza a descrição da movimentação de material",
+     *     @OA\Parameter(
+     *         name="id_movimentacao",
+     *         in="path",
+     *         required=true,
+     *         description="ID da movimentação",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"txt_movimentacao_mov"},
+     *             @OA\Property(property="txt_movimentacao_mov", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Movimentação atualizada com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro de validação"
+     *     )
+     * )
+     */
     public function update(Int $id_movimentacao, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -145,7 +232,28 @@ class MaterialMovimentacaoController extends Controller
         MaterialMovimentacao::updateReg($id_empresa, $id_movimentacao, $request);
     }
 
-    // delete (inactivate)
+    /**
+     * @OA\Delete(
+     *     path="/material-movimentacao/{id_movimentacao}/delete",
+     *     summary="Deletar movimentação de material",
+     *     description="Desativa uma movimentação de material",
+     *     @OA\Parameter(
+     *         name="id_movimentacao",
+     *         in="path",
+     *         required=true,
+     *         description="ID da movimentação",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Movimentação desativada com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Movimentação não encontrada"
+     *     )
+     * )
+     */
     public function delete(Request $request, Int $id_movimentacao) {
         $id_empresa = $this->getIdEmpresa($request);
 

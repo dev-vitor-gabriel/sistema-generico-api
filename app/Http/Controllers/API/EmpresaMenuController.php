@@ -16,6 +16,26 @@ class EmpresaMenuController extends Controller
         return $id_empresa;
     }
 
+     /**
+     * @OA\Post(
+     *     path="/empresaMenu",
+     *     summary="Cria um novo relacionamento entre empresa e menu",
+     *     tags={"EmpresaMenu"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/EmpresaMenu")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Relacionamento criado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/EmpresaMenu")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação"
+     *     )
+     * )
+     */
     public function create(Request $request) {
         $validator = Validator::make($request->all(), [
             'id_menu_emn' => 'required|array',
@@ -52,12 +72,35 @@ class EmpresaMenuController extends Controller
     }
 
 
+    /**
+     * @OA\Get(
+     *     path="/empresaMenu",
+     *     summary="Obtém os menus associados a uma empresa",
+     *     tags={"EmpresaMenu"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Menus encontrados para a empresa",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(ref="#/components/schemas/EmpresaMenu")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Empresa não encontrada"
+     *     )
+     * )
+     */
     public function getMenuByIdEmpresa(Request $request)
     {
         $id_empresa = $this->getIdEmpresa($request);
 
         $data = RelEmpresaMenu::getMenuByIdEmpresa($id_empresa);
 
-        return response()->json($data);
+        if ($data->isEmpty()) {
+            return response()->json(['error' => 'Empresa não encontrada ou sem menus'], 400);
+        }
+
+        return response()->json($data, 200);
     }
 }

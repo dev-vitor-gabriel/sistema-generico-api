@@ -203,13 +203,1485 @@
                 }
             }
         },
+        "/cargo": {
+            "get": {
+                "tags": [
+                    "Cargo"
+                ],
+                "summary": "Lista todos os cargos",
+                "operationId": "0affa17d2e2d91ce2e5b834daf3360f4",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Quantidade de itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filtro para buscar cargos",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_number",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de cargos retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Cargo"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Cargo"
+                ],
+                "summary": "Cria um novo cargo",
+                "operationId": "3657810d17744d6a7be4eb56298a21b4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "desc_cargo_tcg"
+                                ],
+                                "properties": {
+                                    "desc_cargo_tcg": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cargo criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Cargo"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/cargo/{id_cargo}": {
+            "put": {
+                "tags": [
+                    "Cargo"
+                ],
+                "summary": "Atualiza um cargo existente",
+                "operationId": "543e521771967e205ddec1a0e8094969",
+                "parameters": [
+                    {
+                        "name": "id_cargo",
+                        "in": "path",
+                        "description": "ID do cargo a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "desc_cargo_tcg"
+                                ],
+                                "properties": {
+                                    "desc_cargo_tcg": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cargo atualizado com sucesso"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cargo"
+                ],
+                "summary": "Remove um cargo",
+                "operationId": "cb1e0e46a6e9b3a01adf47609f7a1370",
+                "parameters": [
+                    {
+                        "name": "id_cargo",
+                        "in": "path",
+                        "description": "ID do cargo a ser removido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cargo removido com sucesso"
+                    }
+                }
+            }
+        },
+        "/centroCusto": {
+            "get": {
+                "tags": [
+                    "Centro de Custo"
+                ],
+                "summary": "Lista todos os centros de custo",
+                "operationId": "117db102afb1e6db772328e2cb537c49",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Quantidade de itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filtro para buscar centros de custo",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_number",
+                        "in": "query",
+                        "description": "Número da página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de centros de custo retornada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CentroCusto"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Centro de Custo"
+                ],
+                "summary": "Cria um novo centro de custo",
+                "operationId": "73e3392daf0808573cba4979e94fb09f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "des_centro_custo_cco"
+                                ],
+                                "properties": {
+                                    "des_centro_custo_cco": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Centro de Custo criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CentroCusto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/centroCusto/{id_centro_custo}": {
+            "put": {
+                "tags": [
+                    "Centro de Custo"
+                ],
+                "summary": "Atualiza um centro de custo existente",
+                "operationId": "753bc7830f2167bd1411fe6e93dcbf3d",
+                "parameters": [
+                    {
+                        "name": "id_centro_custo",
+                        "in": "path",
+                        "description": "ID do centro de custo a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "des_centro_custo_cco"
+                                ],
+                                "properties": {
+                                    "des_centro_custo_cco": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Centro de Custo atualizado com sucesso"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Centro de Custo"
+                ],
+                "summary": "Remove um centro de custo",
+                "operationId": "a30890c05806c8fa92cd7215465d3c73",
+                "parameters": [
+                    {
+                        "name": "id_centro_custo",
+                        "in": "path",
+                        "description": "ID do centro de custo a ser removido",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Centro de Custo removido com sucesso"
+                    }
+                }
+            }
+        },
+        "/cliente": {
+            "post": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Cria um novo cliente",
+                "operationId": "bc9a364274fd2f1b76621ace38ad1f6a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Cliente"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Cliente criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Cliente"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/cliente/{id_cliente}": {
+            "get": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Obtém um cliente pelo ID",
+                "operationId": "35a75147a8e78e07829ee6b67574d3a8",
+                "parameters": [
+                    {
+                        "name": "id_cliente",
+                        "in": "path",
+                        "description": "ID do cliente",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cliente encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Cliente"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Cliente não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Atualiza um cliente",
+                "operationId": "b7cd6a484a355f0623534c9ac04869ef",
+                "parameters": [
+                    {
+                        "name": "id_cliente",
+                        "in": "path",
+                        "description": "ID do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Cliente"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Cliente atualizado com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Cliente"
+                ],
+                "summary": "Deleta um cliente",
+                "operationId": "fb97d010c130b3810dd52de8ecdf01be",
+                "parameters": [
+                    {
+                        "name": "id_cliente",
+                        "in": "path",
+                        "description": "ID do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cliente deletado com sucesso"
+                    }
+                }
+            }
+        },
+        "/empresa": {
+            "post": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Cria uma nova empresa",
+                "operationId": "465cc9f908a6fab2708eb338a284383c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "des_empresa_emp",
+                                    "razao_social_empresa_emp",
+                                    "cnpj_empresa_emp",
+                                    "des_endereco_emp",
+                                    "des_cidade_emp",
+                                    "des_cep_emp",
+                                    "des_tel_emp"
+                                ],
+                                "properties": {
+                                    "des_empresa_emp": {
+                                        "type": "string"
+                                    },
+                                    "razao_social_empresa_emp": {
+                                        "type": "string"
+                                    },
+                                    "cnpj_empresa_emp": {
+                                        "type": "string"
+                                    },
+                                    "des_endereco_emp": {
+                                        "type": "string"
+                                    },
+                                    "des_cidade_emp": {
+                                        "type": "string"
+                                    },
+                                    "des_cep_emp": {
+                                        "type": "string"
+                                    },
+                                    "des_tel_emp": {
+                                        "type": "string"
+                                    },
+                                    "lnk_whatsapp_emp": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "lnk_instagram_emp": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "lnk_facebook_emp": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "img_empresa_emp": {
+                                        "type": "string",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Empresa criada com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/empresas": {
+            "get": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Lista todas as empresas",
+                "operationId": "7d73e5b455f07ff5c2e3a39b08ddedbd",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Quantidade de registros por página",
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filtro para busca",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_number",
+                        "in": "query",
+                        "description": "Número da página",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de empresas retornada com sucesso"
+                    }
+                }
+            }
+        },
+        "/empresa/{id_empresa_emp}": {
+            "put": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Atualiza uma empresa existente",
+                "operationId": "5ee05685815a03e812bebee8ffd2d4c1",
+                "parameters": [
+                    {
+                        "name": "id_empresa_emp",
+                        "in": "path",
+                        "description": "ID da empresa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "des_empresa_emp",
+                                    "razao_social_empresa_emp",
+                                    "cnpj_empresa_emp",
+                                    "des_endereco_emp",
+                                    "des_cidade_emp",
+                                    "des_cep_emp",
+                                    "des_tel_emp"
+                                ],
+                                "properties": {
+                                    "des_empresa_emp": {
+                                        "type": "string"
+                                    },
+                                    "razao_social_empresa_emp": {
+                                        "type": "string"
+                                    },
+                                    "cnpj_empresa_emp": {
+                                        "type": "string"
+                                    },
+                                    "des_endereco_emp": {
+                                        "type": "string"
+                                    },
+                                    "des_cidade_emp": {
+                                        "type": "string"
+                                    },
+                                    "des_cep_emp": {
+                                        "type": "string"
+                                    },
+                                    "des_tel_emp": {
+                                        "type": "string"
+                                    },
+                                    "lnk_whatsapp_emp": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "lnk_instagram_emp": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "lnk_facebook_emp": {
+                                        "type": "string",
+                                        "nullable": true
+                                    },
+                                    "img_empresa_emp": {
+                                        "type": "string",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Empresa atualizada com sucesso"
+                    },
+                    "404": {
+                        "description": "Empresa não encontrada"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/empresaMenu": {
+            "get": {
+                "tags": [
+                    "EmpresaMenu"
+                ],
+                "summary": "Obtém os menus associados a uma empresa",
+                "operationId": "aee1c59d720256451e7ce549bd5ac1c2",
+                "responses": {
+                    "200": {
+                        "description": "Menus encontrados para a empresa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EmpresaMenu"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Empresa não encontrada"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "EmpresaMenu"
+                ],
+                "summary": "Cria um novo relacionamento entre empresa e menu",
+                "operationId": "056621de288b44700655deddcf565481",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmpresaMenu"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Relacionamento criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EmpresaMenu"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/estoque/{id_estoque}": {
+            "get": {
+                "tags": [
+                    "Estoque"
+                ],
+                "summary": "Obtém um estoque pelo ID",
+                "operationId": "276a5b0c1316c3ba9337fa2ad35fcb43",
+                "parameters": [
+                    {
+                        "name": "id_estoque",
+                        "in": "path",
+                        "description": "ID do estoque",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Estoque encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Estoque"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Estoque não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Estoque"
+                ],
+                "summary": "Atualiza um estoque",
+                "operationId": "dc56ceaae9eb25a035c2bfa4ed8aa4f7",
+                "parameters": [
+                    {
+                        "name": "id_estoque",
+                        "in": "path",
+                        "description": "ID do estoque",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Estoque"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Estoque atualizado com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Estoque"
+                ],
+                "summary": "Deleta um estoque",
+                "operationId": "6285ba21235806c605c51620eb5c0c7e",
+                "parameters": [
+                    {
+                        "name": "id_estoque",
+                        "in": "path",
+                        "description": "ID do estoque",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Estoque deletado com sucesso"
+                    }
+                }
+            }
+        },
+        "/estoque": {
+            "post": {
+                "tags": [
+                    "Estoque"
+                ],
+                "summary": "Cria um novo estoque",
+                "operationId": "8deb717d7f84593ec996a1e5927ad48a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Estoque"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Estoque criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Estoque"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/estoque/valores": {
+            "get": {
+                "tags": [
+                    "Estoque"
+                ],
+                "summary": "Obtém os estoques com valores e materiais associados",
+                "operationId": "aed75f59f730aec697788d5c079327c1",
+                "responses": {
+                    "200": {
+                        "description": "Estoque com valores encontrados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "estoque_id": {
+                                                "type": "integer"
+                                            },
+                                            "estoque_descricao": {
+                                                "type": "string"
+                                            },
+                                            "materiais": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "material_descricao": {
+                                                            "type": "string"
+                                                        },
+                                                        "valor_unitario": {
+                                                            "type": "number",
+                                                            "format": "float"
+                                                        },
+                                                        "quantidade_em_estoque": {
+                                                            "type": "number",
+                                                            "format": "float"
+                                                        },
+                                                        "valor_total_em_estoque": {
+                                                            "type": "number",
+                                                            "format": "float"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/fornecedor": {
+            "post": {
+                "tags": [
+                    "Fornecedor"
+                ],
+                "summary": "Cria um novo fornecedor",
+                "operationId": "c44234a65ae5598ad90e0a00e88f8d69",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Fornecedor"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Fornecedor criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Fornecedor"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/fornecedor/{id_fornecedor}": {
+            "get": {
+                "tags": [
+                    "Fornecedor"
+                ],
+                "summary": "Obtém um fornecedor pelo ID",
+                "operationId": "a61384fd3acb5f3a901ebc15628037ad",
+                "parameters": [
+                    {
+                        "name": "id_fornecedor",
+                        "in": "path",
+                        "description": "ID do fornecedor",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fornecedor encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Fornecedor"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Fornecedor não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Fornecedor"
+                ],
+                "summary": "Atualiza um fornecedor",
+                "operationId": "b22306a0d2a03c8196cc669a7785235e",
+                "parameters": [
+                    {
+                        "name": "id_fornecedor",
+                        "in": "path",
+                        "description": "ID do fornecedor",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Fornecedor"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Fornecedor atualizado com sucesso"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Fornecedor"
+                ],
+                "summary": "Deleta um fornecedor",
+                "operationId": "b89f5d79c5267b90d0d0f917c5e571f4",
+                "parameters": [
+                    {
+                        "name": "id_fornecedor",
+                        "in": "path",
+                        "description": "ID do fornecedor",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Fornecedor deletado com sucesso"
+                    }
+                }
+            }
+        },
+        "/funcionario": {
+            "post": {
+                "tags": [
+                    "Funcionario"
+                ],
+                "summary": "Cria um novo funcionário",
+                "operationId": "59b8de1bfca15211ff442494a65827f5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Funcionario"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Funcionário criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Funcionario"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/funcionario/{id_funcionario}": {
+            "get": {
+                "tags": [
+                    "Funcionario"
+                ],
+                "summary": "Recupera um funcionário pelo ID",
+                "operationId": "8d9229308b5fd388b94c2437bfb9c64b",
+                "parameters": [
+                    {
+                        "name": "id_funcionario",
+                        "in": "path",
+                        "description": "ID do funcionário",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Funcionário recuperado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Funcionario"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Funcionário não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Funcionario"
+                ],
+                "summary": "Atualiza um funcionário",
+                "operationId": "c2d582e287ec7742d656b46cd9ccd912",
+                "parameters": [
+                    {
+                        "name": "id_funcionario",
+                        "in": "path",
+                        "description": "ID do funcionário",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Funcionario"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Funcionário atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Funcionario"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação ou funcionário não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Funcionario"
+                ],
+                "summary": "Deleta um funcionário",
+                "operationId": "15de65220d4234937303e3be39bcf196",
+                "parameters": [
+                    {
+                        "name": "id_funcionario",
+                        "in": "path",
+                        "description": "ID do funcionário",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Funcionário deletado com sucesso"
+                    },
+                    "404": {
+                        "description": "Funcionário não encontrado"
+                    }
+                }
+            }
+        },
+        "/instituicaoPagamento/{id_instituicao_pagamento}": {
+            "get": {
+                "tags": [
+                    "InstituicaoPagamento"
+                ],
+                "summary": "Recuperar uma Instituicao de Pagamento",
+                "operationId": "34afd995a080abe643dcf14e8f560bb6",
+                "parameters": [
+                    {
+                        "name": "id_instituicao_pagamento",
+                        "in": "path",
+                        "description": "ID da Instituicao de Pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados da Instituicao de Pagamento",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InstituicaoPagamento"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Instituicao de Pagamento não encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "InstituicaoPagamento"
+                ],
+                "summary": "Atualizar uma Instituicao de Pagamento",
+                "operationId": "d59bb0ef39a61ecf347097b2e2e34486",
+                "parameters": [
+                    {
+                        "name": "id_instituicao_pagamento",
+                        "in": "path",
+                        "description": "ID da Instituicao de Pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "desc_instituicao_pagamento_tip": {
+                                        "description": "Descrição da instituição de pagamento",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Instituicao de Pagamento atualizada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro ao atualizar a Instituicao de Pagamento"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "InstituicaoPagamento"
+                ],
+                "summary": "Deletar uma Instituicao de Pagamento",
+                "operationId": "e873ffb5384927a67d761feeed11f5e6",
+                "parameters": [
+                    {
+                        "name": "id_instituicao_pagamento",
+                        "in": "path",
+                        "description": "ID da Instituicao de Pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Instituicao de Pagamento deletada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro ao deletar a Instituicao de Pagamento"
+                    }
+                }
+            }
+        },
+        "/instituicaoPagamento": {
+            "post": {
+                "tags": [
+                    "InstituicaoPagamento"
+                ],
+                "summary": "Criar uma nova Instituicao de Pagamento",
+                "operationId": "00ad0a67edacd65ff540769ebfb303dc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "desc_instituicao_pagamento_tip"
+                                ],
+                                "properties": {
+                                    "desc_instituicao_pagamento_tip": {
+                                        "description": "Descrição da instituição de pagamento",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Instituicao de Pagamento criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/InstituicaoPagamento"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na criação da Instituicao de Pagamento"
+                    }
+                }
+            }
+        },
+        "/material/{id_material}": {
+            "get": {
+                "tags": [
+                    "Material"
+                ],
+                "summary": "Obter material por ID",
+                "description": "Retorna os detalhes de um material específico",
+                "operationId": "getMaterialById",
+                "parameters": [
+                    {
+                        "name": "id_material",
+                        "in": "path",
+                        "description": "ID do material",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do material",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Material"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Material não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Material"
+                ],
+                "summary": "Atualizar material",
+                "description": "Atualiza os dados de um material",
+                "operationId": "updateMaterial",
+                "parameters": [
+                    {
+                        "name": "id_material",
+                        "in": "path",
+                        "description": "ID do material",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_unidade_mte": {
+                                        "description": "ID da unidade",
+                                        "type": "integer"
+                                    },
+                                    "des_material_mte": {
+                                        "description": "Descrição do material",
+                                        "type": "string"
+                                    },
+                                    "vlr_material_mte": {
+                                        "description": "Valor do material",
+                                        "type": "integer"
+                                    },
+                                    "id_centro_custo_mte": {
+                                        "description": "ID do centro de custo",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Material atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Material"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Material"
+                ],
+                "summary": "Excluir material",
+                "description": "Desativa um material",
+                "operationId": "deleteMaterial",
+                "parameters": [
+                    {
+                        "name": "id_material",
+                        "in": "path",
+                        "description": "ID do material",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Material excluído com sucesso"
+                    }
+                }
+            }
+        },
+        "/material": {
+            "post": {
+                "tags": [
+                    "Material"
+                ],
+                "summary": "Criar material",
+                "description": "Cria um novo material",
+                "operationId": "createMaterial",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_unidade_mte": {
+                                        "description": "ID da unidade",
+                                        "type": "integer"
+                                    },
+                                    "des_material_mte": {
+                                        "description": "Descrição do material",
+                                        "type": "string"
+                                    },
+                                    "vlr_material_mte": {
+                                        "description": "Valor do material",
+                                        "type": "integer"
+                                    },
+                                    "id_centro_custo_mte": {
+                                        "description": "ID do centro de custo",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Material criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Material"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/user/{id_user}": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "Usuario"
                 ],
                 "summary": "Obtém os dados de um usuário",
-                "operationId": "89aa8079cc718bc80a0c61d400b6ca85",
+                "operationId": "18695312a79f258286f2c79db840375c",
                 "parameters": [
                     {
                         "name": "id_user",
@@ -236,18 +1708,16 @@
                         "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/user/{id}": {
+            },
             "put": {
                 "tags": [
-                    "Auth"
+                    "Usuario"
                 ],
                 "summary": "Atualiza os dados de um usuário",
-                "operationId": "6b4f19990ba4c32a430241425721de1a",
+                "operationId": "705b25a58747427421fe2e97d32fdafa",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "id_user",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -321,13 +1791,13 @@
             },
             "delete": {
                 "tags": [
-                    "Auth"
+                    "Usuario"
                 ],
                 "summary": "Deleta um usuário",
-                "operationId": "d55345a8579612aa19ccfbae69f110a7",
+                "operationId": "e2eb016fcbed0b84a900ab05baf368e7",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "id_user",
                         "in": "path",
                         "required": true,
                         "schema": {
@@ -354,24 +1824,354 @@
                     }
                 }
             }
-        },
-        "/api/cargos": {
-            "get": {
-                "tags": [
-                    "Cargos"
-                ],
-                "summary": "Lista todos os cargos",
-                "operationId": "4037ebca54a6dad92e83ffa6aa3a812c",
-                "responses": {
-                    "200": {
-                        "description": "Lista de cargos retornada com sucesso"
-                    }
-                }
-            }
         }
     },
     "components": {
         "schemas": {
+            "Cargo": {
+                "properties": {
+                    "id_cargo_tcg": {
+                        "type": "integer"
+                    },
+                    "id_empresa_tcg": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "desc_cargo_tcg": {
+                        "type": "string"
+                    },
+                    "is_ativo_tcg": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "CentroCusto": {
+                "properties": {
+                    "id_centro_custo_cco": {
+                        "type": "integer"
+                    },
+                    "id_empresa_cco": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "des_centro_custo_cco": {
+                        "type": "string"
+                    },
+                    "is_ativo_cco": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Cliente": {
+                "properties": {
+                    "id_cliente_cli": {
+                        "type": "integer"
+                    },
+                    "id_empresa_cli": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "des_cliente_cli": {
+                        "type": "string"
+                    },
+                    "telefone_cliente_cli": {
+                        "type": "string"
+                    },
+                    "email_cliente_cli": {
+                        "type": "string",
+                        "format": "email"
+                    },
+                    "documento_cliente_cli": {
+                        "type": "string"
+                    },
+                    "endereco_cliente_cli": {
+                        "type": "string"
+                    },
+                    "is_ativo_cli": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "id_centro_custo_cli": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    },
+                    "id_origem_cliente_cli": {
+                        "description": "Chave estrangeira referenciando a origem do cliente",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Empresa": {
+                "properties": {
+                    "id_empresa_emp": {
+                        "type": "integer"
+                    },
+                    "des_empresa_emp": {
+                        "type": "string"
+                    },
+                    "razao_social_empresa_emp": {
+                        "type": "string"
+                    },
+                    "cnpj_empresa_emp": {
+                        "type": "string"
+                    },
+                    "des_endereco_emp": {
+                        "type": "string"
+                    },
+                    "des_cidade_emp": {
+                        "type": "string"
+                    },
+                    "des_cep_emp": {
+                        "type": "string"
+                    },
+                    "des_tel_emp": {
+                        "type": "string"
+                    },
+                    "lnk_whatsapp_emp": {
+                        "type": "string"
+                    },
+                    "lnk_instagram_emp": {
+                        "type": "string"
+                    },
+                    "lnk_facebook_emp": {
+                        "type": "string"
+                    },
+                    "img_empresa_emp": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "is_ativo_emp": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "EmpresaMenu": {
+                "properties": {
+                    "id_rel_empresa_menu_emn": {
+                        "type": "integer"
+                    },
+                    "id_empresa_emn": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "id_menu_emn": {
+                        "description": "Chave estrangeira referenciando o menu",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Estoque": {
+                "properties": {
+                    "id_estoque_est": {
+                        "type": "integer"
+                    },
+                    "id_empresa_est": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "des_estoque_est": {
+                        "type": "string"
+                    },
+                    "id_centro_custo_est": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    },
+                    "is_ativo_est": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Fornecedor": {
+                "properties": {
+                    "id_fornecedor_frn": {
+                        "type": "integer"
+                    },
+                    "id_empresa_frn": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "desc_fornecedor_frn": {
+                        "type": "string"
+                    },
+                    "tel_fornecedor_frn": {
+                        "type": "string"
+                    },
+                    "documento_fornecedor_frn": {
+                        "type": "string"
+                    },
+                    "is_ativo_frn": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Funcionario": {
+                "properties": {
+                    "id_funcionario_tfu": {
+                        "type": "integer"
+                    },
+                    "id_empresa_tfu": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "id_funcionario_cargo_tfu": {
+                        "description": "Chave estrangeira referenciando o cargo do funcionário",
+                        "type": "integer"
+                    },
+                    "desc_funcionario_tfu": {
+                        "type": "string"
+                    },
+                    "telefone_funcionario_tfu": {
+                        "type": "string"
+                    },
+                    "documento_funcionario_tfu": {
+                        "type": "string"
+                    },
+                    "endereco_funcionario_tfu": {
+                        "type": "string"
+                    },
+                    "is_ativo_tfu": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "id_centro_custo_tfu": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "InstituicaoPagamento": {
+                "properties": {
+                    "id_instituicao_pagamento_tip": {
+                        "type": "integer"
+                    },
+                    "id_empresa_tip": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "desc_instituicao_pagamento_tip": {
+                        "type": "string"
+                    },
+                    "is_ativo_tip": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Material": {
+                "properties": {
+                    "id_material_mte": {
+                        "type": "integer"
+                    },
+                    "id_unidade_mte": {
+                        "description": "Chave estrangeira referenciando a unidade",
+                        "type": "integer"
+                    },
+                    "id_empresa_mte": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "des_material_mte": {
+                        "type": "string"
+                    },
+                    "vlr_material_mte": {
+                        "type": "integer"
+                    },
+                    "is_ativo_mte": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "id_centro_custo_mte": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "type": "array",
                 "items": {
@@ -416,8 +2216,48 @@
             "description": "Auth"
         },
         {
-            "name": "Cargos",
-            "description": "Cargos"
+            "name": "Cargo",
+            "description": "Cargo"
+        },
+        {
+            "name": "Centro de Custo",
+            "description": "Centro de Custo"
+        },
+        {
+            "name": "Cliente",
+            "description": "Cliente"
+        },
+        {
+            "name": "Empresa",
+            "description": "Empresa"
+        },
+        {
+            "name": "EmpresaMenu",
+            "description": "EmpresaMenu"
+        },
+        {
+            "name": "Estoque",
+            "description": "Estoque"
+        },
+        {
+            "name": "Fornecedor",
+            "description": "Fornecedor"
+        },
+        {
+            "name": "Funcionario",
+            "description": "Funcionario"
+        },
+        {
+            "name": "InstituicaoPagamento",
+            "description": "InstituicaoPagamento"
+        },
+        {
+            "name": "Material",
+            "description": "Material"
+        },
+        {
+            "name": "Usuario",
+            "description": "Usuario"
         }
     ],
     "security": [

@@ -16,6 +16,26 @@ class FuncionarioController extends Controller
         return $id_empresa;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/funcionario",
+     *     summary="Cria um novo funcionário",
+     *     tags={"Funcionario"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Funcionario")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Funcionário criado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/Funcionario")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação"
+     *     )
+     * )
+     */
     public function create(Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -49,7 +69,30 @@ class FuncionarioController extends Controller
         return response()->json($funcionario,201);
     }
 
-    public function get(Request $request, Int $id_funcionario = null) {
+    /**
+     * @OA\Get(
+     *     path="/funcionario/{id_funcionario}",
+     *     summary="Recupera um funcionário pelo ID",
+     *     tags={"Funcionario"},
+     *     @OA\Parameter(
+     *         name="id_funcionario",
+     *         in="path",
+     *         required=true,
+     *         description="ID do funcionário",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Funcionário recuperado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/Funcionario")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Funcionário não encontrado"
+     *     )
+     * )
+     */
+    public function get(Request $request, $id_funcionario = null) {
         $id_empresa = $this->getIdEmpresa($request);
         if($id_funcionario){
             $data = Funcionario::getById($id_empresa,$id_funcionario);
@@ -80,6 +123,33 @@ class FuncionarioController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/funcionario/{id_funcionario}",
+     *     summary="Atualiza um funcionário",
+     *     tags={"Funcionario"},
+     *     @OA\Parameter(
+     *         name="id_funcionario",
+     *         in="path",
+     *         required=true,
+     *         description="ID do funcionário",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Funcionario")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Funcionário atualizado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/Funcionario")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro de validação ou funcionário não encontrado"
+     *     )
+     * )
+     */
     public function update(Int $id_funcionario, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -141,6 +211,28 @@ class FuncionarioController extends Controller
         }
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/funcionario/{id_funcionario}",
+     *     summary="Deleta um funcionário",
+     *     tags={"Funcionario"},
+     *     @OA\Parameter(
+     *         name="id_funcionario",
+     *         in="path",
+     *         required=true,
+     *         description="ID do funcionário",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Funcionário deletado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Funcionário não encontrado"
+     *     )
+     * )
+     */
     public function delete(Request $request, Int $id_funcionario) {
         $id_empresa = $this->getIdEmpresa($request);
         Funcionario::deleteReg($id_empresa, $id_funcionario);

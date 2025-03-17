@@ -9,32 +9,68 @@ use App\Helpers\ValidateString;
 
 class FornecedorController extends Controller
 {
-    public function getIdEmpresa(Request $request) {
-        $id_empresa = (int)$request->header('id-empresa-d');
-
-        return $id_empresa;
-    }
-
+    /**
+     * @OA\Post(
+     *     path="/fornecedor",
+     *     summary="Cria um novo fornecedor",
+     *     tags={"Fornecedor"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Fornecedor")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Fornecedor criado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/Fornecedor")
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação"
+     *     )
+     * )
+     */
     public function create(Request $request){
         $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
-            'desc_fornecedor_frn'      => 'required|string|',
-            'tel_fornecedor_frn'       => 'required|string|',
-            'documento_fornecedor_frn' => 'string|',
+            'desc_fornecedor_frn'      => 'required|string|max:255',
+            'tel_fornecedor_frn'       => 'required|string|max:15',
+            'documento_fornecedor_frn' => 'string|max:18',
         ]);
 
         $fornecedor = Fornecedor::create([
             'desc_fornecedor_frn'      => $request->desc_fornecedor_frn,
             'tel_fornecedor_frn'       => ValidateString::removeCharacterSpecial($request->tel_fornecedor_frn),
             'documento_fornecedor_frn' => ValidateString::removeCharacterSpecial($request->documento_fornecedor_frn),
-            'id_empresa_frn' => $id_empresa,
+            'id_empresa_frn'           => $id_empresa,
         ]);
 
-        return response()->json($fornecedor,201);
+        return response()->json($fornecedor, 201);
     }
 
-    public function get(Request $request, Int $id_fornecedor = null){
+    /**
+     * @OA\Get(
+     *     path="/fornecedor/{id_fornecedor}",
+     *     summary="Obtém um fornecedor pelo ID",
+     *     tags={"Fornecedor"},
+     *     @OA\Parameter(
+     *         name="id_fornecedor",
+     *         in="path",
+     *         description="ID do fornecedor",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Fornecedor encontrado",
+     *         @OA\JsonContent(ref="#/components/schemas/Fornecedor")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Fornecedor não encontrado"
+     *     )
+     * )
+     */
+    public function get(Request $request, $id_fornecedor = null){
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_fornecedor){
@@ -43,7 +79,7 @@ class FornecedorController extends Controller
 
             if(empty($data_array)){
                 return response()->json([
-                    'error' => 'Fornecedor Não Existe'],400);
+                    'error' => 'Fornecedor Não Existe'], 400);
             }
             return $data;
         }
@@ -55,18 +91,62 @@ class FornecedorController extends Controller
         return Fornecedor::getAll($id_empresa, $filter, $per_page, $page_number);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/fornecedor/{id_fornecedor}",
+     *     summary="Atualiza um fornecedor",
+     *     tags={"Fornecedor"},
+     *     @OA\Parameter(
+     *         name="id_fornecedor",
+     *         in="path",
+     *         required=true,
+     *         description="ID do fornecedor",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Fornecedor")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Fornecedor atualizado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação"
+     *     )
+     * )
+     */
     public function update(Int $id_fornecedor, Request $request){
         $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
-            'desc_fornecedor_frn'      => 'string',
-            'tel_fornecedor_frn'       => 'string',
-            'documento_fornecedor_frn' => 'string',
+            'desc_fornecedor_frn'      => 'string|max:255',
+            'tel_fornecedor_frn'       => 'string|max:15',
+            'documento_fornecedor_frn' => 'string|max:18',
         ]);
-        Fornecedor::updateReg($id_fornecedor,$id_empresa, $request);
+
+        Fornecedor::updateReg($id_fornecedor, $id_empresa, $request);
     }
 
-    // delete (inactivate)
+    /**
+     * @OA\Delete(
+     *     path="/fornecedor/{id_fornecedor}",
+     *     summary="Deleta um fornecedor",
+     *     tags={"Fornecedor"},
+     *     @OA\Parameter(
+     *         name="id_fornecedor",
+     *         in="path",
+     *         required=true,
+     *         description="ID do fornecedor",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Fornecedor deletado com sucesso"
+     *     )
+     * )
+     */
     public function delete(Request $request, Int $id_fornecedor) {
         $id_empresa = $this->getIdEmpresa($request);
 
