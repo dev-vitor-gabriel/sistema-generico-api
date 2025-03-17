@@ -254,15 +254,36 @@ class MenuSeeder extends Seeder
         DB::table('tb_menu')->insert([
             'id_father_mnu' => null,
             'des_menu_mnu' => 'Empresa',
-            'icon_menu_mnu' => 'FilePlus',
+            'icon_menu_mnu' => 'Buildings',
             'path_menu_mnu' => '/empresa',
             'num_ordem_mnu' => 32+1,
         ]);
         DB::table('tb_menu')->insert([
             'id_father_mnu' => 35,
             'des_menu_mnu' => 'Empresas',
-            'icon_menu_mnu' => 'FilePlus',
+            'icon_menu_mnu' => 'Buildings',
             'path_menu_mnu' => '/empresas',
+            'num_ordem_mnu' => 1,
+        ]);
+        DB::table('tb_menu')->insert([
+            'id_father_mnu' => null,
+            'des_menu_mnu' => 'Permissões',
+            'icon_menu_mnu' => 'User',
+            'path_menu_mnu' => '/permissoes',
+            'num_ordem_mnu' => 33+1,
+        ]);
+        DB::table('tb_menu')->insert([
+            'id_father_mnu' => 37,
+            'des_menu_mnu' => 'Permissões de Usuário',
+            'icon_menu_mnu' => 'FilePlus',
+            'path_menu_mnu' => '/permissoes/permissoes-usuario',
+            'num_ordem_mnu' => 1,
+        ]);
+        DB::table('tb_menu')->insert([
+            'id_father_mnu' => 37,
+            'des_menu_mnu' => 'Permissões de Empresa',
+            'icon_menu_mnu' => 'Buildings',
+            'path_menu_mnu' => '/permissoes/permissoes-empresa',
             'num_ordem_mnu' => 1,
         ]);
     }

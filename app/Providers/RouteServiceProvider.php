@@ -103,12 +103,12 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/api/agendamento.php'));
 
             Route::middleware(['api', 'set.empresa.header'])
-            ->prefix('api/agendamento')
-            ->group(base_path('routes/api/agendamento.php'));
+                ->prefix('api/agendamento')
+                ->group(base_path('routes/api/agendamento.php'));
 
             Route::middleware(['api', 'set.empresa.header'])
-            ->prefix('api/pessoa')
-            ->group(base_path('routes/api/pessoa.php'));
+                ->prefix('api/pessoa')
+                ->group(base_path('routes/api/pessoa.php'));
 
             Route::middleware(['api', 'set.empresa.header'])
                 ->prefix('api/fornecedor')
@@ -125,6 +125,13 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['api', 'set.empresa.header'])
                 ->prefix('api/empresaMenu')
                 ->group(base_path('routes/api/empresaMenu.php'));
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/empresa')
+                ->group(base_path('routes/api/empresa.php'));
+
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/user')
+                ->group(base_path('routes/api/user.php'));
         });
     }
 }

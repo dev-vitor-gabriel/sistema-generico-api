@@ -25,14 +25,15 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MenuSeeder::class,
             SituacoesSeeder::class,
+            CentroCustoSeeder::class,
             CargoSeeder::class,
             FuncionarioSeeder::class,
             UnidadeSeeder::class,
             MaterialSeeder::class,
             TipoServicoSeeder::class,
-            CentroCustoSeeder::class,
             ContaTipoSeeder::class,
             ClienteSeeder::class,
+            StatusSeeder::class,
         ]);
     }
 }
