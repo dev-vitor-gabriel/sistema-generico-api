@@ -6,7 +6,7 @@ use OpenApi\Annotations as OA;
 
 /**
  * @OA\Schema(
- *     schema="MovimentacaoItem",
+ *     schema="MaterialMovimentacao",
  *     type="object",
  *     @OA\Property(property="id_movimentacao_item_mit", type="integer"),
  *     @OA\Property(
@@ -36,6 +36,6 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  */
-class MovimentacaoItem
+class MaterialMovimentacao
 {
 }

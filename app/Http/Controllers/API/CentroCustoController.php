@@ -18,7 +18,7 @@ class CentroCustoController extends Controller
      * @OA\Post(
      *     path="/centroCusto",
      *     summary="Cria um novo centro de custo",
-     *     tags={"Centro de Custo"},
+     *     tags={"CentroCusto"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -52,7 +52,7 @@ class CentroCustoController extends Controller
      * @OA\Get(
      *     path="/centroCusto",
      *     summary="Lista todos os centros de custo",
-     *     tags={"Centro de Custo"},
+     *     tags={"CentroCusto"},
      *     @OA\Parameter(
      *         name="per_page",
      *         in="query",
@@ -107,7 +107,7 @@ class CentroCustoController extends Controller
      * @OA\Put(
      *     path="/centroCusto/{id_centro_custo}",
      *     summary="Atualiza um centro de custo existente",
-     *     tags={"Centro de Custo"},
+     *     tags={"CentroCusto"},
      *     @OA\Parameter(
      *         name="id_centro_custo",
      *         in="path",
@@ -141,7 +141,7 @@ class CentroCustoController extends Controller
      * @OA\Delete(
      *     path="/centroCusto/{id_centro_custo}",
      *     summary="Remove um centro de custo",
-     *     tags={"Centro de Custo"},
+     *     tags={"CentroCusto"},
      *     @OA\Parameter(
      *         name="id_centro_custo",
      *         in="path",

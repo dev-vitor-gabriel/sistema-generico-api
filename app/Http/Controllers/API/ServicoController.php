@@ -23,6 +23,36 @@ class ServicoController extends Controller
         return $id_empresa;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/servico",
+     *     summary="Cria um novo serviço",
+     *     operationId="create",
+     *     tags={"Servico"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             type="object",
+     *             required={"txt_servico_ser", "id_centro_custo_ser", "id_funcionario_servico_ser", "id_cliente_ser"},
+     *             @OA\Property(property="txt_servico_ser", type="string", description="Descrição do serviço"),
+     *             @OA\Property(property="id_centro_custo_ser", type="integer", description="ID do centro de custo"),
+     *             @OA\Property(property="id_funcionario_servico_ser", type="integer", description="ID do funcionário responsável pelo serviço"),
+     *             @OA\Property(property="id_cliente_ser", type="integer", description="ID do cliente"),
+     *             @OA\Property(property="tipos_servico", type="array", @OA\Items(type="object", @OA\Property(property="id_servico_tipo_stp", type="integer"))),
+     *             @OA\Property(property="materiais", type="array", @OA\Items(type="object", @OA\Property(property="id_material_mte", type="integer"))),
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Serviço criado com sucesso",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"), @OA\Property(property="service", ref="#/components/schemas/Servico"))
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro na validação dos dados"
+     *     )
+     * )
+     */
     public function create(Request $request)
     {
         $id_empresa = $this->getIdEmpresa($request);
@@ -86,8 +116,32 @@ class ServicoController extends Controller
             'service' => $servico
         ]);
     }
-    // get
-    public function get(Request $request, Int $id_servico = null)
+
+    /**
+     * @OA\Get(
+     *     path="/servico/{id_servico}",
+     *     summary="Obtém os detalhes de um serviço",
+     *     operationId="get",
+     *     tags={"Servico"},
+     *     @OA\Parameter(
+     *         name="id_servico",
+     *         in="path",
+     *         required=true,
+     *         description="ID do serviço",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Detalhes do serviço",
+     *         @OA\JsonContent(ref="#/components/schemas/Servico")
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Serviço não encontrado"
+     *     )
+     * )
+     */
+    public function get(Request $request, $id_servico = null)
     {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -129,8 +183,38 @@ class ServicoController extends Controller
         return response()->json($data);
     }
 
-    // update
-    // todo: ajustar
+    /**
+     * @OA\Put(
+     *     path="/servico/{id_servico}",
+     *     summary="Atualiza um serviço existente",
+     *     operationId="update",
+     *     tags={"Servico"},
+     *     @OA\Parameter(
+     *         name="id_servico",
+     *         in="path",
+     *         required=true,
+     *         description="ID do serviço",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(ref="#/components/schemas/Servico")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Serviço atualizado com sucesso",
+     *         @OA\JsonContent(type="object", @OA\Property(property="message", type="string"))
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro na validação dos dados"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Serviço não encontrado"
+     *     )
+     * )
+     */
     public function update(Int $id_servico, Request $request)
     {
         $id_empresa = $this->getIdEmpresa($request);
@@ -314,13 +398,58 @@ class ServicoController extends Controller
         ]);
     }
 
-
+    /**
+     * @OA\Patch(
+     *     path="/servico/{id_servico}",
+     *     summary="Finaliza um serviço",
+     *     operationId="finalizar",
+     *     tags={"Servico"},
+     *     @OA\Parameter(
+     *         name="id_servico",
+     *         in="path",
+     *         required=true,
+     *         description="ID do serviço",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Serviço finalizado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Serviço não encontrado"
+     *     )
+     * )
+     */
     public function finalizar(Request $request, Int $id_servico) {
         $id_empresa = $this->getIdEmpresa($request);
 
         Servico::finalizarReg($id_empresa, $id_servico);
     }
 
+     /**
+     * @OA\Delete(
+     *     path="/servico/{id_servico}",
+     *     summary="Exclui um serviço",
+     *     operationId="delete",
+     *     tags={"Servico"},
+     *     @OA\Parameter(
+     *         name="id_servico",
+     *         in="path",
+     *         required=true,
+     *         description="ID do serviço",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Serviço excluído com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Serviço não encontrado"
+     *     )
+     * )
+     */
     public function delete(Request $request, Int $id_servico) {
         $id_empresa = $this->getIdEmpresa($request);
 

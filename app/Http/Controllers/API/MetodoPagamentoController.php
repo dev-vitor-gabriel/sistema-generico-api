@@ -14,6 +14,34 @@ class MetodoPagamentoController extends Controller
         return $id_empresa;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/metodoPagamento",
+     *     summary="Cria um novo método de pagamento",
+     *     tags={"MetodoPagamento"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"desc_metodo_pagamento_tmp"},
+     *             @OA\Property(property="desc_metodo_pagamento_tmp", type="string", example="Cartão de Crédito"),
+     *             @OA\Property(property="is_ativo_tmp", type="boolean", example=true),
+     *             @OA\Property(property="id_empresa_tmp", type="integer", example=1)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Método de pagamento criado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/MaterialMovimentacao")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro na validação dos dados",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Erro de validação")
+     *         )
+     *     )
+     * )
+     */
     public function create(Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -30,7 +58,33 @@ class MetodoPagamentoController extends Controller
         return response()->json($metodoPagamento,201);
     }
 
-    public function get(Request $request, Int $id_metodo_pagamento = null) {
+    /**
+     * @OA\Get(
+     *     path="/metodoPagamento/{id_metodo_pagamento}",
+     *     summary="Obtém um método de pagamento específico",
+     *     tags={"MetodoPagamento"},
+     *     @OA\Parameter(
+     *         name="id_metodo_pagamento",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID do método de pagamento"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Método de pagamento encontrado",
+     *         @OA\JsonContent(ref="#/components/schemas/MaterialMovimentacao")
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Método de pagamento não encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Metodo de Pagamento Não Existe")
+     *         )
+     *     )
+     * )
+     */
+    public function get(Request $request, $id_metodo_pagamento = null) {
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_metodo_pagamento){
@@ -51,6 +105,38 @@ class MetodoPagamentoController extends Controller
         return MetodoPagamento::getAll($id_empresa, $filter, $per_page, $page_number);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/metodoPagamento/{id_metodo_pagamento}",
+     *     summary="Atualiza um método de pagamento existente",
+     *     tags={"MetodoPagamento"},
+     *     @OA\Parameter(
+     *         name="id_metodo_pagamento",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID do método de pagamento"
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"desc_metodo_pagamento_tmp"},
+     *             @OA\Property(property="desc_metodo_pagamento_tmp", type="string", example="Cartão de Débito")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Método de pagamento atualizado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=400,
+     *         description="Erro na validação dos dados",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Erro de validação")
+     *         )
+     *     )
+     * )
+     */
     public function update(Int $id_metodo_pagamento, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -60,6 +146,31 @@ class MetodoPagamentoController extends Controller
         MetodoPagamento::updateReg($id_empresa, $id_metodo_pagamento, $request);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/metodoPagamento/{id_metodo_pagamento}",
+     *     summary="Deleta um método de pagamento",
+     *     tags={"MetodoPagamento"},
+     *     @OA\Parameter(
+     *         name="id_metodo_pagamento",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="ID do método de pagamento"
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Método de pagamento deletado com sucesso"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Método de pagamento não encontrado",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="error", type="string", example="Método de pagamento não encontrado")
+     *         )
+     *     )
+     * )
+     */
     public function delete(Int $id_metodo_pagamento, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
         MetodoPagamento::deleteReg($id_empresa, $id_metodo_pagamento);

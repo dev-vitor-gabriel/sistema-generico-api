@@ -364,7 +364,7 @@
         "/centroCusto": {
             "get": {
                 "tags": [
-                    "Centro de Custo"
+                    "CentroCusto"
                 ],
                 "summary": "Lista todos os centros de custo",
                 "operationId": "117db102afb1e6db772328e2cb537c49",
@@ -417,7 +417,7 @@
             },
             "post": {
                 "tags": [
-                    "Centro de Custo"
+                    "CentroCusto"
                 ],
                 "summary": "Cria um novo centro de custo",
                 "operationId": "73e3392daf0808573cba4979e94fb09f",
@@ -456,7 +456,7 @@
         "/centroCusto/{id_centro_custo}": {
             "put": {
                 "tags": [
-                    "Centro de Custo"
+                    "CentroCusto"
                 ],
                 "summary": "Atualiza um centro de custo existente",
                 "operationId": "753bc7830f2167bd1411fe6e93dcbf3d",
@@ -497,7 +497,7 @@
             },
             "delete": {
                 "tags": [
-                    "Centro de Custo"
+                    "CentroCusto"
                 ],
                 "summary": "Remove um centro de custo",
                 "operationId": "a30890c05806c8fa92cd7215465d3c73",
@@ -1675,6 +1675,1099 @@
                 }
             }
         },
+        "/materialMovimentacao/{tipo_movimentacao}": {
+            "post": {
+                "tags": [
+                    "MaterialMovimentacao"
+                ],
+                "summary": "Criar movimentação de material",
+                "description": "Cria uma movimentação de material de entrada ou saída",
+                "operationId": "6fa089d34070e4fa4d389644f00a12ea",
+                "parameters": [
+                    {
+                        "name": "tipo_movimentacao",
+                        "in": "path",
+                        "description": "Tipo de movimentação (entrada ou saída)",
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "txt_movimentacao_mov",
+                                    "id_estoque",
+                                    "id_centro_custo_mov",
+                                    "materiais"
+                                ],
+                                "properties": {
+                                    "txt_movimentacao_mov": {
+                                        "description": "Descrição da movimentação",
+                                        "type": "string"
+                                    },
+                                    "id_estoque": {
+                                        "description": "ID do estoque",
+                                        "type": "integer"
+                                    },
+                                    "id_centro_custo_mov": {
+                                        "description": "ID do centro de custo",
+                                        "type": "integer"
+                                    },
+                                    "materiais": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id_material_mte": {
+                                                    "description": "ID do material",
+                                                    "type": "integer"
+                                                },
+                                                "qtd_material_mit": {
+                                                    "description": "Quantidade do material",
+                                                    "type": "integer"
+                                                },
+                                                "vlr_material_mit": {
+                                                    "description": "Valor do material",
+                                                    "type": "number",
+                                                    "format": "float"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Movimentação criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MaterialMovimentacao"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/materialMovimentacao/{id_material}": {
+            "get": {
+                "tags": [
+                    "MaterialMovimentacao"
+                ],
+                "summary": "Obter movimentação de material",
+                "description": "Obtém a movimentação de materiais por ID ou lista de todas",
+                "operationId": "6dcd6511b366b5ca2c9906f2b0807396",
+                "parameters": [
+                    {
+                        "name": "id_material",
+                        "in": "path",
+                        "description": "ID do material",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de movimentações",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MaterialMovimentacao"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/materialMovimentacao/{id_movimentacao}": {
+            "put": {
+                "tags": [
+                    "MaterialMovimentacao"
+                ],
+                "summary": "Atualizar movimentação de material",
+                "description": "Atualiza a descrição da movimentação de material",
+                "operationId": "55a784c41f1e22880b6695a8e7f01a9b",
+                "parameters": [
+                    {
+                        "name": "id_movimentacao",
+                        "in": "path",
+                        "description": "ID da movimentação",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "txt_movimentacao_mov"
+                                ],
+                                "properties": {
+                                    "txt_movimentacao_mov": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Movimentação atualizada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "MaterialMovimentacao"
+                ],
+                "summary": "Deletar movimentação de material",
+                "description": "Desativa uma movimentação de material",
+                "operationId": "8742a2f5d53091664c37969accce4349",
+                "parameters": [
+                    {
+                        "name": "id_movimentacao",
+                        "in": "path",
+                        "description": "ID da movimentação",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Movimentação desativada com sucesso"
+                    },
+                    "404": {
+                        "description": "Movimentação não encontrada"
+                    }
+                }
+            }
+        },
+        "/metodoPagamento": {
+            "post": {
+                "tags": [
+                    "MetodoPagamento"
+                ],
+                "summary": "Cria um novo método de pagamento",
+                "operationId": "1b76c69b3e79454bc442e2198d1bc171",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "desc_metodo_pagamento_tmp"
+                                ],
+                                "properties": {
+                                    "desc_metodo_pagamento_tmp": {
+                                        "type": "string",
+                                        "example": "Cartão de Crédito"
+                                    },
+                                    "is_ativo_tmp": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "id_empresa_tmp": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Método de pagamento criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MaterialMovimentacao"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Erro de validação"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/metodoPagamento/{id_metodo_pagamento}": {
+            "get": {
+                "tags": [
+                    "MetodoPagamento"
+                ],
+                "summary": "Obtém um método de pagamento específico",
+                "operationId": "706784495870a0ab0c18aac9f41c148c",
+                "parameters": [
+                    {
+                        "name": "id_metodo_pagamento",
+                        "in": "path",
+                        "description": "ID do método de pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Método de pagamento encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MaterialMovimentacao"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Método de pagamento não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Metodo de Pagamento Não Existe"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "MetodoPagamento"
+                ],
+                "summary": "Atualiza um método de pagamento existente",
+                "operationId": "5ec176ab3c111a2ef8ec7df27333f61a",
+                "parameters": [
+                    {
+                        "name": "id_metodo_pagamento",
+                        "in": "path",
+                        "description": "ID do método de pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "desc_metodo_pagamento_tmp"
+                                ],
+                                "properties": {
+                                    "desc_metodo_pagamento_tmp": {
+                                        "type": "string",
+                                        "example": "Cartão de Débito"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Método de pagamento atualizado com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Erro de validação"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "MetodoPagamento"
+                ],
+                "summary": "Deleta um método de pagamento",
+                "operationId": "cc94c3f73c0d67be3e9bdd82b10b6e99",
+                "parameters": [
+                    {
+                        "name": "id_metodo_pagamento",
+                        "in": "path",
+                        "description": "ID do método de pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Método de pagamento deletado com sucesso"
+                    },
+                    "404": {
+                        "description": "Método de pagamento não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Método de pagamento não encontrado"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pessoa": {
+            "post": {
+                "tags": [
+                    "Pessoa"
+                ],
+                "summary": "Cria uma nova pessoa",
+                "description": "Cria uma nova pessoa com os dados fornecidos.",
+                "operationId": "0f9afdddcdcb5e01fc1c1976099950fa",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nome_pessoa_pes",
+                                    "id_centro_custo_pes"
+                                ],
+                                "properties": {
+                                    "nome_pessoa_pes": {
+                                        "description": "Nome da pessoa",
+                                        "type": "string"
+                                    },
+                                    "id_centro_custo_pes": {
+                                        "description": "ID do centro de custo",
+                                        "type": "integer"
+                                    },
+                                    "documento_pessoa_pes": {
+                                        "description": "Documento de identificação",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pessoa criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Pessoa"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/pessoa/{id_pessoa}": {
+            "get": {
+                "tags": [
+                    "Pessoa"
+                ],
+                "summary": "Retorna uma pessoa por ID",
+                "description": "Retorna os detalhes de uma pessoa com base no ID fornecido.",
+                "operationId": "b33ba4c5dd7069d87346c18ba5805d0c",
+                "parameters": [
+                    {
+                        "name": "id_pessoa",
+                        "in": "path",
+                        "description": "ID da pessoa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes da pessoa",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Pessoa"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Pessoa não encontrada"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Pessoa"
+                ],
+                "summary": "Atualiza os dados de uma pessoa",
+                "description": "Atualiza os dados de uma pessoa com base no ID fornecido.",
+                "operationId": "35e01ea15cc65fa2c3768274af947de3",
+                "parameters": [
+                    {
+                        "name": "id_pessoa",
+                        "in": "path",
+                        "description": "ID da pessoa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nome_pessoa_pes": {
+                                        "description": "Nome da pessoa",
+                                        "type": "string"
+                                    },
+                                    "id_centro_custo_pes": {
+                                        "description": "ID do centro de custo",
+                                        "type": "integer"
+                                    },
+                                    "documento_pessoa_pes": {
+                                        "description": "Documento de identificação",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Pessoa atualizada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de validação ou pessoa não encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Pessoa"
+                ],
+                "summary": "Deleta uma pessoa",
+                "description": "Deleta uma pessoa com base no ID fornecido.",
+                "operationId": "0686ddc64e81a4482786139b5d93c4da",
+                "parameters": [
+                    {
+                        "name": "id_pessoa",
+                        "in": "path",
+                        "description": "ID da pessoa",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pessoa deletada com sucesso"
+                    },
+                    "400": {
+                        "description": "Pessoa não encontrada"
+                    }
+                }
+            }
+        },
+        "/servico": {
+            "post": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Cria um novo serviço",
+                "operationId": "create",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "txt_servico_ser",
+                                    "id_centro_custo_ser",
+                                    "id_funcionario_servico_ser",
+                                    "id_cliente_ser"
+                                ],
+                                "properties": {
+                                    "txt_servico_ser": {
+                                        "description": "Descrição do serviço",
+                                        "type": "string"
+                                    },
+                                    "id_centro_custo_ser": {
+                                        "description": "ID do centro de custo",
+                                        "type": "integer"
+                                    },
+                                    "id_funcionario_servico_ser": {
+                                        "description": "ID do funcionário responsável pelo serviço",
+                                        "type": "integer"
+                                    },
+                                    "id_cliente_ser": {
+                                        "description": "ID do cliente",
+                                        "type": "integer"
+                                    },
+                                    "tipos_servico": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id_servico_tipo_stp": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "materiais": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id_material_mte": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Serviço criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "service": {
+                                            "$ref": "#/components/schemas/Servico"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados"
+                    }
+                }
+            }
+        },
+        "/servico/{id_servico}": {
+            "get": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Obtém os detalhes de um serviço",
+                "operationId": "get",
+                "parameters": [
+                    {
+                        "name": "id_servico",
+                        "in": "path",
+                        "description": "ID do serviço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do serviço",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Servico"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Serviço não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Atualiza um serviço existente",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id_servico",
+                        "in": "path",
+                        "description": "ID do serviço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Servico"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Serviço atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Erro na validação dos dados"
+                    },
+                    "404": {
+                        "description": "Serviço não encontrado"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Exclui um serviço",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id_servico",
+                        "in": "path",
+                        "description": "ID do serviço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Serviço excluído com sucesso"
+                    },
+                    "404": {
+                        "description": "Serviço não encontrado"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Finaliza um serviço",
+                "operationId": "finalizar",
+                "parameters": [
+                    {
+                        "name": "id_servico",
+                        "in": "path",
+                        "description": "ID do serviço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Serviço finalizado com sucesso"
+                    },
+                    "404": {
+                        "description": "Serviço não encontrado"
+                    }
+                }
+            }
+        },
+        "/servicoTipo": {
+            "post": {
+                "tags": [
+                    "ServicoTipo"
+                ],
+                "summary": "Cria um novo tipo de serviço",
+                "operationId": "createServicoTipo",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "des_servico_tipo_stp",
+                                    "vlr_servico_tipo_stp",
+                                    "id_centro_custo_stp"
+                                ],
+                                "properties": {
+                                    "des_servico_tipo_stp": {
+                                        "type": "string",
+                                        "example": "Serviço Premium"
+                                    },
+                                    "vlr_servico_tipo_stp": {
+                                        "type": "integer",
+                                        "example": 150
+                                    },
+                                    "id_centro_custo_stp": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tipo de serviço criado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServicoTipo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados inválidos"
+                    }
+                }
+            }
+        },
+        "/servicoTipo/{id_servico_tipo}": {
+            "get": {
+                "tags": [
+                    "ServicoTipo"
+                ],
+                "summary": "Obtém um tipo de serviço pelo ID",
+                "operationId": "getServicoTipo",
+                "parameters": [
+                    {
+                        "name": "id_servico_tipo",
+                        "in": "path",
+                        "description": "ID do tipo de serviço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do tipo de serviço",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServicoTipo"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Tipo de serviço não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "ServicoTipo"
+                ],
+                "summary": "Atualiza um tipo de serviço",
+                "operationId": "updateServicoTipo",
+                "parameters": [
+                    {
+                        "name": "id_servico_tipo",
+                        "in": "path",
+                        "description": "ID do tipo de serviço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "des_servico_tipo_stp",
+                                    "vlr_servico_tipo_stp"
+                                ],
+                                "properties": {
+                                    "des_servico_tipo_stp": {
+                                        "type": "string",
+                                        "example": "Serviço Atualizado"
+                                    },
+                                    "vlr_servico_tipo_stp": {
+                                        "type": "integer",
+                                        "example": 200
+                                    },
+                                    "id_centro_custo_stp": {
+                                        "type": "integer",
+                                        "example": 3
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tipo de serviço atualizado"
+                    },
+                    "400": {
+                        "description": "Erro na atualização"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "ServicoTipo"
+                ],
+                "summary": "Inativa um tipo de serviço",
+                "operationId": "deleteServicoTipo",
+                "parameters": [
+                    {
+                        "name": "id_servico_tipo",
+                        "in": "path",
+                        "description": "ID do tipo de serviço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tipo de serviço inativado"
+                    },
+                    "400": {
+                        "description": "Erro ao inativar"
+                    }
+                }
+            }
+        },
+        "/unidade": {
+            "get": {
+                "tags": [
+                    "Unidade"
+                ],
+                "summary": "Obtém todas as unidades",
+                "operationId": "getAllUnidades",
+                "responses": {
+                    "200": {
+                        "description": "Lista de unidades"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Unidade"
+                ],
+                "summary": "Cria uma nova unidade",
+                "operationId": "createUnidade",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Unidade"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Unidade criada com sucesso"
+                    },
+                    "400": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/unidade/{id_unidade_und}": {
+            "get": {
+                "tags": [
+                    "Unidade"
+                ],
+                "summary": "Obtém uma unidade pelo ID",
+                "operationId": "getUnidadeById",
+                "parameters": [
+                    {
+                        "name": "id_unidade_und",
+                        "in": "path",
+                        "description": "ID da unidade",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Unidade encontrada"
+                    },
+                    "404": {
+                        "description": "Unidade não encontrada"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Unidade"
+                ],
+                "summary": "Exclui (inativa) uma unidade",
+                "operationId": "deleteUnidade",
+                "parameters": [
+                    {
+                        "name": "id_unidade_und",
+                        "in": "path",
+                        "description": "ID da unidade",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Unidade inativada com sucesso"
+                    },
+                    "404": {
+                        "description": "Unidade não encontrada"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Unidade"
+                ],
+                "summary": "Atualiza uma unidade",
+                "operationId": "updateUnidade",
+                "parameters": [
+                    {
+                        "name": "id_unidade_und",
+                        "in": "path",
+                        "description": "ID da unidade",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Unidade"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Unidade atualizada com sucesso"
+                    },
+                    "404": {
+                        "description": "Unidade não encontrada"
+                    }
+                }
+            }
+        },
         "/user/{id_user}": {
             "get": {
                 "tags": [
@@ -1815,6 +2908,72 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Usuário deletado com sucesso"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/usuario-menu": {
+            "post": {
+                "tags": [
+                    "UsuarioMenu"
+                ],
+                "summary": "Associa menus a um usuário",
+                "operationId": "createUsuarioMenu",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_menu_usm",
+                                    "id_user"
+                                ],
+                                "properties": {
+                                    "id_menu_usm": {
+                                        "description": "Lista de IDs dos menus a serem associados ao usuário",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "id_user": {
+                                        "description": "ID do usuário",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Associação criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioMenu"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -2172,6 +3331,233 @@
                 },
                 "type": "object"
             },
+            "MaterialMovimentacao": {
+                "properties": {
+                    "id_movimentacao_item_mit": {
+                        "type": "integer"
+                    },
+                    "id_movimentacao_mit": {
+                        "description": "Chave estrangeira referenciando a movimentação",
+                        "type": "integer"
+                    },
+                    "id_empresa_mit": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "id_material_mit": {
+                        "description": "Chave estrangeira referenciando o material",
+                        "type": "integer"
+                    },
+                    "qtd_material_mit": {
+                        "description": "Quantidade do material movimentado",
+                        "type": "integer"
+                    },
+                    "vlr_material_mit": {
+                        "description": "Valor do material movimentado",
+                        "type": "integer"
+                    },
+                    "is_ativo_mit": {
+                        "description": "Indica se o item está ativo",
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "tipo_movimentacao_mit": {
+                        "description": "Tipo de movimentação do item",
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "MetodoPagamento": {
+                "properties": {
+                    "id_metodo_pagamento_tmp": {
+                        "type": "integer"
+                    },
+                    "id_empresa_tmp": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "desc_metodo_pagamento_tmp": {
+                        "type": "string"
+                    },
+                    "is_ativo_tmp": {
+                        "description": "Indica se o método de pagamento está ativo",
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Pessoa": {
+                "properties": {
+                    "id_pessoa_pes": {
+                        "type": "integer"
+                    },
+                    "id_centro_custo_pes": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    },
+                    "nome_pessoa_pes": {
+                        "type": "string"
+                    },
+                    "documento_pessoa_pes": {
+                        "type": "string"
+                    },
+                    "is_ativo_pes": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Servico": {
+                "properties": {
+                    "id_servico_ser": {
+                        "type": "integer"
+                    },
+                    "id_empresa_ser": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "txt_servico_ser": {
+                        "type": "string"
+                    },
+                    "vlr_servico_ser": {
+                        "description": "Valor do serviço",
+                        "type": "integer"
+                    },
+                    "dta_agendamento_ser": {
+                        "description": "Data de agendamento do serviço",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "id_situacao_ser": {
+                        "description": "Chave estrangeira referenciando a situação do serviço",
+                        "type": "integer"
+                    },
+                    "id_funcionario_servico_ser": {
+                        "description": "Chave estrangeira referenciando o funcionário responsável pelo serviço",
+                        "type": "integer"
+                    },
+                    "id_centro_custo_ser": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    },
+                    "id_cliente_ser": {
+                        "description": "Chave estrangeira referenciando o cliente",
+                        "type": "integer"
+                    },
+                    "is_ativo_ser": {
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "ServicoTipo": {
+                "properties": {
+                    "id_servico_tipo_stp": {
+                        "type": "integer"
+                    },
+                    "id_empresa_stp": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "des_servico_tipo_stp": {
+                        "description": "Descrição do tipo de serviço",
+                        "type": "string"
+                    },
+                    "vlr_servico_tipo_stp": {
+                        "description": "Valor do tipo de serviço",
+                        "type": "integer"
+                    },
+                    "is_ativo_stp": {
+                        "description": "Indica se o tipo de serviço está ativo",
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "id_centro_custo_stp": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "Unidade": {
+                "properties": {
+                    "id_unidade_und": {
+                        "type": "integer"
+                    },
+                    "id_empresa_und": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "des_unidade_und": {
+                        "description": "Descrição completa da unidade",
+                        "type": "string"
+                    },
+                    "des_reduz_unidade_und": {
+                        "description": "Descrição reduzida da unidade",
+                        "type": "string"
+                    },
+                    "id_centro_custo_und": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    },
+                    "is_ativo_und": {
+                        "description": "Indica se a unidade está ativa",
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "description": "Data de criação do registro",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data da última atualização do registro",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "User": {
                 "type": "array",
                 "items": {
@@ -2200,6 +3586,80 @@
                     },
                     "type": "object"
                 }
+            },
+            "UsuarioMenu": {
+                "properties": {
+                    "id_rel_usuario_menu_usm": {
+                        "type": "integer"
+                    },
+                    "id_menu_usm": {
+                        "description": "Chave estrangeira referenciando o menu",
+                        "type": "integer"
+                    },
+                    "id_user": {
+                        "description": "Chave estrangeira referenciando o usuário",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Venda": {
+                "properties": {
+                    "id_venda_vda": {
+                        "type": "integer"
+                    },
+                    "id_empresa_vda": {
+                        "description": "Chave estrangeira referenciando a empresa",
+                        "type": "integer"
+                    },
+                    "id_funcionario_vda": {
+                        "description": "Chave estrangeira referenciando o funcionário responsável pela venda",
+                        "type": "integer"
+                    },
+                    "id_centro_custo_vda": {
+                        "description": "Chave estrangeira referenciando o centro de custo",
+                        "type": "integer"
+                    },
+                    "desc_venda_vda": {
+                        "description": "Descrição da venda",
+                        "type": "string"
+                    },
+                    "is_deleted": {
+                        "description": "Indica se a venda foi deletada",
+                        "type": "boolean"
+                    },
+                    "created_at": {
+                        "description": "Data de criação",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "description": "Data de atualização",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "id_cliente_vda": {
+                        "description": "Chave estrangeira referenciando o cliente",
+                        "type": "integer"
+                    },
+                    "id_status_vda": {
+                        "description": "Chave estrangeira referenciando o status da venda",
+                        "type": "integer"
+                    },
+                    "id_movimentacao_vda": {
+                        "description": "Chave estrangeira referenciando a movimentação da venda",
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -2220,8 +3680,8 @@
             "description": "Cargo"
         },
         {
-            "name": "Centro de Custo",
-            "description": "Centro de Custo"
+            "name": "CentroCusto",
+            "description": "CentroCusto"
         },
         {
             "name": "Cliente",
@@ -2256,8 +3716,36 @@
             "description": "Material"
         },
         {
+            "name": "MaterialMovimentacao",
+            "description": "MaterialMovimentacao"
+        },
+        {
+            "name": "MetodoPagamento",
+            "description": "MetodoPagamento"
+        },
+        {
+            "name": "Pessoa",
+            "description": "Pessoa"
+        },
+        {
+            "name": "Servico",
+            "description": "Servico"
+        },
+        {
+            "name": "ServicoTipo",
+            "description": "ServicoTipo"
+        },
+        {
+            "name": "Unidade",
+            "description": "Unidade"
+        },
+        {
             "name": "Usuario",
             "description": "Usuario"
+        },
+        {
+            "name": "UsuarioMenu",
+            "description": "UsuarioMenu"
         }
     ],
     "security": [

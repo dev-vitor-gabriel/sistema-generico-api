@@ -21,9 +21,10 @@ class MaterialMovimentacaoController extends Controller
 
      /**
      * @OA\Post(
-     *     path="/material-movimentacao/{tipo_movimentacao}/create",
+     *     path="/materialMovimentacao/{tipo_movimentacao}",
      *     summary="Criar movimentação de material",
      *     description="Cria uma movimentação de material de entrada ou saída",
+     *     tags={"MaterialMovimentacao"},
      *     @OA\Parameter(
      *         name="tipo_movimentacao",
      *         in="path",
@@ -161,9 +162,10 @@ class MaterialMovimentacaoController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/material-movimentacao/{id_material}",
+     *     path="/materialMovimentacao/{id_material}",
      *     summary="Obter movimentação de material",
      *     description="Obtém a movimentação de materiais por ID ou lista de todas",
+     *     tags={"MaterialMovimentacao"},
      *     @OA\Parameter(
      *         name="id_material",
      *         in="path",
@@ -196,9 +198,10 @@ class MaterialMovimentacaoController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/material-movimentacao/{id_movimentacao}/update",
+     *     path="/materialMovimentacao/{id_movimentacao}",
      *     summary="Atualizar movimentação de material",
      *     description="Atualiza a descrição da movimentação de material",
+     *     tags={"MaterialMovimentacao"},
      *     @OA\Parameter(
      *         name="id_movimentacao",
      *         in="path",
@@ -234,9 +237,10 @@ class MaterialMovimentacaoController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/material-movimentacao/{id_movimentacao}/delete",
+     *     path="/materialMovimentacao/{id_movimentacao}",
      *     summary="Deletar movimentação de material",
      *     description="Desativa uma movimentação de material",
+     *     tags={"MaterialMovimentacao"},
      *     @OA\Parameter(
      *         name="id_movimentacao",
      *         in="path",

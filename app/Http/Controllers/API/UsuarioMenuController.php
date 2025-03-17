@@ -10,6 +10,43 @@ use Illuminate\Support\Facades\Validator;
 
 class UsuarioMenuController extends Controller
 {
+    /**
+     * @OA\Post(
+     *     path="/api/usuario-menu",
+     *     summary="Associa menus a um usuário",
+     *     operationId="createUsuarioMenu",
+     *     tags={"UsuarioMenu"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"id_menu_usm", "id_user"},
+     *             @OA\Property(
+     *                 property="id_menu_usm",
+     *                 type="array",
+     *                 @OA\Items(type="integer"),
+     *                 description="Lista de IDs dos menus a serem associados ao usuário"
+     *             ),
+     *             @OA\Property(
+     *                 property="id_user",
+     *                 type="integer",
+     *                 description="ID do usuário"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Associação criada com sucesso",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/UsuarioMenu"))
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     */
     public function create(Request $request) {
         $validator = Validator::make($request->all(), [
             'id_menu_usm' => 'required|array',

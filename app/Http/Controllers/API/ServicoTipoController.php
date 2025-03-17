@@ -14,6 +14,29 @@ class ServicoTipoController extends Controller
         return $id_empresa;
     }
 
+    /**
+     * @OA\Post(
+     *     path="/servicoTipo",
+     *     summary="Cria um novo tipo de serviço",
+     *     operationId="createServicoTipo",
+     *     tags={"ServicoTipo"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"des_servico_tipo_stp", "vlr_servico_tipo_stp", "id_centro_custo_stp"},
+     *             @OA\Property(property="des_servico_tipo_stp", type="string", example="Serviço Premium"),
+     *             @OA\Property(property="vlr_servico_tipo_stp", type="integer", example=150),
+     *             @OA\Property(property="id_centro_custo_stp", type="integer", example=2)
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Tipo de serviço criado com sucesso",
+     *         @OA\JsonContent(ref="#/components/schemas/ServicoTipo")
+     *     ),
+     *     @OA\Response(response=400, description="Dados inválidos"),
+     * )
+     */
     public function create(Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -34,7 +57,28 @@ class ServicoTipoController extends Controller
         return response()->json($servico_tipo,201);
     }
 
-    public function get(Request $request, Int $id_servico_tipo = null) {
+    /**
+     * @OA\Get(
+     *     path="/servicoTipo/{id_servico_tipo}",
+     *     summary="Obtém um tipo de serviço pelo ID",
+     *     operationId="getServicoTipo",
+     *     tags={"ServicoTipo"},
+     *     @OA\Parameter(
+     *         name="id_servico_tipo",
+     *         in="path",
+     *         required=true,
+     *         description="ID do tipo de serviço",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Dados do tipo de serviço",
+     *         @OA\JsonContent(ref="#/components/schemas/ServicoTipo")
+     *     ),
+     *     @OA\Response(response=400, description="Tipo de serviço não encontrado"),
+     * )
+     */
+    public function get(Request $request, $id_servico_tipo = null) {
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_servico_tipo){
@@ -51,6 +95,32 @@ class ServicoTipoController extends Controller
         return $data;
     }
 
+    /**
+     * @OA\Put(
+     *     path="/servicoTipo/{id_servico_tipo}",
+     *     summary="Atualiza um tipo de serviço",
+     *     operationId="updateServicoTipo",
+     *     tags={"ServicoTipo"},
+     *     @OA\Parameter(
+     *         name="id_servico_tipo",
+     *         in="path",
+     *         required=true,
+     *         description="ID do tipo de serviço",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"des_servico_tipo_stp", "vlr_servico_tipo_stp"},
+     *             @OA\Property(property="des_servico_tipo_stp", type="string", example="Serviço Atualizado"),
+     *             @OA\Property(property="vlr_servico_tipo_stp", type="integer", example=200),
+     *             @OA\Property(property="id_centro_custo_stp", type="integer", example=3)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Tipo de serviço atualizado"),
+     *     @OA\Response(response=400, description="Erro na atualização"),
+     * )
+     */
     public function update(Int $id_servico_tipo, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
@@ -63,7 +133,23 @@ class ServicoTipoController extends Controller
         ServicoTipo::updateReg($id_empresa, $id_servico_tipo, $request);
     }
 
-    // delete (inactivate)
+    /**
+     * @OA\Delete(
+     *     path="/servicoTipo/{id_servico_tipo}",
+     *     summary="Inativa um tipo de serviço",
+     *     operationId="deleteServicoTipo",
+     *     tags={"ServicoTipo"},
+     *     @OA\Parameter(
+     *         name="id_servico_tipo",
+     *         in="path",
+     *         required=true,
+     *         description="ID do tipo de serviço",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Tipo de serviço inativado"),
+     *     @OA\Response(response=400, description="Erro ao inativar"),
+     * )
+     */
     public function delete(Int $id_servico_tipo, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
         ServicoTipo::deleteReg($id_empresa, $id_servico_tipo);
