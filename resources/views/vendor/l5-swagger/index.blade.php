@@ -5,9 +5,9 @@
     <title>{{ config('l5-swagger.documentations.'.$documentation.'.api.title') }}</title>
 
     <!-- Alteração para usar o caminho com a variável de ambiente BASE_URL_SWAGGER -->
-    <link rel="stylesheet" type="text/css" href="{{ env('BASE_URL_SWAGGER') . 'swagger-ui.css' }}">
-    <link rel="icon" type="image/png" href="{{ env('BASE_URL_SWAGGER') . 'favicon-32x32.png' }}" sizes="32x32"/>
-    <link rel="icon" type="image/png" href="{{ env('BASE_URL_SWAGGER') . 'favicon-16x16.png' }}" sizes="16x16"/>
+    <link rel="stylesheet" type="text/css" href="https://sistema-generico-api.vercel.app/docs/asset/swagger-ui.css">
+    <link rel="icon" type="image/png" href="https://sistema-generico-api.vercel.app/docs/asset/favicon-32x32.png" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="https://sistema-generico-api.vercel.app/docs/asset/favicon-16x16.png" sizes="16x16"/>
 
     <style>
     html {
@@ -122,8 +122,8 @@
 <div id="swagger-ui"></div>
 
 <!-- Alteração para usar o caminho com a variável de ambiente BASE_URL_SWAGGER -->
-<script src="{{ env('BASE_URL_SWAGGER') . 'swagger-ui-bundle.js' }}"></script>
-<script src="{{ env('BASE_URL_SWAGGER') . 'swagger-ui-standalone-preset.js' }}"></script>
+<script src="https://sistema-generico-api.vercel.app/docs/asset/swagger-ui-bundle.js"></script>
+<script src="https://sistema-generico-api.vercel.app/docs/asset/swagger-ui-standalone-preset.js"></script>
 <script>
     window.onload = function() {
         const ui = SwaggerUIBundle({
