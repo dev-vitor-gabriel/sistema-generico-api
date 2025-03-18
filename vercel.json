@@ -11,10 +11,6 @@
             "dest": "/build/$1"
         },
         {
-            "src": "/vendor/swagger-api/swagger-ui/(.*)",
-            "dest": "/public/vendor/swagger-api/swagger-ui/$1"
-        },
-        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }

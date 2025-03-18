@@ -858,8 +858,8 @@
                 "tags": [
                     "EmpresaMenu"
                 ],
-                "summary": "Obtém os menus associados a uma empresa",
-                "operationId": "aee1c59d720256451e7ce549bd5ac1c2",
+                "summary": "Obtém os menus associados a empresa logada",
+                "operationId": "2764018640e8074db4274e1ed7ebf263",
                 "responses": {
                     "200": {
                         "description": "Menus encontrados para a empresa",
@@ -873,9 +873,6 @@
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Empresa não encontrada"
                     }
                 }
             },

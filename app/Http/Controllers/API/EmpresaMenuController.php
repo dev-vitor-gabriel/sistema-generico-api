@@ -87,21 +87,21 @@ class EmpresaMenuController extends Controller
         return response()->json($data, 200);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/empresaMenu",
-     *     summary="Obtém os menus associados a uma empresa",
-     *     tags={"EmpresaMenu"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Menus encontrados para a empresa",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(ref="#/components/schemas/EmpresaMenu")
-     *         )
-     *     )
-     * )
-     */
+    // /**
+    //  *     @OA\Get(
+    //  *     path="/empresaMenu",
+    //  *     summary="Obtém os menus associados a uma empresa",
+    //  *     tags={"EmpresaMenu"},
+    //  *     @OA\Response(
+    //  *         response=200,
+    //  *         description="Menus encontrados para a empresa",
+    //  *         @OA\JsonContent(
+    //  *             type="array",
+    //  *             @OA\Items(ref="#/components/schemas/EmpresaMenu")
+    //  *         )
+    //  *     )
+    //  * )
+    //  */
     public function getMenuByIdEmpresa(Request $request)
     {
         $id_empresa = $request->id_empresa;
