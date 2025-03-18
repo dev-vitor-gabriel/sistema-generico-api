@@ -11,18 +11,8 @@
             "dest": "/build/$1"
         },
         {
-            "src": "/swagger/(.*)",
-            "dest": "/public/swagger/$1"
-        },
-        {
             "src": "/(.*)",
             "dest": "/api/index.php"
-        }
-    ],
-    "rewrites": [
-        {
-          "source": "/api/docs/asset/:file",
-          "destination": "/public/vendor/swagger-ui/:file"
         }
     ],
     "env": {
