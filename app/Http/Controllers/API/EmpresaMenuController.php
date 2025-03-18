@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class EmpresaMenuController extends Controller
 {
-
+ 
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
