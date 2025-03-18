@@ -104,6 +104,7 @@ return [
              * `scanOptions.exclude` overwrites this
              */
             'excludes' => [],
+
         ],
 
         'scanOptions' => [
