@@ -17,11 +17,10 @@ return [
             ],
 
             'paths' => [
-                'docs_json' => 'api-docs.json',
-                'docs_yaml' => 'api-docs.yaml',
-                'format_to_use_for_docs' => 'json',
-                'assets' => 'vendor/l5-swagger/',
-                'swagger_ui' => 'docs',
+                'docs_json' => 'api-docs.json',  // ou o caminho correto se for outro
+                'docs_yaml' => 'api-docs.yaml',  // se for o caso
+                'assets' => 'api/docs/assets',   // Mude de 'vendor/l5-swagger/' para o caminho correto
+                'swagger_ui' => 'api/docs',
 
                 /*
                  * Edit to include full URL in ui for assets
