@@ -20,7 +20,8 @@ return [
                 'docs_json' => 'api-docs.json',
                 'docs_yaml' => 'api-docs.yaml',
                 'format_to_use_for_docs' => 'json',
-                'swagger_ui' => 'api/docs',
+                'assets' => 'vendor/l5-swagger/',
+                'swagger_ui' => 'docs',
 
                 /*
                  * Edit to include full URL in ui for assets
