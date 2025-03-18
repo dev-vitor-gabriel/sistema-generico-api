@@ -2,13 +2,18 @@
     "version": 2,
     "framework": null,
     "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.7.3" }
+        "api/index.php": { "runtime": "vercel-php@0.7.3" },
+        "public/**": { "runtime": "@vercel/static" }
     },
     "outputDirectory": "public",
     "routes": [
         {
             "src": "/build/(.*)",
             "dest": "/build/$1"
+        },
+        {
+            "src": "/swagger/(.*)",
+            "dest": "/public/swagger/$1"
         },
         {
             "src": "/(.*)",
