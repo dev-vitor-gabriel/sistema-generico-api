@@ -23,6 +23,10 @@
         {
           "source": "/api/docs/asset/:file",
           "destination": "/public/vendor/swagger-ui/:file"
+        },
+        {
+          "source": "/api/docs/asset/:file",
+          "destination": "/public/vendor/swagger-ui/:file"
         }
     ],
     "env": {
