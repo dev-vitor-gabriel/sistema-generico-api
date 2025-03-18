@@ -2,8 +2,7 @@
     "version": 2,
     "framework": null,
     "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.7.3" },
-        "public/**": { "runtime": "@vercel/static" }
+        "api/index.php": { "runtime": "vercel-php@0.7.3" }
     },
     "outputDirectory": "public",
     "routes": [
@@ -18,6 +17,12 @@
         {
             "src": "/(.*)",
             "dest": "/api/index.php"
+        }
+    ],
+    "rewrites": [
+        {
+          "source": "/api/docs/asset/:file",
+          "destination": "/public/vendor/swagger-ui/:file"
         }
     ],
     "env": {
