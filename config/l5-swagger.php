@@ -5,7 +5,7 @@ return [
     'documentations' => [
         'default' => [
             'api' => [
-                'title' => 'Swagger',
+                'title' => 'Swagger UI',
                 'docs' => 'api-docs.json',
             ],
 
