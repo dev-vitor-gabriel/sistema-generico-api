@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "/docs"
+            "url": "http://127.0.0.1:8000/api1"
         }
     ],
     "paths": {
@@ -849,6 +849,48 @@
                     },
                     "422": {
                         "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/{id_empresa_emp}/empresas": {
+            "get": {
+                "tags": [
+                    "Empresa"
+                ],
+                "summary": "Lista todos os usuários da empresa",
+                "operationId": "9ae5e9a633381b2ac03d744dbca57a68",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Quantidade de registros por página",
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filtro para busca",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page_number",
+                        "in": "query",
+                        "description": "Número da página",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários retornada com sucesso"
                     }
                 }
             }
