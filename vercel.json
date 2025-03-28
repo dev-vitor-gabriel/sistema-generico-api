@@ -15,11 +15,11 @@
             "dest": "/api/index.php"
         },
         {
-            "src": "/api/docs/assets/(.*)",
+            "src": "/docs/assets/(.*)",
             "dest": "/public/vendor/l5-swagger/$1"
           },
           {
-            "src": "/api/docs/(.*)",
+            "src": "/docs/(.*)",
             "dest": "/public/docs/$1"
           }
     ],
