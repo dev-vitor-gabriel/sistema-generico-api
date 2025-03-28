@@ -18,5 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/debug-swagger-url', function () {
-    return url(config('l5-swagger.paths.docs_json'));
+    return response()->json([
+        'swagger_url' => url(config('l5-swagger.paths.docs_json'))
+    ]);
 });
