@@ -6,9 +6,15 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Empresa;
+use App\Models\User;
 
 class EmpresaController extends Controller
 {
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
 
     /**
      * @OA\Post(
@@ -244,6 +250,45 @@ class EmpresaController extends Controller
         ]);
 
         return response()->json(['message' => 'Empresa atualizada com sucesso.', 'empresa' => $empresa], 200);
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/{id_empresa_emp}/empresas",
+     *     summary="Lista todos os usuários da empresa",
+     *     tags={"Empresa"},
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *         description="Quantidade de registros por página",
+     *         @OA\Schema(type="integer", default=10)
+     *     ),
+     *     @OA\Parameter(
+     *         name="filter",
+     *         in="query",
+     *         description="Filtro para busca",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="page_number",
+     *         in="query",
+     *         description="Número da página",
+     *         @OA\Schema(type="integer", default=1)
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Lista de usuários retornada com sucesso"
+     *     )
+     * )
+     */
+    public function getUsers(Request $request)
+    {
+        $id_empresa = $this->getIdEmpresa($request);
+        $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
+
+        return User::getAllByCompany($id_empresa, $filter,$per_page, $page_number);
     }
 
 }

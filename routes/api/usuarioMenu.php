@@ -16,4 +16,5 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(UsuarioMenuController::class)->group(function () {
     Route::post('', 'create');
+    Route::get('{id_user}', 'getMenuByIdUsuario');
 });

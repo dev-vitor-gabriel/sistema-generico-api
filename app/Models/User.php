@@ -32,9 +32,18 @@ class User extends Authenticatable implements JWTSubject
         return response()->json($data->toArray());
     }
 
-    public static function getAllByCompany(Int $id_empresa) {
-        $data = User::select(['id','name','email','url_img_user','created_at','updated_at'])->where('is_ativo_user', 1)->orderBy('id', 'desc')->get();
-        return response()->json($data);
+    public static function getAllByCompany(Int $id_empresa, String $filter, Int $perPage, Int $pageNumber) {
+        $paginator = User::
+        select(['id','name','email','url_img_user','created_at','updated_at'])
+        ->where('is_ativo_user', 1)
+        ->where('name', 'like', '%'.$filter.'%')
+        ->orderBy('id', 'desc')
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
     }
 
     public static function getById(Int $id = null) {
