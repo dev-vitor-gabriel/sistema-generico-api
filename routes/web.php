@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/debug-swagger-url', function () {
+    return url(config('l5-swagger.paths.docs_json'));
+});
