@@ -5,9 +5,9 @@
     <title>{{ config('l5-swagger.documentations.'.$documentation.'.api.title') }}</title>
 
     <!-- Alteração para usar o caminho /docs/ para os assets -->
-    <link rel="stylesheet" type="text/css" href="{{ url('/docs/asset/swagger-ui.css') }}">
-    <link rel="icon" type="image/png" href="{{ url('/docs/asset/favicon-32x32.png') }}" sizes="32x32"/>
-    <link rel="icon" type="image/png" href="{{ url('/docs/asset/favicon-16x16.png') }}" sizes="16x16"/>
+    <link rel="stylesheet" type="text/css" href="{{ env('SWAGGER_BASE_URL', 'http://127.0.0.1:8000') . '/docs/asset/swagger-ui.css' }}">
+    <link rel="icon" type="image/png" href="{{ env('SWAGGER_BASE_URL', 'http://127.0.0.1:8000') . '/docs/asset/favicon-32x32.png' }}" sizes="32x32"/>
+    <link rel="icon" type="image/png" href="{{ env('SWAGGER_BASE_URL', 'http://127.0.0.1:8000') . '/docs/asset/favicon-16x16.png' }}" sizes="16x16"/>
 
     <style>
     html {
@@ -122,8 +122,8 @@
 <div id="swagger-ui"></div>
 
 <!-- Alteração para usar o caminho /docs/ para os scripts -->
-<script src="{{ url('/docs/asset/swagger-ui-bundle.js') }}"></script>
-<script src="{{ url('/docs/asset/swagger-ui-standalone-preset.js') }}"></script>
+<script src="{{ env('SWAGGER_BASE_URL', 'http://127.0.0.1:8000') . '/docs/asset/swagger-ui-bundle.js' }}"></script>
+<script src="{{ env('SWAGGER_BASE_URL', 'http://127.0.0.1:8000') . '/docs/asset/swagger-ui-standalone-preset.js' }}"></script>
 <script>
     window.onload = function() {
         const ui = SwaggerUIBundle({
