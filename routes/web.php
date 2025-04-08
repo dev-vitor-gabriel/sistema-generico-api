@@ -17,7 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/docs/api-docs.json', function () {
+Route::get('/api/docs/api-docs.json', function () {
     return response()->file(storage_path('api-docs/api-docs.json'));
 });
 
