@@ -55,12 +55,6 @@ return [
                 ],
             ],
         ],
-        'servers' => [
-            [
-                'url' => env('L5_SWAGGER_SERVER_URL', 'http://localhost:8000/api'),
-                'description' => 'API Server',
-            ],
-        ],
     ],
     'defaults' => [
         'routes' => [
