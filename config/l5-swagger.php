@@ -6,7 +6,7 @@ return [
         'default' => [
             'api' => [
                 'title' => 'Swagger UI',
-                'docs' => 'api-docs.json',
+                'docs' => '/api-docs.json',
             ],
 
             'routes' => [
