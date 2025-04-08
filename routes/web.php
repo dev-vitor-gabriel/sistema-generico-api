@@ -21,7 +21,6 @@ Route::get('/api/docs', function () {
     if (request()->getQueryString() === 'api-docs.json') {
         return response()->file(storage_path('api-docs/api-docs.json'));
     }
-
     return redirect('/api/api/documentation');
 });
 
