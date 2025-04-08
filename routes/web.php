@@ -17,8 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/debug-swagger-url', function () {
-    return response()->json([
-        'swagger_url' => url(config('l5-swagger.paths.docs_json'))
-    ]);
+Route::get('/docs/api-docs.json', function () {
+    return response()->file(storage_path('api-docs/api-docs.json'));
 });
+
