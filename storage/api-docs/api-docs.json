@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "https://sistema-generico-api.vercel.app/api/api/"
+            "url": "https://sistema-generico-api.vercel.app/api/"
         }
     ],
     "paths": {
