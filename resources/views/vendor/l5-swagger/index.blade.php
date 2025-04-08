@@ -133,6 +133,12 @@
             configUrl: {!! isset($configUrl) ? '"' . $configUrl . '"' : 'null' !!},
             validatorUrl: {!! isset($validatorUrl) ? '"' . $validatorUrl . '"' : 'null' !!},
             oauth2RedirectUrl: "{{ route('l5-swagger.'.$documentation.'.oauth2_callback', [], $useAbsolutePath) }}",
+            "servers": [
+                {
+                    "url": "{{ env('L5_SWAGGER_BASE_API_URL', 'http://127.0.0.1:8000/teste') }}",
+                    "description": "API Production"
+                }
+            ],
 
             requestInterceptor: function(request) {
                 request.headers['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
