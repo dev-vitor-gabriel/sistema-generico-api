@@ -17,7 +17,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/api/docs/api-docs.json', function () {
-    return response()->file(storage_path('api-docs/api-docs.json'));
+Route::get('/api/docs', function () {
+    if (request()->getQueryString() === 'api-docs.json') {
+        return response()->file(storage_path('api-docs/api-docs.json'));
+    }
+
+    return redirect('/api/api/documentation');
 });
 
