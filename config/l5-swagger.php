@@ -17,8 +17,8 @@ return [
             ],
 
             'paths' => [
-                'docs_json' => 'api/docs/api-docs.json',
-                'docs_yaml' => 'api-docs.yaml',  // se for o caso
+                'docs_json' => '/api-docs.json',  // ou o caminho correto se for outro
+                'docs_yaml' => '/api-docs.yaml',  // se for o caso
                 'assets' => 'docs/assets',   // Mude de 'vendor/l5-swagger/' para o caminho correto
                 'swagger_ui' => '/docs',
 
