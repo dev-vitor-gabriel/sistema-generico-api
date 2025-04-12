@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Menu;
+use App\Models\RelUsuarioMenu;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -71,7 +72,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $menu = Menu::getAll();
+        $menu = RelUsuarioMenu::getMenuByIdUsuario($user->id);
         return response()->json([
             'user' => $user,
             'authorization' => [
