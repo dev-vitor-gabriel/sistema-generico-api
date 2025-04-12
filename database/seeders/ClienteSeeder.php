@@ -13,7 +13,7 @@ class ClienteSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('tb_cliente')->insert([
+        DB::table('tb_cliente')->updateOrInsert([
             'des_cliente_cli'  => 'Cliente A',
             'telefone_cliente_cli'  => '85900000000',
             'email_cliente_cli'   => 'cliente@gmail.com',

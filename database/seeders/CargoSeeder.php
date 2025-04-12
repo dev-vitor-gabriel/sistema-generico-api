@@ -13,21 +13,21 @@ class CargoSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('tb_cargos')->insert([
+        DB::table('tb_cargos')->updateOrInsert([
             'desc_cargo_tcg'  => 'Barbeiro',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('tb_cargos')->insert([
+        DB::table('tb_cargos')->updateOrInsert([
             'desc_cargo_tcg'  => 'Cabeleireira',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('tb_cargos')->insert([
+        DB::table('tb_cargos')->updateOrInsert([
             'desc_cargo_tcg'  => 'Recepção',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        
+
     }
 }

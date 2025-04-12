@@ -16,25 +16,25 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('tb_status')->insert([
+        DB::table('tb_status')->updateOrInsert([
             'des_status_sts' => 'Aberta',
             'origem_sts' => OrigemStatusEnum::Venda->value,
             'status_sts' => StatusVendaEnum::Aberta->value,
             'is_ativo_sts' => true,
         ]);
-        DB::table('tb_status')->insert([
+        DB::table('tb_status')->updateOrInsert([
             'des_status_sts' => 'Negociando',
             'origem_sts' => OrigemStatusEnum::Venda->value,
             'status_sts' => StatusVendaEnum::Negociando->value,
             'is_ativo_sts' => true,
         ]);
-        DB::table('tb_status')->insert([
+        DB::table('tb_status')->updateOrInsert([
             'des_status_sts' => 'Finalizada',
             'origem_sts' => OrigemStatusEnum::Venda->value,
             'status_sts' => StatusVendaEnum::Finalizada->value,
             'is_ativo_sts' => true,
         ]);
-        DB::table('tb_status')->insert([
+        DB::table('tb_status')->updateOrInsert([
             'des_status_sts' => 'Cancelada',
             'origem_sts' => OrigemStatusEnum::Venda->value,
             'status_sts' => StatusVendaEnum::Cancelada->value,

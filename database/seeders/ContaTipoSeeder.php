@@ -13,12 +13,12 @@ class ContaTipoSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('tb_conta_tipo')->insert([
+        DB::table('tb_conta_tipo')->updateOrInsert([
             'des_conta_tipo_ctp'  => 'entrada',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-        DB::table('tb_conta_tipo')->insert([
+        DB::table('tb_conta_tipo')->updateOrInsert([
             'des_conta_tipo_ctp'  => 'saida',
             'created_at' => now(),
             'updated_at' => now(),

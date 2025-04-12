@@ -13,7 +13,7 @@ class EmpresaSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('tb_empresa')->insert([
+        DB::table('tb_empresa')->updateOrInsert([
             'des_empresa_emp' => 'Empresa Default',
             'razao_social_empresa_emp' => 'Razão Social Default',
             'cnpj_empresa_emp' => '00.000.000/0000-00',

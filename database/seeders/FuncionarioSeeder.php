@@ -13,7 +13,7 @@ class FuncionarioSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('tb_funcionarios')->insert([
+        DB::table('tb_funcionarios')->updateOrInsert([
             'id_funcionario_cargo_tfu'=>1,
             'desc_funcionario_tfu'=>'João',
             'telefone_funcionario_tfu'=>'85900000000',
@@ -23,7 +23,7 @@ class FuncionarioSeeder extends Seeder
             'updated_at' => now(),
             'id_centro_custo_tfu'  => 1,
         ]);
-        DB::table('tb_funcionarios')->insert([
+        DB::table('tb_funcionarios')->updateOrInsert([
             'id_funcionario_cargo_tfu'=>1,
             'desc_funcionario_tfu'=>'Pedro',
             'telefone_funcionario_tfu'=>'85900000000',
@@ -33,7 +33,7 @@ class FuncionarioSeeder extends Seeder
             'updated_at' => now(),
             'id_centro_custo_tfu'  => 2,
         ]);
-        DB::table('tb_funcionarios')->insert([
+        DB::table('tb_funcionarios')->updateOrInsert([
             'id_funcionario_cargo_tfu'=>3,
             'desc_funcionario_tfu'=>'Marcos',
             'telefone_funcionario_tfu'=>'85900000000',

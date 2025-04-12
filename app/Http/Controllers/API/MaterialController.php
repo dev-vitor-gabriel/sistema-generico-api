@@ -14,6 +14,12 @@ class MaterialController extends Controller
         $this->middleware('auth:api', ['except' => []]);
     }
 
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     /**
      * @OA\Get(
      *     path="/material/{id_material}",
