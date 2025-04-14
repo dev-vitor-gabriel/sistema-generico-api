@@ -67,6 +67,21 @@ class UsuarioCentroCusto extends Controller
         return response()->json([], 201);
     }
 
+    // /**
+    //  *     @OA\Get(
+    //  *     path="/usuarioCentroCusto",
+    //  *     summary="Obtém os centros de custo associados ao usuário",
+    //  *     tags={"UsuarioCentroCusto"},
+    //  *     @OA\Response(
+    //  *         response=200,
+    //  *         description="Centros de Custo encontrados para o usuário",
+    //  *         @OA\JsonContent(
+    //  *             type="array",
+    //  *             @OA\Items(ref="#/components/schemas/UsuarioCentroCusto"},")
+    //  *         )
+    //  *     )
+    //  * )
+    //  */
     public function getCentroCustoByIdUsuario(Int $id_usuario)
     {
         $data = RelUsuarioCentroCusto::getCentroCustoByIdUsuario($id_usuario);

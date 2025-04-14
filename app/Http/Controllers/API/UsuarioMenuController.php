@@ -71,15 +71,15 @@ class UsuarioMenuController extends Controller
 
     // /**
     //  *     @OA\Get(
-    //  *     path="/empresaMenu",
-    //  *     summary="Obtém os menus associados a uma empresa",
-    //  *     tags={"EmpresaMenu"},
+    //  *     path="/usuarioMenu",
+    //  *     summary="Obtém os menus associados ao usuário",
+    //  *     tags={"UsuarioMenu"},
     //  *     @OA\Response(
     //  *         response=200,
-    //  *         description="Menus encontrados para a empresa",
+    //  *         description="Menus encontrados para o usuário",
     //  *         @OA\JsonContent(
     //  *             type="array",
-    //  *             @OA\Items(ref="#/components/schemas/EmpresaMenu")
+    //  *             @OA\Items(ref="#/components/schemas/UsuarioMenu")
     //  *         )
     //  *     )
     //  * )
