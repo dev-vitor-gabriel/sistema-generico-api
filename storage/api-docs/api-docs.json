@@ -3023,6 +3023,41 @@
                 }
             }
         },
+        "/usuarioCentroCusto/{id_user}": {
+            "get": {
+                "tags": [
+                    "UsuarioCentroCusto"
+                ],
+                "summary": "Obtém os centros de custo associados a um usuário",
+                "operationId": "6321158e4c8c93ece36b6a19d93a4447",
+                "parameters": [
+                    {
+                        "name": "id_user",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do centro de custo associado ao usuário",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/usuario-menu": {
             "post": {
                 "tags": [
