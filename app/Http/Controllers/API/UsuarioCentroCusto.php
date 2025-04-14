@@ -8,6 +8,43 @@ use App\Models\RelUsuarioCentroCusto;
 
 class UsuarioCentroCusto extends Controller
 {
+     /**
+     * @OA\Post(
+     *     path="/api/usuarioCentroCusto",
+     *     summary="Associa centros de custo a um usuário",
+     *     operationId="createUsuarioCentroCusto",
+     *     tags={"UsuarioCentroCusto"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"id_centro_custo_ccu", "id_user"},
+     *             @OA\Property(
+     *                 property="id_centro_custo_ccu",
+     *                 type="array",
+     *                 @OA\Items(type="integer"),
+     *                 description="Lista de IDs dos centros de custo a serem associados ao usuário"
+     *             ),
+     *             @OA\Property(
+     *                 property="id_user",
+     *                 type="integer",
+     *                 description="ID do usuário"
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Associação criada com sucesso",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/UsuarioCentroCusto"))
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Erro de validação",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="errors", type="object")
+     *         )
+     *     )
+     * )
+     */
     public function create(Request $request) {
         $existingRecords = RelUsuarioCentroCusto::where('id_user', $request->id_user)
         ->pluck('id_centro_custo_ccu')
