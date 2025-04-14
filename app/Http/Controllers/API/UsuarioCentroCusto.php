@@ -69,7 +69,7 @@ class UsuarioCentroCusto extends Controller
 
     // /**
     //  *     @OA\Get(
-    //  *     path="/usuarioCentroCusto",
+    //  *     path="/api/usuarioCentroCusto",
     //  *     summary="Obtém os centros de custo associados ao usuário",
     //  *     tags={"UsuarioCentroCusto"},
     //  *     @OA\Response(
