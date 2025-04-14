@@ -2957,6 +2957,72 @@
                 }
             }
         },
+        "/api/usuarioCentroCusto": {
+            "post": {
+                "tags": [
+                    "UsuarioCentroCusto"
+                ],
+                "summary": "Associa centros de custo a um usuário",
+                "operationId": "createUsuarioCentroCusto",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "id_centro_custo_ccu",
+                                    "id_user"
+                                ],
+                                "properties": {
+                                    "id_centro_custo_ccu": {
+                                        "description": "Lista de IDs dos centros de custo a serem associados ao usuário",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "id_user": {
+                                        "description": "ID do usuário",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Associação criada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/UsuarioCentroCusto"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/usuario-menu": {
             "post": {
                 "tags": [
@@ -3626,6 +3692,30 @@
                     "type": "object"
                 }
             },
+            "UsuarioCentroCusto": {
+                "properties": {
+                    "id_rel_usuario_centro_custo_ccu": {
+                        "type": "integer"
+                    },
+                    "id_centro_custo_ccu": {
+                        "description": "Chave estrangeira referenciando o Centro de Custo",
+                        "type": "integer"
+                    },
+                    "id_user": {
+                        "description": "Chave estrangeira referenciando o usuário",
+                        "type": "integer"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "UsuarioMenu": {
                 "properties": {
                     "id_rel_usuario_menu_usm": {
@@ -3781,6 +3871,10 @@
         {
             "name": "Usuario",
             "description": "Usuario"
+        },
+        {
+            "name": "UsuarioCentroCusto",
+            "description": "UsuarioCentroCusto"
         },
         {
             "name": "UsuarioMenu",
