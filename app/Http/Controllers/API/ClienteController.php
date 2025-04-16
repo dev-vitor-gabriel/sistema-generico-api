@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Cliente;
+use App\Interfaces\ClienteRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Helpers\ValidateString;
 use Illuminate\Support\Facades\Validator;
@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Validator;
 
 class ClienteController extends Controller
 {
+    public function __construct(
+        private ClienteRepositoryInterface $clienteRepository
+     )
+     {
+     }
+
+
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
@@ -57,16 +64,7 @@ class ClienteController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $cliente = Cliente::create([
-            'des_cliente_cli'       => $request->des_cliente_cli,
-            'telefone_cliente_cli'  => $request->telefone_cliente_cli,
-            'email_cliente_cli'     => $request->email_cliente_cli,
-            'documento_cliente_cli' => $request->documento_cliente_cli,
-            'endereco_cliente_cli'  => $request->endereco_cliente_cli,
-            'id_centro_custo_cli'   => $request->id_centro_custo_cli,
-            'id_empresa'            => $id_empresa,
-            'is_ativo_cli'          => 1,
-        ]);
+        $cliente = $this->clienteRepository->create($request->all(),$id_empresa);
 
 
         return response()->json($cliente,201);
@@ -99,7 +97,7 @@ class ClienteController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_cliente){
-            $data = Cliente::getById($id_empresa, $id_cliente);
+            $data = $this->clienteRepository->getById($id_empresa, $id_cliente);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -113,7 +111,9 @@ class ClienteController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        return Cliente::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->clienteRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
     }
 
     /**
@@ -159,8 +159,9 @@ class ClienteController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        Cliente::updateReg($id_empresa, $id_cliente, $request);
+        $updated_cliente = $this->clienteRepository->updateReg($id_empresa, $id_cliente, $request);
 
+        return response()->json($updated_cliente,200);
     }
 
     /**
@@ -184,6 +185,8 @@ class ClienteController extends Controller
     public function delete(Int $id_cliente, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        Cliente::deleteReg($id_empresa, $id_cliente);
+        $inactive_cliente = $this->clienteRepository->deleteReg($id_empresa, $id_cliente);
+
+        return response()->json($inactive_cliente,200);
     }
 }
