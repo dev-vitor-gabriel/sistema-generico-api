@@ -7,6 +7,13 @@ use App\Models\Cargo;
 
 class CargoRepository implements CargoRepositoryInterface
 {
+    public function create($request,$id_empresa)
+    {
+        $result = Cargo::create($request,$id_empresa);
+
+        return $result;
+    }
+
     public function getAll($id_empresa, $filter, $per_page, $page_number)
     {
         $result = Cargo::getAll($id_empresa, $filter, $per_page, $page_number);
@@ -33,10 +40,5 @@ class CargoRepository implements CargoRepositoryInterface
         $result = Cargo::deleteReg($id_empresa, $id_cargo);
 
         return $result;
-    }
-
-    public function create($request,$id_empresa)
-    {
-        return Cargo::create($request,$id_empresa);
     }
 }
