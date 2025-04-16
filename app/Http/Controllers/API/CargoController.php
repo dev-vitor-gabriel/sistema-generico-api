@@ -47,7 +47,7 @@ class CargoController extends Controller
             'desc_cargo_tcg' => 'required|string|max:255'
         ]);
 
-        $cargo = $this->cargoRepository->create($request,$id_empresa);
+        $cargo = $this->cargoRepository->create($request->all(),$id_empresa);
 
         return response()->json($cargo,201);
     }
