@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Interfaces\CentroCustoRepositoryInterface;
+use App\Models\CentroCusto;
+
+class CentroCustoRepository implements CentroCustoRepositoryInterface
+{
+    public function create($request,$id_empresa)
+    {
+        $result = CentroCusto::create($request,$id_empresa);
+
+        return $result;
+    }
+
+    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    {
+        $result = CentroCusto::getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
+    }
+
+    public function getById($id_CentroCusto, $id_empresa)
+    {
+        $result = CentroCusto::getById($id_empresa, $id_CentroCusto);
+
+        return $result;
+    }
+
+    public function updateReg($id_empresa, $id_CentroCusto, $request)
+    {
+        $result = CentroCusto::updateReg($id_empresa, $id_CentroCusto, $request);
+
+        return $result;
+    }
+
+    public function deleteReg($id_empresa, $id_CentroCusto)
+    {
+        $result = CentroCusto::deleteReg($id_empresa, $id_CentroCusto);
+
+        return $result;
+    }
+}

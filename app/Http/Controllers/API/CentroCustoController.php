@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\CentroCusto;
+use App\Interfaces\CentroCustoRepositoryInterface;
 use Illuminate\Http\Request;
 
 class CentroCustoController extends Controller
 {
+    public function __construct(
+        private CentroCustoRepositoryInterface $centroCustoRepository
+     )
+     {
+     }
+
+
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
@@ -40,12 +47,9 @@ class CentroCustoController extends Controller
             'des_centro_custo_cco' => 'required|string|max:255'
         ]);
 
-        $cliente = CentroCusto::create([
-            'des_centro_custo_cco' => $request->des_centro_custo_cco,
-            'id_empresa_cco' => $id_empresa,
-        ]);
+        $centro_custo = $this->centroCustoRepository->create($request->all(),$id_empresa);
 
-        return response()->json($cliente,201);
+        return response()->json($centro_custo,201);
     }
 
     /**
@@ -81,11 +85,11 @@ class CentroCustoController extends Controller
      *     )
      * )
      */
-    public function get(Request $request, Int $id_centro_custo = null) {
+    public function get(Request $request, $id_centro_custo = null) {
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_centro_custo){
-            $data = CentroCusto::getById($id_empresa, $id_centro_custo);
+            $data = $this->centroCustoRepository->getById($id_empresa, $id_centro_custo);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -100,7 +104,9 @@ class CentroCustoController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        return CentroCusto::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->centroCustoRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
     }
 
     /**
@@ -134,7 +140,10 @@ class CentroCustoController extends Controller
         $request->validate([
             'des_centro_custo_cco' => 'required|string|max:255'
         ]);
-        CentroCusto::updateReg($id_empresa, $id_centro_custo, $request);
+
+        $updated_centroCusto = $this->centroCustoRepository->updateReg($id_empresa, $id_centro_custo, $request);
+
+        return response()->json($updated_centroCusto,200);
     }
 
     /**
@@ -157,6 +166,9 @@ class CentroCustoController extends Controller
      */
     public function delete(Int $id_centro_custo, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
-        CentroCusto::deleteReg($id_empresa, $id_centro_custo);
+
+        $inactive_centroCusto = $this->centroCustoRepository->deleteReg($id_empresa, $id_centro_custo);
+
+        return response()->json($inactive_centroCusto,200);
     }
 }
