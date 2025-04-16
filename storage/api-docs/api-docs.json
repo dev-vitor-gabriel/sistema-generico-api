@@ -2510,6 +2510,77 @@
                 }
             }
         },
+        "/servico/dashboard": {
+            "get": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Obtém os dados do dashboard",
+                "operationId": "getDashboardData",
+                "parameters": [
+                    {
+                        "name": "centros_custo",
+                        "in": "query",
+                        "description": "IDs dos centros de custo separados por vírgula",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2,3"
+                        }
+                    },
+                    {
+                        "name": "data_inicio",
+                        "in": "query",
+                        "description": "Data de início para o filtro (formato: Y-m-d H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2025-04-14 00:00:00"
+                        }
+                    },
+                    {
+                        "name": "data_fim",
+                        "in": "query",
+                        "description": "Data de fim para o filtro (formato: Y-m-d H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2025-04-16 23:59:59"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do dashboard",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "total_ativos": {
+                                            "type": "integer"
+                                        },
+                                        "total_finalizados": {
+                                            "type": "integer"
+                                        },
+                                        "total_inativos": {
+                                            "type": "integer"
+                                        },
+                                        "media_tempo_atendimento": {
+                                            "type": "string",
+                                            "example": "00:06:14"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Serviço não encontrado"
+                    }
+                }
+            }
+        },
         "/servicoTipo": {
             "post": {
                 "tags": [

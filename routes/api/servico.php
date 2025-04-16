@@ -25,4 +25,5 @@ Route::controller(ServicoController::class)->group(function () {
     Route::put('{id_servico}', 'update');
     Route::patch('{id_servico}', 'finalizar');
     Route::delete('{id_servico}', 'delete');
+    Route::get('dashboard', 'getDashboardData');
 });

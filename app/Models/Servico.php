@@ -147,12 +147,50 @@ class Servico extends Model
             'is_ativo_ser' => 0
         ]);
     }
+
     public static function finalizarReg(Int $id_empresa, $id_servico) {
         Servico::where('id_servico_ser', $id_servico)
         ->where('id_empresa_ser', $id_empresa)
         ->update([
             'id_situacao_ser' => 2
         ]);
+    }
+
+    public function getDashboardDados($centrosCusto = [], $dataInicio = null, $dataFim = null)
+    {
+        $query = DB::table('tb_servico as ts')
+            ->join('tb_centro_custo as tcc', 'tcc.id_centro_custo_cco', '=', 'ts.id_centro_custo_ser');
+
+        if (!empty($centrosCusto)) {
+            $query->whereIn('tcc.id_centro_custo_cco', $centrosCusto);
+        }
+
+        if ($dataInicio && $dataFim) {
+            $query->whereBetween('ts.created_at', [$dataInicio, $dataFim]);
+        }
+
+        return (array) $query->select([
+            DB::raw("COUNT(CASE WHEN ts.id_situacao_ser = 1 THEN 1 END) AS total_ativos"),
+            DB::raw("COUNT(CASE WHEN ts.id_situacao_ser = 2 THEN 1 END) AS total_finalizados"),
+            DB::raw("COUNT(CASE WHEN ts.is_ativo_ser = 0 THEN 1 END) AS total_inativos"),
+            DB::raw("
+                COALESCE(
+                    TIME_FORMAT(
+                        SEC_TO_TIME(
+                            AVG(
+                                CASE
+                                    WHEN ts.id_situacao_ser = 2
+                                    THEN TIMESTAMPDIFF(SECOND, ts.created_at, ts.updated_at)
+                                    ELSE NULL
+                                END
+                            )
+                        ),
+                        '%H:%i:%s'
+                    ),
+                    '00:00:00'
+                ) AS media_tempo_atendimento
+            ")
+        ])->first();
     }
 
 

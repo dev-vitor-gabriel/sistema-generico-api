@@ -511,4 +511,58 @@ class ServicoController extends Controller
         $output_array = array_values($output_array);
         return $output_array;
     }
+
+    /**
+     * @OA\Get(
+     *     path="/servico/dashboard",
+     *     summary="Obtém os dados do dashboard",
+     *     operationId="getDashboardData",
+     *     tags={"Servico"},
+     *     @OA\Parameter(
+     *         name="centros_custo",
+     *         in="query",
+     *         required=false,
+     *         description="IDs dos centros de custo separados por vírgula",
+     *         @OA\Schema(type="string", example="2,3")
+     *     ),
+     *     @OA\Parameter(
+     *         name="data_inicio",
+     *         in="query",
+     *         required=false,
+     *         description="Data de início para o filtro (formato: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", example="2025-04-14 00:00:00")
+     *     ),
+     *     @OA\Parameter(
+     *         name="data_fim",
+     *         in="query",
+     *         required=false,
+     *         description="Data de fim para o filtro (formato: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", example="2025-04-16 23:59:59")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Dados do dashboard",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             properties={
+     *                 @OA\Property(property="total_ativos", type="integer"),
+     *                 @OA\Property(property="total_finalizados", type="integer"),
+     *                 @OA\Property(property="total_inativos", type="integer"),
+     *                 @OA\Property(property="media_tempo_atendimento", type="string", example="00:06:14")
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Serviço não encontrado"
+     *     )
+     * )
+    */
+
+    public function getDashboardData($centrosCusto = [], $dataInicio = null, $dataFim = null)
+    {
+        $data = Servico::getDashboardDados($centrosCusto, $dataInicio, $dataFim);
+
+        return response()->json($data);
+    }
 }
