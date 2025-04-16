@@ -193,5 +193,4 @@ class Servico extends Model
         ])->first();
     }
 
-
 }

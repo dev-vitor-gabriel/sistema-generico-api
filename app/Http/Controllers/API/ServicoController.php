@@ -516,7 +516,7 @@ class ServicoController extends Controller
      * @OA\Get(
      *     path="/servico/dashboard",
      *     summary="Obtém os dados do dashboard",
-     *     operationId="getDashboardData",
+     *     operationId="getDashboardDados",
      *     tags={"Servico"},
      *     @OA\Parameter(
      *         name="centros_custo",
@@ -558,9 +558,12 @@ class ServicoController extends Controller
      *     )
      * )
     */
-
-    public function getDashboardData($centrosCusto = [], $dataInicio = null, $dataFim = null)
+    public function getDashboardDados(Request $request)
     {
+        $centrosCusto = $request->input('centros_custo', []);
+        $dataInicio   = $request->input('data_inicio');
+        $dataFim      = $request->input('data_fim');
+
         $data = Servico::getDashboardDados($centrosCusto, $dataInicio, $dataFim);
 
         return response()->json($data);

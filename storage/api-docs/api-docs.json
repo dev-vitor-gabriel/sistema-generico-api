@@ -2516,7 +2516,7 @@
                     "Servico"
                 ],
                 "summary": "Obtém os dados do dashboard",
-                "operationId": "getDashboardData",
+                "operationId": "getDashboardDados",
                 "parameters": [
                     {
                         "name": "centros_custo",
