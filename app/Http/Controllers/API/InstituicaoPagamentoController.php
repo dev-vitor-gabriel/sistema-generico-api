@@ -3,10 +3,23 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\InstituicaoPagamento;
+use App\Interfaces\InstituicaoPagamentoRepositoryInterface;
 use Illuminate\Http\Request;
 class InstituicaoPagamentoController extends Controller
 {
+
+    public function __construct(
+        private InstituicaoPagamentoRepositoryInterface $instituicaoPagamentoRepository
+     )
+     {
+     }
+
+     public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     /**
      * @OA\Get(
      *     path="/instituicaoPagamento/{id_instituicao_pagamento}",
@@ -33,7 +46,7 @@ class InstituicaoPagamentoController extends Controller
     public function get(Request $request, $id_instituicao_pagamento = null) {
         $id_empresa = $this->getIdEmpresa($request);
         if($id_instituicao_pagamento){
-            $data = InstituicaoPagamento::getById($id_empresa, $id_instituicao_pagamento);
+            $data = $this->instituicaoPagamentoRepository->getById($id_empresa, $id_instituicao_pagamento);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -47,7 +60,9 @@ class InstituicaoPagamentoController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        return InstituicaoPagamento::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->instituicaoPagamentoRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
     }
 
     /**
@@ -83,11 +98,7 @@ class InstituicaoPagamentoController extends Controller
             'desc_instituicao_pagamento_tip' => 'required|string|max:255'
         ]);
 
-        $instituicaoPagamento = InstituicaoPagamento::create([
-            'desc_instituicao_pagamento_tip' => $request->desc_instituicao_pagamento_tip,
-            'is_ativo_tip' => 1,
-            'id_empresa_tip' => $id_empresa,
-        ]);
+        $instituicaoPagamento = $this->instituicaoPagamentoRepository->create($request->all(),$id_empresa);
 
         return response()->json($instituicaoPagamento, 201);
     }
@@ -129,7 +140,9 @@ class InstituicaoPagamentoController extends Controller
             'desc_instituicao_pagamento_tip' => 'string|max:255'
         ]);
 
-        InstituicaoPagamento::updateReg($id_empresa, $id_instituicao_pagamento, $request);
+        $updated_instituicaoPagamento = $this->instituicaoPagamentoRepository->updateReg($id_empresa, $id_instituicao_pagamento, $request);
+
+        return response()->json($updated_instituicaoPagamento,200);
     }
 
     /**
@@ -156,6 +169,8 @@ class InstituicaoPagamentoController extends Controller
      */
     public function delete(Request $request, Int $id_instituicao_pagamento) {
         $id_empresa = $this->getIdEmpresa($request);
-        InstituicaoPagamento::deleteReg($id_empresa, $id_instituicao_pagamento);
+        $inactive_instituicaoPagamento = $this->instituicaoPagamentoRepository->deleteReg($id_empresa, $id_instituicao_pagamento);
+
+        return response()->json($inactive_instituicaoPagamento, 200);
     }
 }

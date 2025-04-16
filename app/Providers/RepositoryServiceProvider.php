@@ -12,6 +12,9 @@ use App\Interfaces\EstoqueRepositoryInterface;
 use App\Repositories\EstoqueRepository;
 use App\Interfaces\FornecedorRepositoryInterface;
 use App\Repositories\FornecedorRepository;
+use App\Interfaces\InstituicaoPagamentoRepositoryInterface;
+use App\Repositories\InstituicaoPagamentoRepository;
+
 
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +30,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ClienteRepositoryInterface::class, ClienteRepository::class);
         $this->app->bind(EstoqueRepositoryInterface::class, EstoqueRepository::class);
         $this->app->bind(FornecedorRepositoryInterface::class, FornecedorRepository::class);
+        $this->app->bind(InstituicaoPagamentoRepositoryInterface::class, InstituicaoPagamentoRepository::class);
     }
 
     /**
