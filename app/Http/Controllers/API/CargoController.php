@@ -3,11 +3,19 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\CargoRepositoryInterface;
 use App\Models\Cargo;
 use Illuminate\Http\Request;
 
 class CargoController extends Controller
 {
+
+    public function __construct(
+        private CargoRepositoryInterface $cargoRepository
+     )
+     {
+     }
+
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
@@ -40,10 +48,7 @@ class CargoController extends Controller
             'desc_cargo_tcg' => 'required|string|max:255'
         ]);
 
-        $cargo = Cargo::create([
-            'desc_cargo_tcg' => $request->desc_cargo_tcg,
-            'id_empresa'     => $id_empresa,
-        ]);
+        $cargo = $this->cargoRepository->create($request,$id_empresa);
 
         return response()->json($cargo,201);
     }
@@ -85,7 +90,7 @@ class CargoController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_cargo){
-            $data = Cargo::getById($id_cargo, $id_empresa);
+            $data = $this->cargoRepository->getById($id_cargo, $id_empresa);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -100,7 +105,9 @@ class CargoController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        return Cargo::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->cargoRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
     }
 
     /**
@@ -134,7 +141,10 @@ class CargoController extends Controller
         $request->validate([
             'desc_cargo_tcg' => 'required|string|max:255'
         ]);
-        Cargo::updateReg($id_empresa, $id_cargo, $request);
+
+        $updated_cargo = $this->cargoRepository->updateReg($id_empresa, $id_cargo, $request);
+
+        return response()->json($updated_cargo,200);
     }
 
     /**
@@ -157,7 +167,10 @@ class CargoController extends Controller
      */
     public function delete(Request $request, Int $id_cargo) {
         $id_empresa = $this->getIdEmpresa($request);
-        Cargo::deleteReg($id_empresa, $id_cargo);
+
+        $inactive_cargo = $this->cargoRepository->deleteReg($id_empresa, $id_cargo);
+
+        return response()->json($inactive_cargo,200);
     }
 
 }
