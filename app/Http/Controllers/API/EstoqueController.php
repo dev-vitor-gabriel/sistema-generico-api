@@ -3,11 +3,25 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\EstoqueRepositoryInterface;
 use App\Models\Estoque;
 use Illuminate\Http\Request;
 
 class EstoqueController extends Controller
 {
+    public function __construct(
+        private EstoqueRepositoryInterface $estoqueRepository
+     )
+     {
+     }
+     
+     public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
+
     /**
      * @OA\Get(
      *     path="/estoque/{id_estoque}",
@@ -35,7 +49,7 @@ class EstoqueController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         if ($id_estoque) {
-            $data = Estoque::getById($id_empresa, $id_estoque);
+            $data = $this->estoqueRepository->getById($id_empresa, $id_estoque);
             $data_array = json_decode($data->content());
 
             if (empty($data_array)) {
@@ -51,7 +65,9 @@ class EstoqueController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        return Estoque::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->estoqueRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
     }
 
     /**
@@ -82,11 +98,7 @@ class EstoqueController extends Controller
             'id_centro_custo_est' => 'required|integer|exists:tb_centro_custo,id_centro_custo_cco'
         ]);
 
-        $estoque = Estoque::create([
-            'des_estoque_est'            => $request->des_estoque_est,
-            'id_centro_custo_est'        => $request->id_centro_custo_est,
-            'id_empresa_est'             => $id_empresa,
-        ]);
+        $estoque = $this->estoqueRepository->create($request->all(), $id_empresa);
 
         return response()->json($estoque,201);
     }
@@ -125,7 +137,7 @@ class EstoqueController extends Controller
             'id_centro_custo_est' => 'required|integer|exists:tb_centro_custo,id_centro_custo_cco'
         ]);
 
-        $estoque = Estoque::find($id_estoque);
+        $estoque = Estoque::find($id_estoque, $id_empresa); 
         $estoque->des_estoque_est = $request->des_estoque_est;
         $estoque->id_centro_custo_est = $request->id_centro_custo_est;
         $estoque->save();
@@ -154,7 +166,9 @@ class EstoqueController extends Controller
     public function delete(Request $request, Int $id_estoque) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        Estoque::deleteReg($id_estoque, $id_empresa);
+       $inactive_estoque = $this->estoqueRepository->deleteReg($id_estoque, $id_empresa);
+
+       return response()->json($inactive_estoque, 200);
     }
 
     /**
