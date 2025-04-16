@@ -11,6 +11,8 @@ class CentroCusto extends Model
 
     protected $table = "tb_centro_custo";
 
+    protected $primaryKey = 'id_centro_custo_cco_tcg';
+
     protected $fillable = [
         'des_centro_custo_cco',
         'is_ativo_cco',
@@ -55,8 +57,7 @@ class CentroCusto extends Model
         where('id_centro_custo_cco', $id_centro_custo)
         ->where('id_empresa_cco', $id_empresa)
         ->update([
-            'des_centro_custo_cco' => $obj
-            ->des_centro_custo_cco
+            'des_centro_custo_cco' => $obj->des_centro_custo_cco
         ]);
     }
 
