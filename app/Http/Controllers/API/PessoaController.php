@@ -3,12 +3,25 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\PessoaRepositoryInterface;
 use App\Models\Pessoa;
 use Illuminate\Http\Request;
 use App\Helpers\ValidateString;
 
 class PessoaController extends Controller
 {
+
+    public function __construct(
+        private PessoaRepositoryInterface $pessoaRepository
+     )
+     {
+     }
+
+     public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
 
     /**
      * @OA\Post(
@@ -41,6 +54,7 @@ class PessoaController extends Controller
      * )
      */
     public function create(request $request){
+        $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
             'nome_pessoa_pes'           => 'required|string|',
@@ -48,11 +62,8 @@ class PessoaController extends Controller
             'documento_pessoa_pes'      => 'string|',
         ]);
 
-        $pessoa = Pessoa::create([
-            'nome_pessoa_pes'           => $request->nome_pessoa_pes,
-            'id_centro_custo_pes'       => $request->id_centro_custo_pes,
-            'documento_pessoa_pes'      => ValidateString::removeCharacterSpecial($request->documento_pessoa_pes)
-        ]);
+        $pessoa = $this->pessoaRepository->create($request->all(),$id_empresa);
+
         return response()->json($pessoa,201);
     }
 
@@ -80,10 +91,11 @@ class PessoaController extends Controller
      *     )
      * )
      */
-    public function get($id_pessoa = null){
+    public function get(Request $request, $id_pessoa = null){
+        $id_empresa = $this->getIdEmpresa($request);
 
         if($id_pessoa){
-            $data = Pessoa::getById($id_pessoa);
+            $data = $this->pessoaRepository->getById($id_empresa,$id_pessoa);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -93,8 +105,14 @@ class PessoaController extends Controller
             }
             return $data;
         }
-        $data = Pessoa::getAll();
-        return $data;
+
+        $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
+
+        $result = $this->pessoaRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+        return $result;
     }
 
     /**
@@ -132,13 +150,17 @@ class PessoaController extends Controller
      *     )
      * )
      */
-    public function update(Int $id_pessoa, request $request){
+    public function update(Request $request,Int $id_pessoa){
+        $id_empresa = $this->getIdEmpresa($request);
+
         $request->validate([
             'nome_pessoa_pes'           => 'string',
             'id_centro_custo_pes'       => 'integer',
             'documento_pessoa_pes'      => 'string',
         ]);
-        Pessoa::updateReg($id_pessoa, $request);
+        $updated_pessoa = $this->pessoaRepository->updateReg($id_empresa, $id_pessoa, $request);
+
+        return response()->json($updated_pessoa,200);
     }
 
     /**
@@ -164,7 +186,11 @@ class PessoaController extends Controller
      *     )
      * )
      */
-    public function delete(Int $id_pessoa){
-        Pessoa::deleteReg($id_pessoa);
+    public function delete(Request $request,Int $id_pessoa){
+        $id_empresa = $this->getIdEmpresa($request);
+
+        $inactive_pessoa = $this->pessoaRepository->deleteReg($id_empresa, $id_pessoa);
+
+        return response()->json($inactive_pessoa,200);
     }
 }
