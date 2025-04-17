@@ -16,6 +16,8 @@ use App\Interfaces\InstituicaoPagamentoRepositoryInterface;
 use App\Repositories\InstituicaoPagamentoRepository;
 use App\Interfaces\MaterialRepositoryInterface;
 use App\Repositories\MaterialRepository;
+use App\Interfaces\MetodoPagamentoRepositoryInterface;
+use App\Repositories\MetodoPagamentoRepository;
 
 
 use Illuminate\Support\ServiceProvider;
@@ -34,6 +36,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(FornecedorRepositoryInterface::class, FornecedorRepository::class);
         $this->app->bind(InstituicaoPagamentoRepositoryInterface::class, InstituicaoPagamentoRepository::class);
         $this->app->bind(MaterialRepositoryInterface::class, MaterialRepository::class);
+        $this->app->bind(MetodoPagamentoRepositoryInterface::class, MetodoPagamentoRepository::class);
     }
 
     /**
