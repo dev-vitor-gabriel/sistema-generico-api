@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\ServicoTipoRepositoryInterface;
 use App\Models\ServicoTipo;
 use Illuminate\Http\Request;
 
 class ServicoTipoController extends Controller
 {
+    public function __construct(
+        private ServicoTipoRepositoryInterface $servicoTipoRepository
+     )
+     {
+     }
+
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
@@ -46,13 +53,7 @@ class ServicoTipoController extends Controller
             'id_centro_custo_stp'  => 'required|integer|',
         ]);
 
-        $servico_tipo = ServicoTipo::create([
-            'des_servico_tipo_stp' => $request->des_servico_tipo_stp,
-            'vlr_servico_tipo_stp' => $request->vlr_servico_tipo_stp,
-            'id_centro_custo_stp'  => $request->id_centro_custo_stp,
-            'is_ativo_stp'         => 1,
-            'id_empresa_stp'       => $id_empresa,
-        ]);
+        $servico_tipo = $this->servicoTipoRepository->create($request->all(), $id_empresa);
 
         return response()->json($servico_tipo,201);
     }
@@ -82,7 +83,7 @@ class ServicoTipoController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_servico_tipo){
-            $data = ServicoTipo::getById($id_empresa, $id_servico_tipo);
+            $data = $this->servicoTipoRepository->getById($id_empresa, $id_servico_tipo);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -91,8 +92,14 @@ class ServicoTipoController extends Controller
             }
             return $data;
         }
-        $data = ServicoTipo::getAll($id_empresa);
-        return $data;
+
+        $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
+
+        $result = $this->servicoTipoRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+        return $result;
     }
 
     /**
@@ -130,7 +137,9 @@ class ServicoTipoController extends Controller
             'id_centro_custo_stp'  => 'integer',
         ]);
 
-        ServicoTipo::updateReg($id_empresa, $id_servico_tipo, $request);
+        $updated_servicoTipo = $this->servicoTipoRepository->updateReg($id_empresa, $id_servico_tipo, $request);
+
+        return response()->json($updated_servicoTipo,200);
     }
 
     /**
@@ -152,7 +161,10 @@ class ServicoTipoController extends Controller
      */
     public function delete(Int $id_servico_tipo, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
-        ServicoTipo::deleteReg($id_empresa, $id_servico_tipo);
+
+        $inactive_servicoTipo = $this->servicoTipoRepository->deleteReg($id_empresa, $id_servico_tipo);
+
+        return response()->json($inactive_servicoTipo,200);
     }
 }
 
