@@ -137,10 +137,7 @@ class EstoqueController extends Controller
             'id_centro_custo_est' => 'required|integer|exists:tb_centro_custo,id_centro_custo_cco'
         ]);
 
-        $estoque = Estoque::find($id_estoque, $id_empresa); 
-        $estoque->des_estoque_est = $request->des_estoque_est;
-        $estoque->id_centro_custo_est = $request->id_centro_custo_est;
-        $estoque->save();
+        $estoque = $this->estoqueRepository->updateReg($id_empresa, $id_estoque, $request);
 
         return response()->json($estoque);
     }
