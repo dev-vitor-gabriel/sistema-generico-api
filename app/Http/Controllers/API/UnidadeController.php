@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\UnidadeRepositoryInterface;
-use App\Models\Unidade;
 use Illuminate\Http\Request;
 
 class UnidadeController extends Controller
