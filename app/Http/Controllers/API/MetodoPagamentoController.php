@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\MetodoPagamentoRepositoryInterface;
-use App\Models\MetodoPagamento;
 use Illuminate\Http\Request;
 
 class MetodoPagamentoController extends Controller
