@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\ServicoTipoRepositoryInterface;
-use App\Models\ServicoTipo;
 use Illuminate\Http\Request;
 
 class ServicoTipoController extends Controller
