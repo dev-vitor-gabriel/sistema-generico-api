@@ -160,7 +160,7 @@ class FornecedorController extends Controller
     public function delete(Request $request, Int $id_fornecedor) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        $inactive_fornecedor = $this->fornecedorRepository->deleteReg($id_fornecedor, $id_empresa);
+        $inactive_fornecedor = $this->fornecedorRepository->deleteReg($id_empresa, $id_fornecedor);
 
         return response()->json($inactive_fornecedor, 200);
     }
