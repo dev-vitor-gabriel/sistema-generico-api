@@ -2581,13 +2581,13 @@
                 }
             }
         },
-        "/servico/top-tipos-servico": {
+        "/servico/topSevenServiceTypes": {
             "get": {
                 "tags": [
                     "Servico"
                 ],
-                "summary": "Obtém os 7 tipos de serviço mais utilizados",
-                "operationId": "getTopTiposServico",
+                "summary": "Obtém o top 7 tipos de serviço lançados em serviços",
+                "operationId": "getTopSevenServiceTypes",
                 "parameters": [
                     {
                         "name": "centros_custo",

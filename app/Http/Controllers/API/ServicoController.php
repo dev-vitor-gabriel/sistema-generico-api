@@ -571,9 +571,9 @@ class ServicoController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/servico/top-tipos-servico",
-     *     summary="Obtém os 7 tipos de serviço mais utilizados",
-     *     operationId="getTopTiposServico",
+     *     path="/servico/topSevenServiceTypes",
+     *     summary="Obtém o top 7 tipos de serviço lançados em serviços",
+     *     operationId="getTopSevenServiceTypes",
      *     tags={"Servico"},
      *     @OA\Parameter(
      *         name="centros_custo",
