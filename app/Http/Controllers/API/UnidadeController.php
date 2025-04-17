@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\UnidadeRepositoryInterface;
 use App\Models\Unidade;
 use Illuminate\Http\Request;
 
 class UnidadeController extends Controller
 {
+    public function __construct(
+        private UnidadeRepositoryInterface $unidadeRepository
+     )
+     {
+     }
+
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
@@ -44,13 +51,7 @@ class UnidadeController extends Controller
             'id_centro_custo_und'   => 'required|integer|',
         ]);
 
-        $servico_tipo = Unidade::create([
-            'des_unidade_und'       => $request->des_unidade_und,
-            'des_reduz_unidade_und' => $request->des_reduz_unidade_und,
-            'id_centro_custo_und'   => $request->id_centro_custo_und,
-            'is_ativo_stp'          => 1,
-            'id_empresa'            => $id_empresa,
-        ]);
+        $servico_tipo = $this->unidadeRepository->create($request->all(), $id_empresa);
 
         return response()->json($servico_tipo,201);
     }
@@ -93,7 +94,7 @@ class UnidadeController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_unidade_und){
-            $data = Unidade::getById(($id_unidade_und));
+            $data = $this->unidadeRepository->getById($id_empresa, $id_unidade_und);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -102,8 +103,15 @@ class UnidadeController extends Controller
             }
             return $data;
         }
-        $data = Unidade::getAll($id_empresa);
-        return $data;
+
+        $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
+
+        $result = $this->unidadeRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
     }
 
     /**
@@ -141,7 +149,9 @@ class UnidadeController extends Controller
             'des_reduz_unidade_und' => 'string|max:255',
             'id_centro_custo_und'   => 'integer',
         ]);
-        Unidade::updateReg($id_empresa, $id_unidade_und, $request);
+        $updated_unidade = $this->unidadeRepository->updateReg($id_empresa, $id_unidade_und, $request);
+
+        return response()->json($updated_unidade, 200);
     }
 
     /**
@@ -170,7 +180,9 @@ class UnidadeController extends Controller
     public function delete(Int $id_unidade_und, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        Unidade::deleteReg($id_empresa, $id_unidade_und);
+        $inactive_unidade = $this->unidadeRepository->deleteReg($id_empresa, $id_unidade_und);
+
+        return response()->json($inactive_unidade, 200);
     }
 
 }
