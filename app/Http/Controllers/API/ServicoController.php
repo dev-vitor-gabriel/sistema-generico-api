@@ -571,16 +571,16 @@ class ServicoController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/servico/topSevenServiceTypes",
-     *     summary="Obtém o top 7 tipos de serviço lançados em serviços",
-     *     operationId="getTopSevenServiceTypes",
+     *     path="/servico/top-tipos-servico",
+     *     summary="Obtém os 7 tipos de serviço mais utilizados",
+     *     operationId="getTopTiposServico",
      *     tags={"Servico"},
      *     @OA\Parameter(
      *         name="centros_custo",
      *         in="query",
      *         required=false,
      *         description="IDs dos centros de custo separados por vírgula",
-     *         @OA\Schema(type="string", example="2,3")
+     *         @OA\Schema(type="string", example="1,2")
      *     ),
      *     @OA\Parameter(
      *         name="data_inicio",
@@ -600,11 +600,12 @@ class ServicoController extends Controller
      *         response=200,
      *         description="Dados da consulta",
      *         @OA\JsonContent(
-     *             type="object",
-     *             properties={
-     *                 @OA\Property(property="tipo_servico", type="string"),
-     *                 @OA\Property(property="total_tipo_servico", type="integer"),
-     *             }
+     *             type="array",
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="tipo_servico", type="string", example="Corte de Cabelo"),
+     *                 @OA\Property(property="total_tipo_servico", type="integer", example=42)
+     *             )
      *         )
      *     ),
      *     @OA\Response(
@@ -612,7 +613,7 @@ class ServicoController extends Controller
      *         description="Serviço não encontrado"
      *     )
      * )
-    */
+     */
     public function getTopSevenServiceTypes(Request $request)
     {
         $centrosCusto = explode(',', $request->query('centros_custo'));

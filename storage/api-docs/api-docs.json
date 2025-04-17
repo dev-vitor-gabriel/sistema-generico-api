@@ -2581,13 +2581,13 @@
                 }
             }
         },
-        "/servico/topSevenServiceTypes": {
+        "/servico/top-tipos-servico": {
             "get": {
                 "tags": [
                     "Servico"
                 ],
-                "summary": "Obtém o top 7 tipos de serviço lançados em serviços",
-                "operationId": "getTopSevenServiceTypes",
+                "summary": "Obtém os 7 tipos de serviço mais utilizados",
+                "operationId": "getTopTiposServico",
                 "parameters": [
                     {
                         "name": "centros_custo",
@@ -2596,7 +2596,7 @@
                         "required": false,
                         "schema": {
                             "type": "string",
-                            "example": "2,3"
+                            "example": "1,2"
                         }
                     },
                     {
@@ -2626,15 +2626,20 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "tipo_servico": {
-                                            "type": "string"
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "tipo_servico": {
+                                                "type": "string",
+                                                "example": "Corte de Cabelo"
+                                            },
+                                            "total_tipo_servico": {
+                                                "type": "integer",
+                                                "example": 42
+                                            }
                                         },
-                                        "total_tipo_servico": {
-                                            "type": "integer"
-                                        }
-                                    },
-                                    "type": "object"
+                                        "type": "object"
+                                    }
                                 }
                             }
                         }
