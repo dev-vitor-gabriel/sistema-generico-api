@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\User;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Interfaces\UserRepositoryInterface;
 
 class UserController extends Controller
 {
+
+    public function __construct(
+        private UserRepositoryInterface $userRepository
+     )
+     {
+     }
+
+     public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     /**
      * @OA\Get(
      *     path="/user/{id_user}",
@@ -26,15 +40,23 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function get($id_usuario = null) {
+    public function get(Request $request, $id_usuario = null) {
+        $id_empresa = $this->getIdEmpresa($request);
+
         if ($id_usuario) {
             $id_usuario = (int) $id_usuario;
-            $data = User::getById($id_usuario);
+            $data = $this->userRepository->getById($id_empresa, $id_usuario);
             return response()->json($data->original);
         }
 
-        $data = User::getAll();
-        return response()->json($data->original);
+        $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
+
+        $result = $this->userRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
     }
 
     /**
@@ -75,13 +97,17 @@ class UserController extends Controller
      * )
      */
     public function update(Int $id_user, Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
+
         $request->validate([
             'name'         => 'required|string|max:255',
             'email'        => 'required|string|email|max:255|unique:users',
             'password'     => 'required|string|min:6',
             'url_img_user' => 'string'
         ]);
-        User::updateReg($id_user, $request);
+        $updated_user = $this->userRepository->updateReg($id_empresa, $id_user, $request);
+
+        return response()->json($updated_user, 200);
     }
 
     /**
@@ -104,7 +130,11 @@ class UserController extends Controller
      *     )
      * )
      */
-    public function delete(Int $id_user) {
-        User::deleteReg($id_user);
+    public function delete(Request $request, Int $id_user) {
+        $id_empresa = $this->getIdEmpresa($request);
+
+        $inactive_user = $this->userRepository->deleteReg($id_empresa, $id_user);
+
+        return response()->json($inactive_user, 200);
     }
 }
