@@ -3,11 +3,18 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\MetodoPagamentoRepositoryInterface;
 use App\Models\MetodoPagamento;
 use Illuminate\Http\Request;
 
 class MetodoPagamentoController extends Controller
 {
+    public function __construct(
+        private MetodoPagamentoRepositoryInterface $metodoPagamentoRepository
+     )
+     {
+     }
+
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
@@ -49,11 +56,7 @@ class MetodoPagamentoController extends Controller
             'desc_metodo_pagamento_tmp'       => 'required|string|max:255'
         ]);
 
-        $metodoPagamento = MetodoPagamento::create([
-            'desc_metodo_pagamento_tmp'       => $request->desc_metodo_pagamento_tmp,
-            'is_ativo_tmp'                    => 1,
-            'id_empresa_tmp' => $id_empresa,
-        ]);
+        $metodoPagamento = $this->metodoPagamentoRepository->create($request->all(), $id_empresa);
 
         return response()->json($metodoPagamento,201);
     }
@@ -88,7 +91,7 @@ class MetodoPagamentoController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_metodo_pagamento){
-            $data = MetodoPagamento::getById($id_empresa, $id_metodo_pagamento);
+            $data = $this->metodoPagamentoRepository->getById($id_empresa, $id_metodo_pagamento);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -102,7 +105,9 @@ class MetodoPagamentoController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        return MetodoPagamento::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->metodoPagamentoRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
     }
 
     /**
@@ -143,7 +148,9 @@ class MetodoPagamentoController extends Controller
         $request->validate([
             'desc_metodo_pagamento_tmp'       => 'string|max:255'
         ]);
-        MetodoPagamento::updateReg($id_empresa, $id_metodo_pagamento, $request);
+        $updated_metodo_pagamento = $this->metodoPagamentoRepository->updateReg($id_empresa, $id_metodo_pagamento, $request);
+
+        return response()->json($updated_metodo_pagamento, 200);
     }
 
     /**
@@ -173,6 +180,9 @@ class MetodoPagamentoController extends Controller
      */
     public function delete(Int $id_metodo_pagamento, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
-        MetodoPagamento::deleteReg($id_empresa, $id_metodo_pagamento);
+        
+        $inactive_metodo_pagamento = $this->metodoPagamentoRepository->deleteReg($id_empresa, $id_metodo_pagamento);
+
+        return response()->json($inactive_metodo_pagamento,200);
     }
 }
