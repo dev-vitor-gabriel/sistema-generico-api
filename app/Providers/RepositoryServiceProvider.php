@@ -20,6 +20,8 @@ use App\Interfaces\MetodoPagamentoRepositoryInterface;
 use App\Repositories\MetodoPagamentoRepository;
 use App\Interfaces\PessoaRepositoryInterface;
 use App\Repositories\PessoaRepository;
+use App\Interfaces\ServicoTipoRepositoryInterface;
+use App\Repositories\ServicoTipoRepository;
 
 
 use Illuminate\Support\ServiceProvider;
@@ -40,6 +42,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(MaterialRepositoryInterface::class, MaterialRepository::class);
         $this->app->bind(MetodoPagamentoRepositoryInterface::class, MetodoPagamentoRepository::class);
         $this->app->bind(PessoaRepositoryInterface::class, PessoaRepository::class);
+        $this->app->bind(ServicoTipoRepositoryInterface::class, ServicoTipoRepository::class);
     }
 
     /**
