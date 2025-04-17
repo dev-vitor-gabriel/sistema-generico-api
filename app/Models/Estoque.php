@@ -11,6 +11,8 @@ class Estoque extends Model
     use HasFactory;
     protected $table = "tb_estoque";
 
+    protected $primaryKey = 'id_estoque_est';
+
     protected $fillable = [
         'des_estoque_est',
         'id_centro_custo_est',
@@ -140,6 +142,15 @@ class Estoque extends Model
             ->orderBy('te.id_estoque_est', 'desc')
             // ->orderBy('tm.des_material_mte', 'desc')
             ->get();
+    }
+
+    public static function updateReg(Int $id_empresa, Int $id_estoque, $obj) {
+        estoque::
+        where('id_estoque_est', $id_estoque)
+        ->where('id_empresa_est', $id_empresa)
+        ->update([
+            'des_estoque_est' => $obj->des_estoque_est
+        ]);
     }
 
     public static function deleteReg($id_estoque_est, $id_empresa) {
