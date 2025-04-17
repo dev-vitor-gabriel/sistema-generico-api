@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\ServicoController;
 
@@ -26,4 +25,5 @@ Route::controller(ServicoController::class)->group(function () {
     Route::patch('{id_servico}', 'finalizar');
     Route::delete('{id_servico}', 'delete');
     Route::get('dashboard', 'getDashboardData');
+    Route::get('topSevenServiceTypes', 'getTopSevenServiceTypes');
 });

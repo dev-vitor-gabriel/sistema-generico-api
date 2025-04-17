@@ -568,4 +568,60 @@ class ServicoController extends Controller
 
         return response()->json($data);
     }
+
+    /**
+     * @OA\Get(
+     *     path="/servico/topSevenServiceTypes",
+     *     summary="Obtém o top 7 tipos de serviço lançados em serviços",
+     *     operationId="getTopSevenServiceTypes",
+     *     tags={"Servico"},
+     *     @OA\Parameter(
+     *         name="centros_custo",
+     *         in="query",
+     *         required=false,
+     *         description="IDs dos centros de custo separados por vírgula",
+     *         @OA\Schema(type="string", example="2,3")
+     *     ),
+     *     @OA\Parameter(
+     *         name="data_inicio",
+     *         in="query",
+     *         required=false,
+     *         description="Data de início para o filtro (formato: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", example="2025-04-14 00:00:00")
+     *     ),
+     *     @OA\Parameter(
+     *         name="data_fim",
+     *         in="query",
+     *         required=false,
+     *         description="Data de fim para o filtro (formato: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", example="2025-04-16 23:59:59")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Dados da consulta",
+     *         @OA\JsonContent(
+     *             type="object",
+     *             properties={
+     *                 @OA\Property(property="tipo_servico", type="string"),
+     *                 @OA\Property(property="total_tipo_servico", type="integer"),
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Serviço não encontrado"
+     *     )
+     * )
+    */
+    public function getTopSevenServiceTypes(Request $request)
+    {
+        $centrosCusto = explode(',', $request->query('centros_custo'));
+        $dataInicio = $request->query('data_inicio');
+        $dataFim = $request->query('data_fim');
+
+        $data = RelServicoTipoServico::getTopTiposServico($centrosCusto, $dataInicio, $dataFim);
+
+        return response()->json($data);
+    }
+
 }

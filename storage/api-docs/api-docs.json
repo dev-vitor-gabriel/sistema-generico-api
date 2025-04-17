@@ -2581,6 +2581,70 @@
                 }
             }
         },
+        "/servico/topSevenServiceTypes": {
+            "get": {
+                "tags": [
+                    "Servico"
+                ],
+                "summary": "Obtém o top 7 tipos de serviço lançados em serviços",
+                "operationId": "getTopSevenServiceTypes",
+                "parameters": [
+                    {
+                        "name": "centros_custo",
+                        "in": "query",
+                        "description": "IDs dos centros de custo separados por vírgula",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2,3"
+                        }
+                    },
+                    {
+                        "name": "data_inicio",
+                        "in": "query",
+                        "description": "Data de início para o filtro (formato: Y-m-d H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2025-04-14 00:00:00"
+                        }
+                    },
+                    {
+                        "name": "data_fim",
+                        "in": "query",
+                        "description": "Data de fim para o filtro (formato: Y-m-d H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2025-04-16 23:59:59"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados da consulta",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "tipo_servico": {
+                                            "type": "string"
+                                        },
+                                        "total_tipo_servico": {
+                                            "type": "integer"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Serviço não encontrado"
+                    }
+                }
+            }
+        },
         "/servicoTipo": {
             "post": {
                 "tags": [
