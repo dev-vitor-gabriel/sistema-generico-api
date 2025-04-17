@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\PessoaRepositoryInterface;
-use App\Models\Pessoa;
 use Illuminate\Http\Request;
 use App\Helpers\ValidateString;
 
