@@ -3,16 +3,21 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\MaterialRepositoryInterface;
 use App\Models\Material;
 use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 
 class MaterialController extends Controller
 {
-    public function __construct()
-    {
+
+    public function __construct(
+        private MaterialRepositoryInterface $materialRepository
+     )
+     {
         $this->middleware('auth:api', ['except' => []]);
-    }
+     }
+    
 
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
@@ -49,7 +54,7 @@ class MaterialController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         if($id_material){
-            $data = Material::getById($id_empresa, $id_material);
+            $data = $this->materialRepository->getById($id_empresa, $id_material);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -58,8 +63,14 @@ class MaterialController extends Controller
             }
             return $data;
         }
-        $data = Material::getAll($id_empresa);
-        return $data;
+
+        $per_page = $request->query('per_page', 10);
+        $filter = $request->query('filter', '');
+        $page_number = $request->query('page_number', 1);
+        $per_page = ($per_page > 50) ? 50 : $per_page;
+
+        $result = $this->materialRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+        return $result;
     }
 
     /**
@@ -99,16 +110,9 @@ class MaterialController extends Controller
             'id_centro_custo_mte'   => 'required|integer|',
         ]);
 
-        $material = Material::create([
-            'id_unidade_mte'        => $request->id_unidade_mte,
-            'des_material_mte'      => $request->des_material_mte,
-            'vlr_material_mte'      => $request->vlr_material_mte,
-            'id_centro_custo_mte'   => $request->id_centro_custo_mte,
-            'id_empresa_mte'        => $id_empresa,
-            'is_ativo_mte'          => 1,
-        ]);
+        $material = $this->materialRepository->create($request->all(), $id_empresa);
 
-        return response()->json($material,201);
+        return response()->json($material,200);
     }
 
     /**
@@ -155,7 +159,9 @@ class MaterialController extends Controller
             'vlr_material_mte'      => 'numeric'
         ]);
 
-        Material::updateReg($id_empresa, $id_material, $request);
+        $updated_material = $this->materialRepository->updateReg($id_empresa, $id_material, $request);
+
+        return response()->json($updated_material, 200);
     }
 
     /**
@@ -181,6 +187,8 @@ class MaterialController extends Controller
     public function delete(Request $request, Int $id_material) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        Material::deleteReg($id_empresa, $id_material);
+        $inactive_material = $this->materialRepository->deleteReg($id_empresa, $id_material);
+
+        return response()->json($inactive_material,200);
     }
 }
