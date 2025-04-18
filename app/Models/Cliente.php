@@ -38,39 +38,24 @@ class Cliente extends Model
         ]);
     }
 
-    public static function getById(Int $id_empresa, Int $id = null) {
-        if($id) {
-            $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
-            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
-            ->where('id_cliente_cli', $id)
-            ->where('id_empresa_cli', $id_empresa)
-            ->where('is_ativo_cli', 1)
-            ->orderBy('id_cliente_cli', 'desc')
-            ->get();
-        }else{
-            $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
-            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
-            ->where('is_ativo_cli', 1)
-            ->where('id_empresa_cli', $id_empresa)
-            ->orderBy('id_cliente_cli', 'desc')
-            ->get();
-        }
-        return response()
-        ->json($data);
+    public static function getById(Int $id_empresa,Int $id_cliente) {
+
+        $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
+        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
+        ->where('id_cliente_cli', $id_cliente)
+        ->where('id_empresa_cli', $id_empresa)
+        ->where('is_ativo_cli', 1)
+        ->orderBy('id_cliente_cli', 'desc')
+        ->first();
+
+        return $data;
     }
 
-    public static function updateReg(Int $id_empresa, Int $id_cliente, $obj) {
+    public static function updateReg(Int $id_empresa, Int $id_cliente, $dados_atualizados) {
         Cliente::
         where('id_cliente_cli', $id_cliente)
         ->where('id_empresa_cli', $id_empresa)
-        ->update([
-            'des_cliente_cli'       => $obj->des_cliente_cli,
-            'telefone_cliente_cli'  => $obj->telefone_cliente_cli,
-            'email_cliente_cli'     => $obj->email_cliente_cli,
-            'documento_cliente_cli' => $obj->documento_cliente_cli,
-            'endereco_cliente_cli'  => $obj->endereco_cliente_cli,
-            'id_centro_custo_cli'   => $obj->id_centro_custo_cli
-        ]);
+        ->update($dados_atualizados);
     }
 
     public static function deleteReg($id_empresa, $id_cliente) {
