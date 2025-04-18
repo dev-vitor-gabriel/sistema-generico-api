@@ -188,8 +188,8 @@ class PessoaController extends Controller
     public function delete(Request $request,Int $id_pessoa){
         $id_empresa = $this->getIdEmpresa($request);
 
-        $inactive_pessoa = $this->pessoaRepository->deleteReg($id_empresa, $id_pessoa);
+       $this->pessoaRepository->deleteReg($id_pessoa);
 
-        return response()->json($inactive_pessoa,200);
+        // return response()->json($inactive_pessoa,200);
     }
 }

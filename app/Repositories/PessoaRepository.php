@@ -30,14 +30,14 @@ class PessoaRepository implements PessoaRepositoryInterface
 
     public function updateReg($id_empresa, $id_pessoa, $request)
     {
-        $result = Pessoa::updateReg($id_empresa, $id_pessoa, $request);
+        $result = Pessoa::updateReg($id_pessoa, $request);
 
         return $result;
     }
 
-    public function deleteReg($id_empresa, $id_pessoa)
+    public function deleteReg($id_pessoa)
     {
-        $result = Pessoa::deleteReg($id_empresa, $id_pessoa);
+        $result = Pessoa::deleteReg($id_pessoa);
 
         return $result;
     }
