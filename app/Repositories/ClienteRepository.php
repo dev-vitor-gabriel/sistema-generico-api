@@ -28,9 +28,9 @@ class ClienteRepository implements ClienteRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_cliente, $request)
+    public function updateReg($id_empresa, $id_cliente, $dados_atualizados)
     {
-        $result = Cliente::updateReg($id_empresa, $id_cliente, $request);
+        $result = Cliente::updateReg($id_empresa, $id_cliente, $dados_atualizados);
 
         return $result;
     }
