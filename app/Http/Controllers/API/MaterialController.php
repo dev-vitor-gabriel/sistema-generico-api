@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Interfaces\MaterialRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use OpenApi\Annotations as OA;
 
 class MaterialController extends Controller
@@ -151,14 +152,31 @@ class MaterialController extends Controller
     public function update(Int $id_material, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        $request->validate([
+        $dados_material = $this->materialRepository->getById($id_material, $id_empresa);
+        
+        if (!$dados_material) {
+            return response()->json(['erro' => 'Material não encontrado'], 404);
+        }
+        
+        $validator = Validator::make($request->all(),[
             'id_unidade_mte'        => 'integer',
             'des_material_mte'      => 'string|max:255',
             'id_centro_custo_mte'   => 'integer',
             'vlr_material_mte'      => 'numeric'
         ]);
 
-        $updated_material = $this->materialRepository->updateReg($id_empresa, $id_material, $request);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'id_unidade_mte'       => $request->id_unidade_mte       ?? $dados_material->id_unidade_mte,
+            'des_material_mte'     => $request->des_material_mte     ?? $dados_material->des_material_mte,
+            'id_centro_custo_mte'  => $request->id_centro_custo_mte  ?? $dados_material->id_centro_custo_mte,
+            'vlr_material_mte'     => $request->vlr_material_mte     ?? $dados_material->vlr_material_mte,
+        ];
+
+        $updated_material = $this->materialRepository->updateReg($id_empresa, $id_material, $dados_atualizados);
 
         return response()->json($updated_material, 200);
     }

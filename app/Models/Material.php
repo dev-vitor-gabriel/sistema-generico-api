@@ -41,57 +41,33 @@ class Material extends Model
         return response()->json($data);
     }
 
-    public static function getById(Int $id_empresa, Int $id = null)
+    public static function getById(Int $id_material,Int $id_empresa)
     {
-        if ($id) {
-            $data = Material::select([
-                'tb_material.id_material_mte',
-                'tb_material.des_material_mte',
-                'tb_material.vlr_material_mte',
-                'tb_unidade.des_reduz_unidade_und',
-                'tb_material.is_ativo_mte',
-                'tb_material.created_at',
-                'tb_material.updated_at',
-                'tb_centro_custo.des_centro_custo_cco'
-            ])
-                ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
-                ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
-                ->where('id_material_mte', $id)
-                ->where('is_ativo_mte', 1)
-                ->where('tb_material.id_empresa_mte', $id_empresa)
-                ->get();
-            return response()->json($data);
-        } else {
-            $data = Material::select([
-                'tb_material.id_material_mte',
-                'tb_material.des_material_mte',
-                'tb_material.vlr_material_mte',
-                'tb_unidade.des_reduz_unidade_und',
-                'tb_material.is_ativo_mte',
-                'tb_material.created_at',
-                'tb_material.updated_at',
-                'tb_centro_custo.des_centro_custo_cco'
-            ])
-                ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
-                ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
-                ->where('is_ativo_mte', 1)
-                ->where('tb_material.id_empresa_mte', $id_empresa)
-                ->orderBy('id_material_mte', 'desc')
-                ->get();
-            return response()->json($data);
-        }
+         $data = Material::select(
+            'tb_material.id_material_mte',
+            'tb_material.des_material_mte',
+            'tb_material.vlr_material_mte',
+            'tb_unidade.des_reduz_unidade_und',
+            'tb_material.is_ativo_mte',
+            'tb_material.created_at',
+            'tb_material.updated_at',
+            'tb_centro_custo.des_centro_custo_cco'
+            )
+            ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
+            ->where('id_material_mte', $id_material)
+            ->where('is_ativo_mte', 1)
+            ->where('tb_material.id_empresa_mte', $id_empresa)
+            ->first();
+            return $data;
+        
     }
 
-    public static function updateReg(Int $id_empresa, Int $id_material, $obj)
+    public static function updateReg(Int $id_empresa, Int $id_material, $dados_atualizados)
     {
         Material::where('id_material_mte', $id_material)
             ->where('id_empresa_mte', $id_empresa)
-            ->update([
-                'des_material_mte'      => $obj->des_material_mte,
-                'id_unidade_mte'        => $obj->id_unidade_mte,
-                'vlr_material_mte'      => $obj->vlr_material_mte,
-                'id_centro_custo_mte'   => $obj->id_centro_custo_mte,
-            ]);
+            ->update($dados_atualizados);
     }
 
     public static function deleteReg($id_empresa, $id_material)

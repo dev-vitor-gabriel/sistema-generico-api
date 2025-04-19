@@ -28,9 +28,9 @@ class MaterialRepository implements MaterialRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_material, $request)
+    public function updateReg($id_empresa, $id_material, $dados_atualizados)
     {
-        $result = Material::updateReg($id_empresa, $id_material, $request);
+        $result = Material::updateReg($id_empresa, $id_material, $dados_atualizados);
 
         return $result;
     }
