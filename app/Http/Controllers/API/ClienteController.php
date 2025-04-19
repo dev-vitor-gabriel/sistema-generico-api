@@ -147,13 +147,11 @@ class ClienteController extends Controller
 
         $dados_cliente = $this->clienteRepository->getById($id_cliente, $id_empresa);
 
-        $dados_array = $dados_cliente->toArray();
-
         if (!$dados_cliente) {
             return response()->json(['erro' => 'Cliente não encontrado'], 404);
         }
 
-        $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli);
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli ?? $dados_cliente->documento_cliente_cli);
         $request->merge(['documento_cliente_cli' => $document_formated]);
         $validator = Validator::make($request->all(),[
             'des_cliente_cli'       => 'string|max:255',
