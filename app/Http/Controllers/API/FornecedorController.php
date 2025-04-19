@@ -139,9 +139,8 @@ class FornecedorController extends Controller
         if (!$dados_fornecedor) {
             return response()->json(['erro' => 'Fornecedor não encontrado'], 404);
         }
-        $dados_array = $dados_fornecedor->toArray();
         
-        $document_formated = ValidateString::removeCharacterSpecial($request->documento_fornecedor_frn);
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_fornecedor_frn ?? $dados_fornecedor->documento_fornecedor_frn);
         $request->merge(['documento_fornecedor_frn' => $document_formated]);
         $validator = Validator::make($request->all(),[
             'desc_fornecedor_frn'      => 'string|max:255',
