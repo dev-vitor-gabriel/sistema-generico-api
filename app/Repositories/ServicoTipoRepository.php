@@ -28,9 +28,9 @@ class ServicoTipoRepository implements ServicoTipoRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_servico_tipo, $request)
+    public function updateReg($id_empresa, $id_servico_tipo, $dados_atualizados)
     {
-        $result = ServicoTipo::updateReg($id_empresa, $id_servico_tipo, $request);
+        $result = ServicoTipo::updateReg($id_empresa, $id_servico_tipo, $dados_atualizados);
 
         return $result;
     }

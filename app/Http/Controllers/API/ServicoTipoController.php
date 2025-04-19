@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Interfaces\ServicoTipoRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class ServicoTipoController extends Controller
 {
@@ -130,13 +132,29 @@ class ServicoTipoController extends Controller
     public function update(Int $id_servico_tipo, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        $request->validate([
-            'des_servico_tipo_stp' => 'required|string|max:255',
-            'vlr_servico_tipo_stp' => 'required|string|max:255',
+        $dados_servico_tipo = $this->servicoTipoRepository->getById($id_empresa, $id_servico_tipo);
+
+        if (!$dados_servico_tipo) {
+            return response()->json(['erro' => 'Tipo de Serviço não encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(),[
+            'des_servico_tipo_stp' => 'string|max:255',
+            'vlr_servico_tipo_stp' => 'string|max:255',
             'id_centro_custo_stp'  => 'integer',
         ]);
 
-        $updated_servicoTipo = $this->servicoTipoRepository->updateReg($id_empresa, $id_servico_tipo, $request);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'des_servico_tipo_stp'  => $request->des_servico_tipo_stp  ?? $dados_servico_tipo->des_servico_tipo_stp,
+            'vlr_servico_tipo_stp'  => $request->vlr_servico_tipo_stp  ?? $dados_servico_tipo->vlr_servico_tipo_stp,
+            'id_centro_custo_stp'   => $request->id_centro_custo_stp   ?? $dados_servico_tipo->id_centro_custo_stp,
+        ];
+
+        $updated_servicoTipo = $this->servicoTipoRepository->updateReg($id_empresa, $id_servico_tipo, $dados_atualizados);
 
         return response()->json($updated_servicoTipo,200);
     }
