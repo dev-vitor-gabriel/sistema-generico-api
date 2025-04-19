@@ -28,9 +28,9 @@ class InstituicaoPagamentoRepository implements InstituicaoPagamentoRepositoryIn
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_instituicao_pagamento, $request)
+    public function updateReg($id_empresa, $id_instituicao_pagamento, $dados_atualizados)
     {
-        $result = InstituicaoPagamento::updateReg($id_empresa, $id_instituicao_pagamento, $request);
+        $result = InstituicaoPagamento::updateReg($id_empresa, $id_instituicao_pagamento, $dados_atualizados);
 
         return $result;
     }

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Interfaces\InstituicaoPagamentoRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
+
 class InstituicaoPagamentoController extends Controller
 {
 
@@ -136,11 +139,26 @@ class InstituicaoPagamentoController extends Controller
      */
     public function update(Int $id_instituicao_pagamento, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
-        $request->validate([
+
+        $dados_instituicao_pagamento = $this->instituicaoPagamentoRepository->getById($id_instituicao_pagamento, $id_empresa);
+
+        if (!$dados_instituicao_pagamento) {
+            return response()->json(['erro' => 'Cliente não encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(),[
             'desc_instituicao_pagamento_tip' => 'string|max:255'
         ]);
 
-        $updated_instituicaoPagamento = $this->instituicaoPagamentoRepository->updateReg($id_empresa, $id_instituicao_pagamento, $request);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'desc_instituicao_pagamento_tip'       => $request->desc_instituicao_pagamento_tip       ?? $dados_instituicao_pagamento->desc_instituicao_pagamento_tip,
+            ];
+
+        $updated_instituicaoPagamento = $this->instituicaoPagamentoRepository->updateReg($id_empresa, $id_instituicao_pagamento, $dados_atualizados);
 
         return response()->json($updated_instituicaoPagamento,200);
     }

@@ -33,34 +33,24 @@ class InstituicaoPagamento extends Model
         ]);
     }
 
-    public static function getById(Int $id_empresa, Int $id = null) {
-        if($id) {
-            $data = InstituicaoPagamento::
-            select(['*'])
-            ->where('desc_instituicao_pagamento_tip', $id)
-            ->where('is_ativo_tip', 1)
-            ->where('id_empresa_tip', $id_empresa)
-            ->orderBy('id_instituicao_pagamento_tip', 'desc')
-            ->get();
-        }else{
-            $data = InstituicaoPagamento::
-            select(['*'])
-            ->where('is_ativo_tip', 1)
-            ->orderBy('id_instituicao_pagamento_tip', 'desc')
-            ->where('id_empresa_tip', $id_empresa)
-            ->get();
-        }
-        return response()->json($data);
+    public static function getById(Int $id_empresa, Int $id_instituicao_pagamento) {
+        
+        $data = InstituicaoPagamento::select(['*'])
+        ->where('desc_instituicao_pagamento_tip', $id_instituicao_pagamento)
+        ->where('is_ativo_tip', 1)
+        ->where('id_empresa_tip', $id_empresa)
+        ->orderBy('id_instituicao_pagamento_tip', 'desc')
+        ->get();
+        
+        return $data;
     }
 
-    public static function updateReg(Int $id_empresa, Int $id_instituicao_pagamento, $obj)
+    public static function updateReg(Int $id_empresa, Int $id_instituicao_pagamento, $dados_atualizados)
     {
         InstituicaoPagamento::
         where('id_instituicao_pagamento_tip', $id_instituicao_pagamento)
         ->where('id_empresa_tip', $id_empresa)
-            ->update([
-                'desc_instituicao_pagamento_tip' => $obj->desc_instituicao_pagamento_tip
-            ]);
+            ->update($dados_atualizados);
     }
 
     public static function deleteReg($id_empresa, $id_instituicao_pagamento)
