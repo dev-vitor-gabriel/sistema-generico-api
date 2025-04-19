@@ -28,9 +28,9 @@ class CentroCustoRepository implements CentroCustoRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_CentroCusto, $request)
+    public function updateReg($id_empresa, $id_CentroCusto, $dados_atualizados)
     {
-        $result = CentroCusto::updateReg($id_empresa, $id_CentroCusto, $request);
+        $result = CentroCusto::updateReg($id_empresa, $id_CentroCusto, $dados_atualizados);
 
         return $result;
     }

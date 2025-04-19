@@ -5,6 +5,8 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CentroCustoRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class CentroCustoController extends Controller
 {
@@ -137,11 +139,25 @@ class CentroCustoController extends Controller
     public function update(Int $id_centro_custo, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        $request->validate([
-            'des_centro_custo_cco' => 'required|string|max:255'
+        $dados_centro_custo = $this->centroCustoRepository->getById($id_centro_custo, $id_empresa);
+
+        if (!$dados_centro_custo) {
+            return response()->json(['erro' => 'Centro de Custo não encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(),[
+            'des_centro_custo_cco' => 'string|max:255'
         ]);
 
-        $updated_centroCusto = $this->centroCustoRepository->updateReg($id_empresa, $id_centro_custo, $request);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'des_centro_custo_cco'       => $request->des_centro_custo_cco   ?? $dados_centro_custo->des_centro_custo_cco,
+            ];
+
+        $updated_centroCusto = $this->centroCustoRepository->updateReg($id_empresa, $id_centro_custo, $dados_atualizados);
 
         return response()->json($updated_centroCusto,200);
     }
