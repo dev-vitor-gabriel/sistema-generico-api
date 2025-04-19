@@ -28,9 +28,9 @@ class MetodoPagamentoRepository implements MetodoPagamentoRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_metodo_pagamento, $request)
+    public function updateReg($id_empresa, $id_metodo_pagamento, $dados_atualizados)
     {
-        $result = MetodoPagamento::updateReg($id_empresa, $id_metodo_pagamento, $request);
+        $result = MetodoPagamento::updateReg($id_empresa, $id_metodo_pagamento, $dados_atualizados);
 
         return $result;
     }

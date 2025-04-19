@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Interfaces\MetodoPagamentoRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class MetodoPagamentoController extends Controller
 {
@@ -142,12 +143,27 @@ class MetodoPagamentoController extends Controller
      * )
      */
     public function update(Int $id_metodo_pagamento, Request $request) {
-        $id_empresa = $this->getIdEmpresa($request);
+        $id_empresa = $this->getIdEmpresa($request);    
 
-        $request->validate([
+        $dados_metodo_pagamento = $this->metodoPagamentoRepository->getById($id_empresa, $id_metodo_pagamento);
+        
+        if (!$dados_metodo_pagamento) {
+            return response()->json(['erro' => 'Metodo de Pagamento não encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(),[
             'desc_metodo_pagamento_tmp'       => 'string|max:255'
         ]);
-        $updated_metodo_pagamento = $this->metodoPagamentoRepository->updateReg($id_empresa, $id_metodo_pagamento, $request);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'desc_metodo_pagamento_tmp'       => $request->desc_metodo_pagamento_tmp       ?? $dados_metodo_pagamento->desc_metodo_pagamento_tmp,
+        ];
+
+        $updated_metodo_pagamento = $this->metodoPagamentoRepository->updateReg($id_empresa, $id_metodo_pagamento, $dados_atualizados);
 
         return response()->json($updated_metodo_pagamento, 200);
     }
