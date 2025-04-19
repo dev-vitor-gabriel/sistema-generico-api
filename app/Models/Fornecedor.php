@@ -35,27 +35,22 @@ class Fornecedor extends Model
         ]);
     }
 
-    public static function getById(Int $id_empresa, Int $id = null){
-        if($id){
-            $data = Fornecedor::
-            select(['*'])
-            ->where('id_fornecedor_frn', $id)
-            ->where('is_ativo_frn', 1)
-            ->where('id_empresa_frn', $id_empresa)
-            ->get();
-            return response()->json($data);
-        }
+    public static function getById(Int $id_fornecedor,Int $id_empresa){
+        
+        $data = Fornecedor::select(['*'])
+        ->where('id_fornecedor_frn', $id_fornecedor)
+        ->where('is_ativo_frn', 1)
+        ->where('id_empresa_frn', $id_empresa)
+        ->first();
+        
+        return $data;
+        
     }
 
-    public static function updateReg(Int $id_fornecedor, $id_empresa, $obj) {
+    public static function updateReg(Int $id_fornecedor, $id_empresa, $dados_atualizados) {
         Fornecedor::where('id_fornecedor_frn', $id_fornecedor)
         ->where('id_empresa_frn', $id_empresa)
-        ->update([
-            'desc_fornecedor_frn'       => $obj->desc_fornecedor_frn,
-            'tel_fornecedor_frn'        => $obj->tel_fornecedor_frn,
-            'documento_fornecedor_frn'  => $obj->documento_fornecedor_frn
-
-        ]);
+        ->update($dados_atualizados);
     }
 
     public static function deleteReg($id_empresa,$id_fornecedor) {

@@ -28,9 +28,9 @@ class FornecedorRepository implements FornecedorRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_fornecedor, $request)
+    public function updateReg($id_empresa, $id_fornecedor, $dados_atualizados)
     {
-        $result = Fornecedor::updateReg($id_empresa, $id_fornecedor, $request);
+        $result = Fornecedor::updateReg($id_empresa, $id_fornecedor, $dados_atualizados);
 
         return $result;
     }

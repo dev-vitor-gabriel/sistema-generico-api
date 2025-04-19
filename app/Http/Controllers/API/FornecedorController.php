@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\FornecedorRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Helpers\ValidateString;
+use Illuminate\Support\Facades\Validator;
 
 class FornecedorController extends Controller
 {
@@ -43,6 +44,10 @@ class FornecedorController extends Controller
      */
     public function create(Request $request){
         $id_empresa = $this->getIdEmpresa($request);
+
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_fornecedor_frn);
+
+        $request->merge(['documento_fornecedor_frn' => $document_formated]);
 
         $request->validate([
             'desc_fornecedor_frn'      => 'required|string|max:255',
@@ -122,19 +127,39 @@ class FornecedorController extends Controller
      *     @OA\Response(
      *         response=422,
      *         description="Erro de validação"
-     *     )
+     *     ).
+     * 
      * )
      */
     public function update(Int $id_fornecedor, Request $request){
         $id_empresa = $this->getIdEmpresa($request);
 
-        $request->validate([
+        $dados_fornecedor = $this->fornecedorRepository->getById($id_fornecedor, $id_empresa);
+
+        if (!$dados_fornecedor) {
+            return response()->json(['erro' => 'Fornecedor não encontrado'], 404);
+        }
+        $dados_array = $dados_fornecedor->toArray();
+        
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_fornecedor_frn);
+        $request->merge(['documento_fornecedor_frn' => $document_formated]);
+        $validator = Validator::make($request->all(),[
             'desc_fornecedor_frn'      => 'string|max:255',
             'tel_fornecedor_frn'       => 'string|max:15',
             'documento_fornecedor_frn' => 'string|max:18',
         ]);
 
-        $updated_fornecedor = $this->fornecedorRepository->updateReg($id_fornecedor, $id_empresa, $request);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'desc_fornecedor_frn'       => $request->desc_fornecedor_frn       ?? $dados_fornecedor->desc_fornecedor_frn,
+            'tel_fornecedor_frn'        => $request->tel_fornecedor_frn        ?? $dados_fornecedor->tel_fornecedor_frn,
+            'documento_fornecedor_frn'  => $request->documento_fornecedor_frn  ?? $dados_fornecedor->documento_fornecedor_frn,
+        ];
+
+        $updated_fornecedor = $this->fornecedorRepository->updateReg($id_fornecedor, $id_empresa,$dados_atualizados);
 
         return response()->json($updated_fornecedor, 200);
     }

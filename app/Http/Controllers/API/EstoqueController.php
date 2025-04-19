@@ -135,6 +135,8 @@ class EstoqueController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
     
         $dados_estoque = $this->estoqueRepository->getById($id_empresa, $id_estoque);
+
+        $dados_array = $dados_estoque->toArray();
     
         if (!$dados_estoque) {
             return response()->json(['erro' => 'Estoque não encontrado'], 404);
@@ -149,7 +151,6 @@ class EstoqueController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
     
-        // Pega os valores novos ou mantém os antigos
         $dados_atualizados = [
             'des_estoque_est'     => $request->des_estoque_est     ?? $dados_estoque->des_estoque_est,
             'id_centro_custo_est' => $request->id_centro_custo_est ?? $dados_estoque->id_centro_custo_est,
