@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\PessoaRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Helpers\ValidateString;
+use Illuminate\Support\Facades\Validator;
 
 class PessoaController extends Controller
 {
@@ -54,6 +55,10 @@ class PessoaController extends Controller
      */
     public function create(request $request){
         $id_empresa = $this->getIdEmpresa($request);
+
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_pessoa_pes);
+
+        $request->merge(['documento_pessoa_pes' => $document_formated]);
 
         $request->validate([
             'nome_pessoa_pes'           => 'required|string|',
@@ -152,12 +157,31 @@ class PessoaController extends Controller
     public function update(Request $request,Int $id_pessoa){
         $id_empresa = $this->getIdEmpresa($request);
 
-        $request->validate([
+        $dados_pessoa = $this->pessoaRepository->getById($id_pessoa, $request);
+
+        if (!$dados_pessoa) {
+            return response()->json(['erro' => 'Pessoa não encontrada'], 404);
+        }
+
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_pessoa_pes ?? $dados_pessoa->documento_pessoa_pes);
+        $request->merge(['documento_pessoa_pes' => $document_formated]);
+        $validator = Validator::make($request->all(),[
             'nome_pessoa_pes'           => 'string',
             'id_centro_custo_pes'       => 'integer',
             'documento_pessoa_pes'      => 'string',
         ]);
-        $updated_pessoa = $this->pessoaRepository->updateReg($id_empresa, $id_pessoa, $request);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'nome_pessoa_pes'      => $request->nome_pessoa_pes      ?? $dados_pessoa->nome_pessoa_pes,
+            'id_centro_custo_pes'  => $request->id_centro_custo_pes  ?? $dados_pessoa->id_centro_custo_pes,
+            'documento_pessoa_pes' => $request->documento_pessoa_pes ?? $dados_pessoa->documento_pessoa_pes,
+        ];
+
+        $updated_pessoa = $this->pessoaRepository->updateReg($id_pessoa, $dados_atualizados);
 
         return response()->json($updated_pessoa,200);
     }

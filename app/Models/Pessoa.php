@@ -23,24 +23,19 @@ class Pessoa extends Model
         return response()->json($data);
     }
 
-    public static function getById(Int $id = null){
-        if($id){
-            $data = Pessoa::select(['*'])->where('id_pessoa_pes', $id)->where('is_ativo_pes', 1)->get();
-            return response()->json($data);
-        }else{
-            $data = Pessoa::getAll();
-        }
+    public static function getById(Int $id_pessoa){
+        
+        $data = Pessoa::select(['*'])
+        ->where('id_pessoa_pes', $id_pessoa)
+        ->where('is_ativo_pes', 1)
+        ->first();
 
         return $data;
     }
 
-    public static function updateReg(Int $id_pessoa, $obj) {
+    public static function updateReg(Int $id_pessoa, $dados_atualizados) {
         Pessoa::where('id_pessoa_pes', $id_pessoa)
-        ->update([
-            'nome_pessoa_pes'        => $obj->nome_pessoa_pes,
-            'id_centro_custo_pes'    => $obj->id_centro_custo_pes,
-            'documento_pessoa_pes'   => ValidateString::removeCharacterSpecial($obj->documento_pessoa_pes)
-        ]);
+        ->update($dados_atualizados);
     }
 
     public static function deleteReg($id_pessoa){
