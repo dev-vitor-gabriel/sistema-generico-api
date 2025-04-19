@@ -28,9 +28,9 @@ class UnidadeRepository implements UnidadeRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_unidade_und, $request)
+    public function updateReg($id_empresa, $id_unidade_und, $dados_atualizados)
     {
-        $result = Unidade::updateReg($id_empresa, $id_unidade_und, $request);
+        $result = Unidade::updateReg($id_empresa, $id_unidade_und, $dados_atualizados);
 
         return $result;
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Interfaces\UnidadeRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class UnidadeController extends Controller
 {
@@ -143,12 +144,29 @@ class UnidadeController extends Controller
     public function update(Int $id_unidade_und, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        $request->validate([
+        $dados_unidade = $this->unidadeRepository->getById($id_empresa, $id_unidade_und);
+
+        if (!$dados_unidade) {
+            return response()->json(['erro' => 'Unidade não encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(),[
             'des_unidade_und'       => 'string|max:255',
             'des_reduz_unidade_und' => 'string|max:255',
             'id_centro_custo_und'   => 'integer',
         ]);
-        $updated_unidade = $this->unidadeRepository->updateReg($id_empresa, $id_unidade_und, $request);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'des_unidade_und'        => $request->des_unidade_und        ?? $dados_unidade->des_unidade_und,
+            'des_reduz_unidade_und'  => $request->des_reduz_unidade_und  ?? $dados_unidade->des_reduz_unidade_und,
+            'id_centro_custo_und'    => $request->id_centro_custo_und    ?? $dados_unidade->id_centro_custo_und,
+        ];
+
+        $updated_unidade = $this->unidadeRepository->updateReg($id_empresa, $id_unidade_und, $dados_atualizados);
 
         return response()->json($updated_unidade, 200);
     }

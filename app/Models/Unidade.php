@@ -28,35 +28,24 @@ class Unidade extends Model
         return response()->json($data);
     }
 
-    public static function getById(Int $id_empresa, Int $id = null) {
-        if($id) {
-            $data = Unidade::select('tb_unidade.*', 'tb_centro_custo.des_centro_custo_cco')
-            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_unidade.id_centro_custo_und')
-            ->where('id_unidade_und', $id)
-            ->where('is_ativo_und', 1)
-            ->where('id_empresa_und', $id_empresa)
-            ->orderBy('id_unidade_und', 'desc')
-            ->get();
-        }else{
-            Unidade::select('tb_unidade.*', 'tb_centro_custo.des_centro_custo_cco')
-            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_unidade.id_centro_custo_und')
-            ->where('is_ativo_und', 1)
-            ->where('id_empresa_und', $id_empresa)
-            ->orderBy('id_unidade_und', 'desc')
-            ->get();
-        }
-        return response()->json($data);
+    public static function getById(Int $id_empresa, Int $id_unidade_und) {
+        
+        $data = Unidade::select('tb_unidade.*', 'tb_centro_custo.des_centro_custo_cco')
+        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_unidade.id_centro_custo_und')
+        ->where('id_unidade_und', $id_unidade_und)
+        ->where('is_ativo_und', 1)
+        ->where('id_empresa_und', $id_empresa)
+        ->orderBy('id_unidade_und', 'desc')
+        ->first();
+        
+        return $data;
     }
 
-    public static function updateReg(Int $id_empresa, Int $id_unidade_und, $obj) {
+    public static function updateReg(Int $id_empresa, Int $id_unidade_und, $dados_atualizados) {
         Unidade::
         where('id_unidade_und', $id_unidade_und)
         ->where('id_empresa_und', $id_empresa)
-        ->update([
-            'des_unidade_und'       => $obj->des_unidade_und,
-            'des_reduz_unidade_und' => $obj->des_reduz_unidade_und,
-            'id_centro_custo_und'   => $obj->id_centro_custo_und,
-        ]);
+        ->update($dados_atualizados);
     }
 
     public static function deleteReg($id_empresa, $id_unidade_und) {
