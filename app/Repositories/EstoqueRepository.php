@@ -28,9 +28,9 @@ class EstoqueRepository implements EstoqueRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_estoque, $request)
+    public function updateReg($id_empresa, $id_estoque, $dados_atualizados)
     {
-        $result = Estoque::updateReg($id_empresa, $id_estoque, $request);
+        $result = Estoque::updateReg($id_empresa, $id_estoque, $dados_atualizados);
 
         return $result;
     }

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\EstoqueRepositoryInterface;
 use App\Models\Estoque;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+
 
 class EstoqueController extends Controller
 {
@@ -131,16 +133,33 @@ class EstoqueController extends Controller
      */
     public function update(Int $id_estoque, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
-
-        $request->validate([
-            'des_estoque_est'     => 'required|string|max:255',
-            'id_centro_custo_est' => 'required|integer|exists:tb_centro_custo,id_centro_custo_cco'
+    
+        $dados_estoque = $this->estoqueRepository->getById($id_empresa, $id_estoque);
+    
+        if (!$dados_estoque) {
+            return response()->json(['erro' => 'Estoque não encontrado'], 404);
+        }
+    
+        $validator = Validator::make($request->all(), [
+            'des_estoque_est'     => 'sometimes|string|max:255',
+            'id_centro_custo_est' => 'sometimes|integer|exists:tb_centro_custo,id_centro_custo_cco',
         ]);
-
-        $estoque = $this->estoqueRepository->updateReg($id_empresa, $id_estoque, $request);
-
-        return response()->json($estoque);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
+        // Pega os valores novos ou mantém os antigos
+        $dados_atualizados = [
+            'des_estoque_est'     => $request->des_estoque_est     ?? $dados_estoque->des_estoque_est,
+            'id_centro_custo_est' => $request->id_centro_custo_est ?? $dados_estoque->id_centro_custo_est,
+        ];
+    
+        $updated_estoque = $this->estoqueRepository->updateReg($id_empresa, $id_estoque, $dados_atualizados);
+    
+        return response()->json($updated_estoque, 200);
     }
+    
 
     /**
      * @OA\Delete(
@@ -160,7 +179,7 @@ class EstoqueController extends Controller
      *     )
      * )
      */
-    public function delete(Request $request, Int $id_estoque) {
+    public function delete( Int $id_estoque, Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
        $inactive_estoque = $this->estoqueRepository->deleteReg($id_estoque, $id_empresa);

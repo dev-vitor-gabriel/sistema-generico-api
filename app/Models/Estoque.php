@@ -42,36 +42,26 @@ class Estoque extends Model
         ]);
     }
 
-    public static function getById(Int $id_empresa, Int $id = null) {
-        if($id) {
-            $data = Estoque::select([
-                'tb_estoque.id_estoque_est',
-                'tb_estoque.des_estoque_est',
-                'tb_centro_custo.des_centro_custo_cco',
-                'tb_estoque.created_at' ,
-                'tb_estoque.updated_at'
-            ])
-            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
-            ->where('is_ativo_est', 1)
-            ->where('id_estoque_est', $id)
-            ->where('tb_estoque.id_empresa_est', $id_empresa)
-            ->orderBy('tb_estoque.id_estoque_est', 'desc')
-            ->get();
-        } else {
-            $data = Estoque::select([
-                'tb_estoque.id_estoque_est',
-                'tb_estoque.des_estoque_est',
-                'tb_centro_custo.des_centro_custo_cco',
-                'tb_estoque.created_at' ,
-                'tb_estoque.updated_at'
-            ])
-            ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
-            ->where('is_ativo_est', 1)
-            ->where('tb_estoque.id_empresa_est', $id_empresa)
-            ->orderBy('tb_estoque.id_estoque_est', 'desc')
-            ->get();
-        }
-        return response()->json($data);
+    public static function getById(Int $id_empresa, Int $id_estoque) {
+
+        $data = Estoque::select(
+            'tb_estoque.id_estoque_est',
+            'tb_estoque.des_estoque_est',
+            'tb_estoque.id_centro_custo_est', 
+            'tb_centro_custo.des_centro_custo_cco',
+            'tb_estoque.created_at',
+            'tb_estoque.updated_at'
+        )
+        
+        
+         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
+         ->where('is_ativo_est', 1)
+         ->where('id_estoque_est', $id_estoque)
+         ->where('tb_estoque.id_empresa_est', $id_empresa)
+         ->orderBy('tb_estoque.id_estoque_est', 'desc')
+         ->first();
+         
+        return $data;
     }
 
     public static function getEstoqueComValores()
@@ -144,13 +134,11 @@ class Estoque extends Model
             ->get();
     }
 
-    public static function updateReg(Int $id_empresa, Int $id_estoque, $obj) {
+    public static function updateReg(Int $id_empresa, Int $id_estoque, $dados_atualizados) {
         estoque::
         where('id_estoque_est', $id_estoque)
         ->where('id_empresa_est', $id_empresa)
-        ->update([
-            'des_estoque_est' => $obj->des_estoque_est
-        ]);
+        ->update($dados_atualizados);
     }
 
     public static function deleteReg($id_estoque_est, $id_empresa) {
