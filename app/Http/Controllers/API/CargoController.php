@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CargoRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CargoController extends Controller
 {
@@ -137,11 +138,25 @@ class CargoController extends Controller
     public function update(Request $request, Int $id_cargo) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        $request->validate([
-            'desc_cargo_tcg' => 'required|string|max:255'
+        $dados_cargo = $this->cargoRepository->getById($id_cargo, $id_empresa);
+
+        if (!$dados_cargo) {
+            return response()->json(['erro' => 'Cargo não encontrado'], 404);
+        }
+
+        $validator = Validator::make($request->all(),[
+            'desc_cargo_tcg' => 'string|max:255'
         ]);
 
-        $updated_cargo = $this->cargoRepository->updateReg($id_empresa, $id_cargo, $request);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $dados_atualizados = [
+            'desc_cargo_tcg'     => $request->desc_cargo_tcg       ?? $dados_cargo->desc_cargo_tcg,
+        ];
+
+        $updated_cargo = $this->cargoRepository->updateReg($id_empresa, $id_cargo, $dados_atualizados);
 
         return response()->json($updated_cargo,200);
     }

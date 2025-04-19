@@ -34,32 +34,23 @@ class Cargo extends Model
         ]);
     }
 
-    public static function getById(Int $id_empresa, Int $id = null) {
-        if($id) {
-            $data = Cargo::select(['*'])
-            ->where('id_cargo_tcg', $id)
-            ->where('is_ativo_tcg', 1)
-            ->where('id_empresa_tcg', $id_empresa)
-            ->orderBy('id_cargo_tcg', 'desc')
-            ->get();
-        }else{
-            $data = Cargo::select(['*'])
-            ->where('is_ativo_tcg', 1)
-            ->where('id_empresa_tcg', $id_empresa)
-            ->orderBy('id_cargo_tcg', 'desc')
-            ->get();
-        }
-        return response()
-        ->json($data);
+    public static function getById(Int $id_empresa, Int $id_cargo) {
+        
+        $data = Cargo::select(['*'])
+        ->where('id_cargo_tcg', $id_cargo)
+        ->where('is_ativo_tcg', 1)
+        ->where('id_empresa_tcg', $id_empresa)
+        ->orderBy('id_cargo_tcg', 'desc')
+        ->first();
+        
+        return $data;
     }
 
-    public static function updateReg(Int $id_empresa, Int $id_cargo, $obj) {
+    public static function updateReg(Int $id_empresa, Int $id_cargo, $dados_atualizados) {
         Cargo::
         where('id_cargo_tcg', $id_cargo)
         ->where('id_empresa_tcg', $id_empresa)
-        ->update([
-            'desc_cargo_tcg' => $obj->desc_cargo_tcg
-        ]);
+        ->update($dados_atualizados);
     }
 
     public static function deleteReg($id_empresa, $id_cargo) {

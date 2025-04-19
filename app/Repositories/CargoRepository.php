@@ -28,9 +28,9 @@ class CargoRepository implements CargoRepositoryInterface
         return $result;
     }
 
-    public function updateReg($id_empresa, $id_cargo, $request)
+    public function updateReg($id_empresa, $id_cargo, $dados_atualizados)
     {
-        $result = Cargo::updateReg($id_empresa, $id_cargo, $request);
+        $result = Cargo::updateReg($id_empresa, $id_cargo, $dados_atualizados);
 
         return $result;
     }
