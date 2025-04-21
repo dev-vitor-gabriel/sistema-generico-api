@@ -19,11 +19,11 @@ Route::controller(ServicoController::class)->group(function () {
     Route::get('30days', 'getLast30Days');
     Route::get('30DaysPerFunc', 'getLast30DaysPerFunc');
     Route::get('30DaysPerTipoServico', 'getLast30DaysPerTipoServico');
+    Route::get('dashboard', 'getDashboardDados');
+    Route::get('topSevenServiceTypes', 'getTopSevenServiceTypes');
     Route::get('{id_servico}', 'get');
     Route::get('', 'get');
     Route::put('{id_servico}', 'update');
     Route::patch('{id_servico}', 'finalizar');
     Route::delete('{id_servico}', 'delete');
-    Route::get('dashboard', 'getDashboardData');
-    Route::get('topSevenServiceTypes', 'getTopSevenServiceTypes');
 });

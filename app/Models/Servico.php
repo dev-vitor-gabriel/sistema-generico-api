@@ -156,7 +156,7 @@ class Servico extends Model
         ]);
     }
 
-    public function getDashboardDados($centrosCusto = [], $dataInicio = null, $dataFim = null)
+    public static function getDashboardDados($centrosCusto = [], $dataInicio = null, $dataFim = null)
     {
         $query = DB::table('tb_servico as ts')
             ->join('tb_centro_custo as tcc', 'tcc.id_centro_custo_cco', '=', 'ts.id_centro_custo_ser');

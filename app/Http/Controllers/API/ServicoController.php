@@ -564,8 +564,9 @@ class ServicoController extends Controller
         $dataInicio   = $request->input('data_inicio');
         $dataFim      = $request->input('data_fim');
 
-        $data = Servico::getDashboardDados($centrosCusto, $dataInicio, $dataFim);
+        $array_centro_custo = explode(',', $centrosCusto);
 
+        $data = Servico::getDashboardDados($array_centro_custo, $dataInicio, $dataFim);
         return response()->json($data);
     }
 
