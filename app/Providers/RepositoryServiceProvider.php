@@ -28,6 +28,8 @@ use App\Interfaces\UserRepositoryInterface;
 use App\Repositories\UserRepository;
 use App\Interfaces\RelUsuarioCentroCustoRepositoryInterface;
 use App\Repositories\RelUsuarioCentroCustoRepository;
+use App\Interfaces\RelUsuarioMenuRepositoryInterface;
+use App\Repositories\RelUsuarioMenuRepository;
 
 
 use Illuminate\Support\ServiceProvider;
@@ -52,6 +54,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UnidadeRepositoryInterface::class, UnidadeRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(RelUsuarioCentroCustoRepositoryInterface::class, RelUsuarioCentroCustoRepository::class);
+        $this->app->bind(RelUsuarioMenuRepositoryInterface::class, RelUsuarioMenuRepository::class);
     }
 
     /**

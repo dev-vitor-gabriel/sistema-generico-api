@@ -6,8 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Interfaces\RelUsuarioCentroCustoRepositoryInterface;
-use App\Models\Menu;
-use App\Models\RelUsuarioMenu;
+use App\Interfaces\RelUsuarioMenuRepositoryInterface;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +22,8 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     public function __construct(
-        private RelUsuarioCentroCustoRepositoryInterface $relUsuarioCentroCustoRepository
+        private RelUsuarioCentroCustoRepositoryInterface $relUsuarioCentroCustoRepository,
+        private RelUsuarioMenuRepositoryInterface $relUsuarioMenuRepository
         )
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
@@ -78,14 +78,14 @@ class AuthController extends Controller
         $user_centro_custo = $this->relUsuarioCentroCustoRepository->getCentroCustoByIdUsuario($user->id);
         $user->centro_custo_permission = $user_centro_custo;
         
-        $menu = RelUsuarioMenu::getMenuByIdUsuario($user->id);
+        $usuarioMenu = $this->relUsuarioMenuRepository->getMenuByIdUsuario($user->id);
         return response()->json([
             'user' => $user,
             'authorization' => [
                 'token' => $token,
                 'type' => 'bearer',
             ],
-            'menu' => $menu
+            'menu' => $usuarioMenu
         ]);
     }
 
