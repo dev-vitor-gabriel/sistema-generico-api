@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RelUsuarioCentroCusto;
 
-class UsuarioCentroCusto extends Controller
+class UsuarioCentroCustoController extends Controller
 {
      /**
      * @OA\Post(
@@ -49,7 +49,6 @@ class UsuarioCentroCusto extends Controller
         $existingRecords = RelUsuarioCentroCusto::where('id_user', $request->id_user)
         ->pluck('id_centro_custo_ccu')
         ->toArray();
-
         $centroCustoParaRemover = array_diff($existingRecords, $request->id_centro_custo_ccu);
         RelUsuarioCentroCusto::where('id_user', $request->id_user)
             ->whereIn('id_centro_custo_ccu', $centroCustoParaRemover)
