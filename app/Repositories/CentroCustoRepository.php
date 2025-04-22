@@ -9,21 +9,21 @@ class CentroCustoRepository implements CentroCustoRepositoryInterface
 {
     public function create($request,$id_empresa)
     {
-        $result = CentroCusto::create($request,$id_empresa);
+        $result = CentroCusto::create($request, $id_empresa);
 
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    public function getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa = null)
     {
-        $result = CentroCusto::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = CentroCusto::getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa);
 
         return $result;
     }
 
-    public function getById($id_CentroCusto, $id_empresa)
+    public function getById($id_usuario, $id_CentroCusto)
     {
-        $result = CentroCusto::getById($id_empresa, $id_CentroCusto);
+        $result = CentroCusto::getById($id_usuario, $id_CentroCusto);
 
         return $result;
     }
