@@ -5,8 +5,8 @@ namespace App\Interfaces;
 interface CentroCustoRepositoryInterface
 {
     public function create($request, $id_empresa);
-    public function getAll($id_empresa, $filter, $per_page, $page_number);
-    public function getById($id_empresa, $id_centro_custo);
+    public function getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa = null);
+    public function getById($id_usuario, $id_centro_custo);
     public function updateReg($id_empresa, $id_centro_custo, $request);
     public function deleteReg($id_empresa, $id_centro_custo);
 }

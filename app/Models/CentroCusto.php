@@ -11,7 +11,7 @@ class CentroCusto extends Model
 
     protected $table = "tb_centro_custo";
 
-    protected $primaryKey = 'id_centro_custo_cco_tcg';
+    protected $primaryKey = 'id_centro_custo_cco';
 
     protected $fillable = [
         'des_centro_custo_cco',
@@ -19,13 +19,21 @@ class CentroCusto extends Model
         'id_empresa_cco',
     ];
 
-    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) {
-        $paginator = CentroCusto::select(['*'])
-        ->where('is_ativo_cco', 1)
-        ->where('des_centro_custo_cco', 'like', '%'.$filter.'%')
-        ->where('id_empresa_cco', $id_empresa)
-        ->orderBy('id_centro_custo_cco', 'desc')
-        ->paginate($perPage, ['*'], 'page', $pageNumber);
+    public static function getAll($id_usuario, $filter, $perPage = 10, $pageNumber = 1, $id_empresa = null) {
+        $query = CentroCusto::select('tb_centro_custo.*');
+
+        if ($id_empresa !== null) {
+            $query->where('tb_centro_custo.id_empresa_cco', $id_empresa);
+        } else {
+            $query->join('rel_usuario_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'rel_usuario_centro_custo.id_centro_custo_ccu')
+                ->where('rel_usuario_centro_custo.id_user', $id_usuario);
+        }
+
+        $query->where('tb_centro_custo.is_ativo_cco', 1)
+            ->where('tb_centro_custo.des_centro_custo_cco', 'like', '%' . $filter . '%')
+            ->orderBy('tb_centro_custo.id_centro_custo_cco', 'desc');
+
+        $paginator = $query->paginate($perPage, ['*'], 'page', $pageNumber);
 
         return response()->json([
             'items' => $paginator->items(),
@@ -33,20 +41,22 @@ class CentroCusto extends Model
         ]);
     }
 
-    public static function getById(Int $id_empresa, Int $id = null) {
+    public static function getById(Int $id_usuario, Int $id = null) {
         if ($id) {
-            $data = CentroCusto::select(['*'])
-            ->where('id_centro_custo_cco', $id)
-            ->where('is_ativo_cco', 1)
-            ->where('id_empresa_cco', $id_empresa)
-            ->orderBy('id_centro_custo_cco', 'desc')
-            ->get();
-        } else{
-            $data = CentroCusto::select(['*'])
-            ->where('is_ativo_cco', 1)
-            ->where('id_empresa_cco', $id_empresa)
-            ->orderBy('id_centro_custo_cco', 'desc')
-            ->get();
+            $data = CentroCusto::select('tb_centro_custo.*')
+                ->join('rel_usuario_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'rel_usuario_centro_custo.id_centro_custo_ccu')
+                ->where('rel_usuario_centro_custo.id_user', $id_usuario)
+                ->where('tb_centro_custo.id_centro_custo_cco', $id)
+                ->where('tb_centro_custo.is_ativo_cco', 1)
+                ->orderBy('tb_centro_custo.id_centro_custo_cco', 'desc')
+                ->get();
+        } else {
+            $data = CentroCusto::select('tb_centro_custo.*')
+                ->join('rel_usuario_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'rel_usuario_centro_custo.id_centro_custo_ccu')
+                ->where('rel_usuario_centro_custo.id_user', $id_usuario)
+                ->where('tb_centro_custo.is_ativo_cco', 1)
+                ->orderBy('tb_centro_custo.id_centro_custo_cco', 'desc')
+                ->get();
         }
         return response()
         ->json($data);

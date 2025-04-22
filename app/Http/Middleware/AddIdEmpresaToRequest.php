@@ -29,6 +29,9 @@ class AddIdEmpresaToRequest
                 if (isset($decoded->id_empresa_d)) {
                     $request->headers->set('id_empresa_d', $decoded->id_empresa_d);
                 }
+                if (isset($decoded->id_usuario_d)) {
+                    $request->headers->set('id_usuario_d', $decoded->id_usuario_d);
+                }
             } catch (\Exception $e) {
                 return response()->json(['error' => 'Token inválido'], 401);
             }

@@ -15,10 +15,16 @@ class CentroCustoController extends Controller
      }
 
 
-    public function getIdEmpresa(Request $request) {
+     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
         return $id_empresa;
+    }
+
+    public function getIdUsuario(Request $request) {
+        $id_usuario = (int)$request->header('id-usuario-d');
+
+        return $id_usuario;
     }
 
     /**
@@ -86,10 +92,15 @@ class CentroCustoController extends Controller
      * )
      */
     public function get(Request $request, $id_centro_custo = null) {
-        $id_empresa = $this->getIdEmpresa($request);
+        $id_usuario = $this->getIdUsuario($request);
+        $id_empresa = null;
+        $getByCompany = filter_var($request->query('getByCompany', false), FILTER_VALIDATE_BOOLEAN);
+        if ($getByCompany) {
+            $id_empresa = $this->getIdEmpresa($request);
+        }
 
         if($id_centro_custo){
-            $data = $this->centroCustoRepository->getById($id_empresa, $id_centro_custo);
+            $data = $this->centroCustoRepository->getById($id_usuario, $id_centro_custo);
             $data_array = json_decode($data->content());
 
             if(empty($data_array)){
@@ -104,7 +115,7 @@ class CentroCustoController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        $result = $this->centroCustoRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->centroCustoRepository->getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa);
 
         return $result;
     }
