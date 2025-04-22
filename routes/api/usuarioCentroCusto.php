@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\UsuarioCentroCusto;
+use App\Http\Controllers\API\UsuarioCentroCustoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::controller(UsuarioCentroCusto::class)->group(function () {
+Route::controller(UsuarioCentroCustoController::class)->group(function () {
     Route::post('', 'create');
     Route::get('{id_user}', 'getCentroCustoByIdUsuario');
 });

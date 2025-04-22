@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Interfaces\RelUsuarioCentroCustoRepositoryInterface;
 use App\Models\Menu;
 use App\Models\RelUsuarioMenu;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,9 @@ use Illuminate\Support\Facades\Validator;
  */
 class AuthController extends Controller
 {
-    public function __construct()
+    public function __construct(
+        private RelUsuarioCentroCustoRepositoryInterface $relUsuarioCentroCustoRepository
+        )
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
@@ -72,6 +75,9 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        $user_centro_custo = $this->relUsuarioCentroCustoRepository->getCentroCustoByIdUsuario($user->id);
+        $user->centro_custo_permission = $user_centro_custo;
+        
         $menu = RelUsuarioMenu::getMenuByIdUsuario($user->id);
         return response()->json([
             'user' => $user,
