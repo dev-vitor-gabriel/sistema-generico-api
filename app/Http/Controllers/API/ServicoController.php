@@ -9,13 +9,17 @@ use App\Models\RelServicoMaterial;
 use App\Models\Material;
 use App\Models\ServicoTipo;
 use Illuminate\Http\Request;
+use App\Interfaces\ServicoRepositoryInterface;
+
 
 class ServicoController extends Controller
 {
-    public function __construct()
-    {
+    public function __construct(
+        private ServicoRepositoryInterface $servicoRepository
+     )
+     {
         $this->middleware('auth:api', ['except' => []]);
-    }
+     }
 
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
@@ -622,6 +626,17 @@ class ServicoController extends Controller
         $dataFim = $request->query('data_fim');
 
         $data = RelServicoTipoServico::getTopTiposServico($centrosCusto, $dataInicio, $dataFim);
+
+        return response()->json($data);
+    }
+
+    public function getTopThreeEmployeesByTotalTypeService(Request $request)
+    {
+        $centrosCusto = explode(',', $request->query('centros_custo'));
+        $dataInicio = $request->query('data_inicio');
+        $dataFim = $request->query('data_fim');
+
+        $data = $this->servicoRepository->getTopThreeEmployeesByTotalTypeService($request->query('limit', 3), $centrosCusto, $dataInicio, $dataFim);
 
         return response()->json($data);
     }

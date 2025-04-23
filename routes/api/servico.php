@@ -21,6 +21,7 @@ Route::controller(ServicoController::class)->group(function () {
     Route::get('30DaysPerTipoServico', 'getLast30DaysPerTipoServico');
     Route::get('dashboard', 'getDashboardDados');
     Route::get('topSevenServiceTypes', 'getTopSevenServiceTypes');
+    Route::get('topThreeEmployees', 'getTopThreeEmployeesByTotalTypeService');
     Route::get('{id_servico}', 'get');
     Route::get('', 'get');
     Route::put('{id_servico}', 'update');

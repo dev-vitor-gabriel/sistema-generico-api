@@ -193,4 +193,25 @@ class Servico extends Model
         ])->first();
     }
 
+    public static function getTopThreeEmployeesByTotalTypeService($limit = 3, $centrosCusto = [], $dataInicio = null, $dataFim = null)
+{
+    $query = DB::table('tb_servico as ts')
+        ->join('tb_funcionarios as tf', 'ts.id_funcionario_servico_ser', '=', 'tf.id_funcionario_tfu')
+        ->join('rel_servico_tipo_servico as rsts', 'ts.id_servico_ser', '=', 'rsts.id_servico_rst')
+        ->select('tf.desc_funcionario_tfu as nome', DB::raw('COUNT(*) as total_tipos_servico'))
+        ->groupBy('tf.id_funcionario_tfu', 'tf.desc_funcionario_tfu')
+        ->orderByDesc('total_tipos_servico');
+
+    if ($dataInicio && $dataFim) {
+        $query->whereBetween('ts.created_at', [$dataInicio, $dataFim]);
+    }
+
+    if (!empty($centrosCusto)) {
+        $query->whereIn('ts.id_centro_custo_ser', $centrosCusto);
+    }
+
+    return $query->limit($limit)->get();
+}
+
+
 }
