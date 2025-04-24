@@ -160,18 +160,20 @@ class Servico extends Model
     {
         $query = DB::table('tb_servico as ts')
             ->join('tb_centro_custo as tcc', 'tcc.id_centro_custo_cco', '=', 'ts.id_centro_custo_ser');
-
+    
+        // Filtrando pelos centros de custo, caso seja fornecido
         if (!empty($centrosCusto)) {
             $query->whereIn('tcc.id_centro_custo_cco', $centrosCusto);
         }
-
+    
+        // Filtrando pelo intervalo de datas, caso seja fornecido
         if ($dataInicio && $dataFim) {
             $query->whereBetween('ts.created_at', [$dataInicio, $dataFim]);
         }
-
+    
         return (array) $query->select([
-            DB::raw("COUNT(CASE WHEN ts.id_situacao_ser = 1 THEN 1 END) AS total_ativos"),
-            DB::raw("COUNT(CASE WHEN ts.id_situacao_ser = 2 THEN 1 END) AS total_finalizados"),
+            DB::raw("COUNT(CASE WHEN ts.id_situacao_ser = 1 AND ts.is_ativo_ser = 1 THEN 1 END) AS total_ativos"),
+            DB::raw("COUNT(CASE WHEN ts.id_situacao_ser = 2 AND ts.is_ativo_ser = 1 THEN 1 END) AS total_finalizados"),
             DB::raw("COUNT(CASE WHEN ts.is_ativo_ser = 0 THEN 1 END) AS total_inativos"),
             DB::raw("
                 COALESCE(
@@ -179,7 +181,7 @@ class Servico extends Model
                         SEC_TO_TIME(
                             AVG(
                                 CASE
-                                    WHEN ts.id_situacao_ser = 2
+                                    WHEN ts.id_situacao_ser = 2 AND ts.is_ativo_ser = 1
                                     THEN TIMESTAMPDIFF(SECOND, ts.created_at, ts.updated_at)
                                     ELSE NULL
                                 END
@@ -192,6 +194,7 @@ class Servico extends Model
             ")
         ])->first();
     }
+    
 
     public static function getTopThreeEmployeesByTotalTypeService($limit = 3, $centrosCusto = [], $dataInicio = null, $dataFim = null)
 {
