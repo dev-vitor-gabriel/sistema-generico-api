@@ -630,6 +630,51 @@ class ServicoController extends Controller
         return response()->json($data);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/servico/topThreeEmployees",
+     *     summary="Obtém o top 3 funcionarios por total de tipos de serviço lançados em serviços",
+     *     operationId="getTopThreeEmployeesByTotalTypeService",
+     *     tags={"Servico"},
+     *     @OA\Parameter(
+     *         name="centros_custo",
+     *         in="query",
+     *         required=false,
+     *         description="IDs dos centros de custo separados por vírgula",
+     *         @OA\Schema(type="string", example="1,2")
+     *     ),
+     *     @OA\Parameter(
+     *         name="data_inicio",
+     *         in="query",
+     *         required=false,
+     *         description="Data de início para o filtro (formato: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", example="2025-04-14 00:00:00")
+     *     ),
+     *     @OA\Parameter(
+     *         name="data_fim",
+     *         in="query",
+     *         required=false,
+     *         description="Data de fim para o filtro (formato: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", example="2025-04-16 23:59:59")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Dados da consulta",
+     *         @OA\JsonContent(
+     *             type="array",
+     *             @OA\Items(
+     *                 type="object",
+     *                 @OA\Property(property="nome", type="string", example="Corte de Cabelo"),
+     *                 @OA\Property(property="total_tipos_servico", type="integer", example=42)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Serviço não encontrado"
+     *     )
+     * )
+     */
     public function getTopThreeEmployeesByTotalTypeService(Request $request)
     {
         $centrosCusto = explode(',', $request->query('centros_custo'));
