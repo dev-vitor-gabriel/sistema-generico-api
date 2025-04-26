@@ -58,9 +58,13 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api/material')
                 ->group(base_path('routes/api/material.php'));
 
-            Route::middleware(['api', 'set.empresa.header'])
+                Route::middleware(['api', 'set.empresa.header'])
                 ->prefix('api/estoque')
                 ->group(base_path('routes/api/estoque.php'));
+
+                Route::middleware(['api', 'set.empresa.header'])
+                    ->prefix('api/estoqueItem')
+                    ->group(base_path('routes/api/estoqueItem.php'));
 
             Route::middleware(['api', 'set.empresa.header'])
                 ->prefix('api/estoqueQuantidadeMaterial')

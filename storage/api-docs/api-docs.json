@@ -1765,11 +1765,6 @@
                                                 "qtd_material_mit": {
                                                     "description": "Quantidade do material",
                                                     "type": "integer"
-                                                },
-                                                "vlr_material_mit": {
-                                                    "description": "Valor do material",
-                                                    "type": "number",
-                                                    "format": "float"
                                                 }
                                             },
                                             "type": "object"
@@ -3630,10 +3625,6 @@
                     },
                     "qtd_material_mit": {
                         "description": "Quantidade do material movimentado",
-                        "type": "integer"
-                    },
-                    "vlr_material_mit": {
-                        "description": "Valor do material movimentado",
                         "type": "integer"
                     },
                     "is_ativo_mit": {

@@ -13,10 +13,6 @@ return new class extends Migration
     {
         Schema::create('tb_estoque_item', function (Blueprint $table) {
             $table->id('id_estoque_item_eti');
-            $table->unsignedBigInteger('id_estoque_eti');
-            $table->foreign('id_estoque_eti')
-                ->references('id_estoque_est')
-                ->on('tb_estoque');
             $table->unsignedBigInteger('id_material_eti');
             $table->foreign('id_material_eti')
                 ->references('id_material_mte')
@@ -26,6 +22,7 @@ return new class extends Migration
                 ->references('id_empresa_emp')
                 ->on('tb_empresa');
             $table->unsignedBigInteger('id_centro_custo_eti');
+            $table->string('des_estoque_item_eti')->nullable();
             $table->foreign('id_centro_custo_eti')
                 ->references('id_centro_custo_cco')
                 ->on('tb_centro_custo');

@@ -25,7 +25,6 @@ use OpenApi\Annotations as OA;
  *         description="Chave estrangeira referenciando o material"
  *     ),
  *     @OA\Property(property="qtd_material_mit", type="integer", description="Quantidade do material movimentado"),
- *     @OA\Property(property="vlr_material_mit", type="integer", description="Valor do material movimentado"),
  *     @OA\Property(property="is_ativo_mit", type="boolean", description="Indica se o item está ativo"),
  *     @OA\Property(property="created_at", type="string", format="date-time", description="Data de criação"),
  *     @OA\Property(property="updated_at", type="string", format="date-time", description="Data de atualização"),

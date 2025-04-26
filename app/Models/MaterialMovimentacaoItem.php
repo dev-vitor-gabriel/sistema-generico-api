@@ -14,7 +14,6 @@ class MaterialMovimentacaoItem extends Model
         'id_movimentacao_mit',
         'id_material_mit',
         'qtd_material_mit',
-        'vlr_material_mit',
         'is_ativo_mit',
         'tipo_movimentacao_mit'
     ];
