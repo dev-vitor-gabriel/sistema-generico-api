@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-use RelVendaMaterial;
+use App\Models\RelVendaMaterial;
 
 class Venda extends Model
 {
