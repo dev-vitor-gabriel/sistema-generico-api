@@ -15,13 +15,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\API\MaterialMovimentacaoController;
 use App\Interfaces\EstoqueItemRepositoryInterface;
+use App\Interfaces\VendaRepositoryInterface;
 
 class VendaController extends Controller
 {
-    private MaterialMovimentacaoController $materialMovimentacaoController;
-    private EstoqueItemRepositoryInterface $estoqueItemRepository;
-
-    public function __construct(MaterialMovimentacaoController $materialMovimentacaoController, EstoqueItemRepositoryInterface $estoqueItemRepository)
+    public function __construct(private MaterialMovimentacaoController $materialMovimentacaoController, private EstoqueItemRepositoryInterface $estoqueItemRepository, private VendaRepositoryInterface $vendaRepository)
     {
         $this->middleware('auth:api', ['except' => []]);
         $this->materialMovimentacaoController = $materialMovimentacaoController;
@@ -34,12 +32,19 @@ class VendaController extends Controller
         return $id_empresa;
     }
 
+    public function getIdUser(Request $request) {
+        $id_usuario = (int)$request->header('id-usuario-d');
+
+        return $id_usuario;
+    }
+
     // create
     public function create(Request $request)
     {
         $id_empresa = $this->getIdEmpresa($request);
+        $id_usuario = $this->getIdUser($request);
 
-        $funcionario = Funcionario::getById($request->id_funcionario_vda);
+        $funcionario = Funcionario::getById($id_empresa,$request->id_funcionario_vda);
 
         if (!$funcionario)
         {
@@ -59,7 +64,7 @@ class VendaController extends Controller
         //     ]
         // }
 
-        $centroCusto = CentroCusto::getById($request->id_centro_custo_vda);
+        $centroCusto = CentroCusto::getById($id_usuario,$request->id_centro_custo_vda);
 
         if (!$centroCusto)
         {
@@ -87,6 +92,7 @@ class VendaController extends Controller
                     'id_material_rvm' => $material_venda['id_material_rvm'],
                     'vlr_unit_material_rvm' => $material_venda['vlr_unit_material_rvm'],
                     'qtd_material_rvm' => $material_venda['qtd_material_rvm'],
+                    'id_estoque_item_eti' => $material_venda['id_estoque_item_eti'],
                     ]
                 );
         }
@@ -418,5 +424,16 @@ class VendaController extends Controller
         }
 
         return $saldoInsuficiente;
+    }
+
+    public function getTotalMateriaisPorVenda(Request $request)
+    {
+        $centrosCusto = explode(',', $request->query('centros_custo'));
+        $dataInicio = $request->query('data_inicio');
+        $dataFim = $request->query('data_fim');
+
+        $data = $this->vendaRepository->getTotalMateriaisPorVenda($centrosCusto,$dataInicio,$dataFim);
+
+        return response()->json($data);
     }
 }
