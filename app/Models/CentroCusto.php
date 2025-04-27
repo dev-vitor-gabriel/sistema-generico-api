@@ -41,23 +41,15 @@ class CentroCusto extends Model
         ]);
     }
 
-    public static function getById(Int $id_usuario, Int $id = null) {
-        if ($id) {
-            $data = CentroCusto::select('tb_centro_custo.*')
-                ->join('rel_usuario_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'rel_usuario_centro_custo.id_centro_custo_ccu')
-                ->where('rel_usuario_centro_custo.id_user', $id_usuario)
-                ->where('tb_centro_custo.id_centro_custo_cco', $id)
-                ->where('tb_centro_custo.is_ativo_cco', 1)
-                ->orderBy('tb_centro_custo.id_centro_custo_cco', 'desc')
-                ->get();
-        } else {
-            $data = CentroCusto::select('tb_centro_custo.*')
-                ->join('rel_usuario_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'rel_usuario_centro_custo.id_centro_custo_ccu')
-                ->where('rel_usuario_centro_custo.id_user', $id_usuario)
-                ->where('tb_centro_custo.is_ativo_cco', 1)
-                ->orderBy('tb_centro_custo.id_centro_custo_cco', 'desc')
-                ->get();
-        }
+    public static function getById(Int $id_usuario, Int $id_centro_custo) {
+        $data = CentroCusto::select('tb_centro_custo.*')
+            ->join('rel_usuario_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'rel_usuario_centro_custo.id_centro_custo_ccu')
+            ->where('rel_usuario_centro_custo.id_user', $id_usuario)
+            ->where('tb_centro_custo.id_centro_custo_cco', $id_centro_custo)
+            ->where('tb_centro_custo.is_ativo_cco', 1)
+            ->orderBy('tb_centro_custo.id_centro_custo_cco', 'desc')
+            ->get();
+
         return response()
         ->json($data);
     }
