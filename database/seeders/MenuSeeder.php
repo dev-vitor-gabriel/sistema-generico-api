@@ -43,7 +43,7 @@ class MenuSeeder extends Seeder
         ]);
         DB::table('tb_menu')->updateOrInsert([
             'id_father_mnu' => 2,
-            'des_menu_mnu' => 'Dashboard Serviço',
+            'des_menu_mnu' => 'Dashboard',
             'icon_menu_mnu' => 'ChartLine',
             'path_menu_mnu' => '/servico/dashboard',
             'num_ordem_mnu' => 5+1,
@@ -241,14 +241,14 @@ class MenuSeeder extends Seeder
             'id_father_mnu' => 32,
             'des_menu_mnu' => 'Vendas',
             'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '/vendas',
+            'path_menu_mnu' => '/venda',
             'num_ordem_mnu' => 1,
         ]);
         DB::table('tb_menu')->updateOrInsert([
             'id_father_mnu' => 32,
-            'des_menu_mnu' => 'Gráficos',
-            'icon_menu_mnu' => 'FilePlus',
-            'path_menu_mnu' => '/gráficos',
+            'des_menu_mnu' => 'Dashboard',
+            'icon_menu_mnu' => 'ChartLine',
+            'path_menu_mnu' => '/venda/dashboard',
             'num_ordem_mnu' => 2,
         ]);
         DB::table('tb_menu')->updateOrInsert([
