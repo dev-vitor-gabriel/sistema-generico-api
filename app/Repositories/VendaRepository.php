@@ -13,4 +13,11 @@ class VendaRepository implements VendaRepositoryInterface
 
         return $result;
     }
+
+    public function getValorMateriaisPorVenda($centros_custo,string $data_inicio,string $data_fim)
+    {
+        $result = RelVendaMaterial::getValorMateriaisPorVenda($centros_custo,$data_inicio,$data_fim);
+
+        return $result;
+    }
 }

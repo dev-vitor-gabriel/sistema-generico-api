@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\API\MaterialMovimentacaoController;
 use App\Interfaces\EstoqueItemRepositoryInterface;
 use App\Interfaces\VendaRepositoryInterface;
+use App\Helpers\FormatterValue;
 
 class VendaController extends Controller
 {
@@ -433,6 +434,21 @@ class VendaController extends Controller
         $dataFim = $request->query('data_fim');
 
         $data = $this->vendaRepository->getTotalMateriaisPorVenda($centrosCusto,$dataInicio,$dataFim);
+
+        return response()->json($data);
+    }
+
+    public function getValorMateriaisPorVenda(Request $request)
+    {
+        $centrosCusto = explode(',', $request->query('centros_custo'));
+        $dataInicio = $request->query('data_inicio');
+        $dataFim = $request->query('data_fim');
+
+        $data = $this->vendaRepository->getValorMateriaisPorVenda($centrosCusto,$dataInicio,$dataFim);
+
+        foreach ($data as $item) {
+            $item->valor_total_vendido = FormatterValue::formatterMoney($item->valor_total_vendido);
+        }
 
         return response()->json($data);
     }

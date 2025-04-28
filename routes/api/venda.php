@@ -18,6 +18,7 @@ use App\Http\Controllers\API\VendaController;
 Route::controller(VendaController::class)->group(function () {
     Route::post('', 'create');
     Route::get('topMateriaisVendidos', 'getTotalMateriaisPorVenda');
+    Route::get('topValorMateriaisVendidos', 'getValorMateriaisPorVenda');
     Route::get('', 'get');
     Route::get('{id_venda}', 'get');
     Route::get('{id_venda}/materiais', 'getMateriais');
