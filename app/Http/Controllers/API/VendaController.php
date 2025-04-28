@@ -93,7 +93,6 @@ class VendaController extends Controller
                     'id_material_rvm' => $material_venda['id_material_rvm'],
                     'vlr_unit_material_rvm' => $material_venda['vlr_unit_material_rvm'],
                     'qtd_material_rvm' => $material_venda['qtd_material_rvm'],
-                    'id_estoque_item_eti' => $material_venda['id_estoque_item_eti'],
                     ]
                 );
         }

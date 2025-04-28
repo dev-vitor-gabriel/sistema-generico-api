@@ -16,7 +16,6 @@ class RelVendaMaterial extends Model
         'id_venda_rvm',
         'vlr_unit_material_rvm',
         'qtd_material_rvm',
-        'id_estoque_item_eti'
     ];
 
     public static function deleteReg($id)
