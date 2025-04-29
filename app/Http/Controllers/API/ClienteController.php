@@ -47,7 +47,7 @@ class ClienteController extends Controller
     public function create(Request $request) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli);
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli ?? '');
 
         $request->merge(['documento_cliente_cli' => $document_formated]);
 
@@ -57,7 +57,8 @@ class ClienteController extends Controller
             'email_cliente_cli'     => 'required|string|max:255',
             'documento_cliente_cli' => 'string|max:11',
             'endereco_cliente_cli'  => 'string|max:255',
-            'id_centro_custo_cli'   => 'required|integer'
+            'id_centro_custo_cli'   => 'required|integer',
+            'id_origem_cliente_cli' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
@@ -65,7 +66,6 @@ class ClienteController extends Controller
         }
 
         $cliente = $this->clienteRepository->create($request->all(),$id_empresa);
-
 
         return response()->json($cliente,201);
     }
@@ -147,13 +147,11 @@ class ClienteController extends Controller
 
         $dados_cliente = $this->clienteRepository->getById($id_cliente, $id_empresa);
 
-        $dados_array = $dados_cliente->toArray();
-
         if (!$dados_cliente) {
             return response()->json(['erro' => 'Cliente não encontrado'], 404);
         }
 
-        $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli);
+        $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli ?? $dados_cliente->documento_cliente_cli);
         $request->merge(['documento_cliente_cli' => $document_formated]);
         $validator = Validator::make($request->all(),[
             'des_cliente_cli'       => 'string|max:255',
@@ -162,6 +160,8 @@ class ClienteController extends Controller
             'documento_cliente_cli' => 'string|max:11',
             'endereco_cliente_cli'  => 'string|max:255',
             'id_centro_custo_cli'   => 'integer',
+            'id_origem_cliente_cli' => 'integer',
+
         ]);
 
         if ($validator->fails()) {
@@ -169,12 +169,13 @@ class ClienteController extends Controller
         }
 
         $dados_atualizados = [
-            'des_cliente_cli'       => $request->des_cliente_cli       ?? $dados_cliente->des_cliente_cli,
-            'telefone_cliente_cli'  => $request->telefone_cliente_cli  ?? $dados_cliente->telefone_cliente_cli,
-            'email_cliente_cli'     => $request->email_cliente_cli     ?? $dados_cliente->email_cliente_cli,
-            'documento_cliente_cli' => $request->documento_cliente_cli ?? $dados_cliente->documento_cliente_cli,
-            'endereco_cliente_cli'  => $request->endereco_cliente_cli  ?? $dados_cliente->endereco_cliente_cli,
-            'id_centro_custo_cli'   => $request->id_centro_custo_cli   ?? $dados_cliente->id_centro_custo_cli,
+            'des_cliente_cli'       => $request->des_cliente_cli           ?? $dados_cliente->des_cliente_cli,
+            'telefone_cliente_cli'  => $request->telefone_cliente_cli      ?? $dados_cliente->telefone_cliente_cli,
+            'email_cliente_cli'     => $request->email_cliente_cli         ?? $dados_cliente->email_cliente_cli,
+            'documento_cliente_cli' => $request->documento_cliente_cli     ?? $dados_cliente->documento_cliente_cli,
+            'endereco_cliente_cli'  => $request->endereco_cliente_cli      ?? $dados_cliente->endereco_cliente_cli,
+            'id_centro_custo_cli'   => $request->id_centro_custo_cli       ?? $dados_cliente->id_centro_custo_cli,
+            'id_origem_cliente_cli' => $request->id_origem_cliente_cli     ?? $dados_cliente->id_origem_cliente_cli,
         ];
 
         $updated_cliente = $this->clienteRepository->updateReg($id_empresa, $id_cliente, $dados_atualizados);

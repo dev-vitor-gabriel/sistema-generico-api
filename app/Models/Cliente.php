@@ -20,12 +20,14 @@ class Cliente extends Model
         'id_centro_custo_cli',
         'is_ativo_cli',
         'id_empresa_cli',
+        'id_origem_cliente_cli',
     ];
 
     public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) 
     {
-        $paginator = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
+        $paginator = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco', 'tb_origem_cliente.desc_origem_cliente_orc')
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
+        ->join('tb_origem_cliente', 'tb_origem_cliente.id_origem_cliente_orc', '=', 'tb_cliente.id_origem_cliente_cli')
         ->where('is_ativo_cli', 1)
         ->where('des_cliente_cli', 'like', '%'.$filter.'%')
         ->where('id_empresa_cli', $id_empresa)
@@ -38,14 +40,14 @@ class Cliente extends Model
         ]);
     }
 
-    public static function getById(Int $id_empresa,Int $id_cliente) {
+    public static function getById(Int $id_cliente,Int $id_empresa) {
 
-        $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco')
+        $data = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco', 'tb_origem_cliente.desc_origem_cliente_orc')
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
+        ->join('tb_origem_cliente', 'tb_origem_cliente.id_origem_cliente_orc', '=', 'tb_cliente.id_origem_cliente_cli')
         ->where('id_cliente_cli', $id_cliente)
         ->where('id_empresa_cli', $id_empresa)
         ->where('is_ativo_cli', 1)
-        ->orderBy('id_cliente_cli', 'desc')
         ->first();
 
         return $data;
