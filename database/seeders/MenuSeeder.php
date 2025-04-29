@@ -293,5 +293,12 @@ class MenuSeeder extends Seeder
             'path_menu_mnu' => '/cadastro-base/permissoes/permissoes-centro-custo',
             'num_ordem_mnu' => 36+1,
         ]);
+        DB::table('tb_menu')->updateOrInsert([
+            'id_father_mnu' => 25,
+            'des_menu_mnu' => 'Cadastro Origem do Cliente',
+            'icon_menu_mnu' => 'TagChevron',
+            'path_menu_mnu' => '/cadastro-base/perfil/origem-cliente',
+            'num_ordem_mnu' => 32,
+        ]);
     }
 }
