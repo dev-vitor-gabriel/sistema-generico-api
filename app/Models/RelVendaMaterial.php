@@ -87,4 +87,61 @@ class RelVendaMaterial extends Model
             ->get();
     }
 
+    public static function getTopTresFuncionariosPorVenda($centrosCusto = [], $dataInicio = null, $dataFim = null)
+    {
+        $query = RelVendaMaterial::query()
+            ->from('rel_venda_material as rvm')
+            ->join('tb_venda as tv', 'tv.id_venda_vda', '=', 'rvm.id_venda_rvm')
+            ->join('tb_material as tm', 'tm.id_material_mte', '=', 'rvm.id_material_rvm')
+            ->join('tb_centro_custo as tcc', 'tcc.id_centro_custo_cco', '=', 'tv.id_centro_custo_vda')
+            ->join('tb_funcionarios as tf', 'tv.id_funcionario_vda', '=', 'tf.id_funcionario_tfu');
+
+        if (!empty($centrosCusto)) {
+            $query->whereIn('tcc.id_centro_custo_cco', $centrosCusto);
+        }
+
+        if ($dataInicio && $dataFim) {
+            $query->whereBetween('tv.created_at', [$dataInicio, $dataFim]);
+        }
+
+        return $query->select([
+                'tf.desc_funcionario_tfu as nome_funcionario',
+                RelVendaMaterial::raw('SUM(rvm.qtd_material_rvm) as quantidade_vendida'),
+                RelVendaMaterial::raw('SUM(rvm.qtd_material_rvm * rvm.vlr_unit_material_rvm) as valor_total_vendido')
+            ])
+            ->groupBy('tf.id_funcionario_tfu', 'tf.desc_funcionario_tfu')
+            ->orderByDesc('quantidade_vendida')
+            ->limit(3)
+            ->get();
+    }
+
+    public static function getVendasPorCentroCusto($centrosCusto = [], $dataInicio = null, $dataFim = null)
+    {
+        $query = RelVendaMaterial::query()
+            ->from('rel_venda_material as rvm')
+            ->join('tb_venda as tv', 'tv.id_venda_vda', '=', 'rvm.id_venda_rvm')
+            ->join('tb_material as tm', 'tm.id_material_mte', '=', 'rvm.id_material_rvm')
+            ->join('tb_centro_custo as tcc', 'tcc.id_centro_custo_cco', '=', 'tv.id_centro_custo_vda');
+
+        if (!empty($centrosCusto)) {
+            $query->whereIn('tcc.id_centro_custo_cco', $centrosCusto);
+        }
+
+        if ($dataInicio && $dataFim) {
+            $query->whereBetween('tv.created_at', [$dataInicio, $dataFim]);
+        }
+
+        return $query->select([
+                'tcc.des_centro_custo_cco',
+                RelVendaMaterial::raw('SUM(rvm.qtd_material_rvm) as quantidade_vendida'),
+                RelVendaMaterial::raw('SUM(rvm.qtd_material_rvm * rvm.vlr_unit_material_rvm) as valor_total_vendido'),
+            ])
+            ->groupBy('tcc.id_centro_custo_cco', 'tcc.des_centro_custo_cco')
+            ->orderByDesc('quantidade_vendida')
+            ->limit(10)
+            ->get();
+    }
+
+
+
 }

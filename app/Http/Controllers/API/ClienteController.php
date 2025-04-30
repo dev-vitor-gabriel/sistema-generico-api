@@ -161,7 +161,6 @@ class ClienteController extends Controller
             'endereco_cliente_cli'  => 'string|max:255',
             'id_centro_custo_cli'   => 'integer',
             'id_origem_cliente_cli' => 'integer',
-
         ]);
 
         if ($validator->fails()) {
