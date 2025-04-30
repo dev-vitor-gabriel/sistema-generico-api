@@ -496,4 +496,15 @@ class VendaController extends Controller
 
         return response()->json($data);
     }
+
+    public function getTotalVendasPorOrigemCliente(Request $request)
+    {
+        $centrosCusto = explode(',', $request->query('centros_custo'));
+        $dataInicio = $request->query('data_inicio');
+        $dataFim = $request->query('data_fim');
+
+        $data = $this->vendaRepository->getTotalVendasPorOrigemCliente($centrosCusto,$dataInicio,$dataFim);
+
+        return response()->json($data);
+    }
 }

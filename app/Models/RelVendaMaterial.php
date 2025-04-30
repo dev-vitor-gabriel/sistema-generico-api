@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class RelVendaMaterial extends Model
 {
     use HasFactory;
@@ -168,6 +169,33 @@ class RelVendaMaterial extends Model
             ->limit(10)
             ->get();
     }
+
+    public static function getTotalVendasPorOrigemCliente($centrosCusto = [], $dataInicio = null, $dataFim = null)
+    {
+        $query = RelVendaMaterial::query()
+            ->from('rel_venda_material as rvm')
+            ->join('tb_venda as tv', 'tv.id_venda_vda', '=', 'rvm.id_venda_rvm')
+            ->join('tb_centro_custo as tcc', 'tcc.id_centro_custo_cco', '=', 'tv.id_centro_custo_vda')
+            ->join('tb_cliente as tc', 'tc.id_cliente_cli', '=', 'tv.id_cliente_vda')
+            ->join('tb_origem_cliente as toc', 'toc.id_origem_cliente_orc', '=', 'tc.id_origem_cliente_cli');
+
+        if (!empty($centrosCusto)) {
+            $query->whereIn('tcc.id_centro_custo_cco', $centrosCusto);
+        }
+
+        if ($dataInicio && $dataFim) {
+            $query->whereBetween('tv.created_at', [$dataInicio, $dataFim]);
+        }
+
+        return $query->select([
+                'toc.desc_origem_cliente_orc',
+                RelVendaMaterial::raw('COUNT(DISTINCT tv.id_venda_vda) AS total_vendas'),
+            ])
+            ->groupBy('toc.id_origem_cliente_orc', 'toc.desc_origem_cliente_orc')
+            ->orderByDesc('total_vendas')
+            ->get();
+    }
+
 
 
 
