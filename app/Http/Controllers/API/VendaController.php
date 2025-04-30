@@ -481,4 +481,19 @@ class VendaController extends Controller
 
         return response()->json($data);
     }
+
+    public function getVendasPorCliente(Request $request)
+    {
+        $centrosCusto = explode(',', $request->query('centros_custo'));
+        $dataInicio = $request->query('data_inicio');
+        $dataFim = $request->query('data_fim');
+
+        $data = $this->vendaRepository->getVendasPorCliente($centrosCusto,$dataInicio,$dataFim);
+
+        foreach ($data as $item) {
+            $item->valor_total_vendido = FormatterValue::formatterMoney($item->valor_total_vendido);
+        }
+
+        return response()->json($data);
+    }
 }
