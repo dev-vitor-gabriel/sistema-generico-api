@@ -50,7 +50,7 @@ class UnidadeController extends Controller
             'id_centro_custo_und'   => 'required|integer|',
         ]);
 
-        $request = $request->merge(['id_empresa_cli' => $id_empresa]);
+        $request = $request->merge(['id_empresa_und' => $id_empresa]);
 
         $unidade = $this->unidadeRepository->create($request->all());
 
