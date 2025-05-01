@@ -7,7 +7,7 @@ use App\Models\Material;
 
 class MaterialRepository implements MaterialRepositoryInterface
 {
-    public function create($request): Material
+    public function create($request)
     {
         $result = Material::create($request);
 

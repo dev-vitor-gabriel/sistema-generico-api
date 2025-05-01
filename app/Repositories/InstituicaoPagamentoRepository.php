@@ -7,9 +7,9 @@ use App\Models\InstituicaoPagamento;
 
 class InstituicaoPagamentoRepository implements InstituicaoPagamentoRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = InstituicaoPagamento::create($request,$id_empresa);
+        $result = InstituicaoPagamento::create($request);
 
         return $result;
     }

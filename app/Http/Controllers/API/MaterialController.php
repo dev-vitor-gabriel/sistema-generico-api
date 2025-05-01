@@ -110,9 +110,7 @@ class MaterialController extends Controller
             'id_centro_custo_mte'   => 'required|integer|',
         ]);
 
-        $request = $request->merge([
-            'id_empresa_mte' => $id_empresa,
-        ]);
+        $request = $request->merge(['id_empresa_mte' => $id_empresa]);
 
         $material = $this->materialRepository->create($request->all());
 
