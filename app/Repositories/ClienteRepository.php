@@ -9,7 +9,10 @@ class ClienteRepository implements ClienteRepositoryInterface
 {
     public function create($request, $id_empresa)
     {
-        $result = Cliente::create($request,$id_empresa);
+        $result = Cliente::create(array_merge(
+            $request,
+            ['id_empresa_cli' => $id_empresa]
+        ));
 
         return $result;
     }
