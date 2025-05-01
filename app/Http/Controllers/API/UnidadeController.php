@@ -50,7 +50,9 @@ class UnidadeController extends Controller
             'id_centro_custo_und'   => 'required|integer|',
         ]);
 
-        $servico_tipo = $this->unidadeRepository->create($request->all(), $id_empresa);
+        $request = $request->merge(['id_empresa_cli' => $id_empresa]);
+
+        $servico_tipo = $this->unidadeRepository->create($request, $id_empresa);
 
         return response()->json($servico_tipo,201);
     }
