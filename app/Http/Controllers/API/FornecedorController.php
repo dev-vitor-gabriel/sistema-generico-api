@@ -50,10 +50,8 @@ class FornecedorController extends Controller
             'documento_fornecedor_frn' => 'string|max:18',
         ]);
 
-        $request = $request->merge([
-            'id_empresa_Frn' => $id_empresa,
-        ]);
-        $fornecedor = $this->fornecedorRepository->create($request->all());
+        $request = $request->merge(['id_empresa_frn' => $id_empresa,]);
+        $fornecedor = $this->fornecedorRepository->create($request);
         return response()->json($fornecedor, 201);
     }
 
