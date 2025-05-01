@@ -19,10 +19,10 @@ class CentroCusto extends Model
         'id_empresa_cco',
     ];
 
-    public static function getAll($id_usuario, $filter, $perPage = 10, $pageNumber = 1, $id_empresa = null) {
+    public static function getAll($id_usuario, $filter, $perPage = 10, $pageNumber = 1, $id_empresa, $getByCompany = false) {
         $query = CentroCusto::select('tb_centro_custo.*');
 
-        if ($id_empresa !== null) {
+        if ($getByCompany == true) {
             $query->where('tb_centro_custo.id_empresa_cco', $id_empresa);
         } else {
             $query->join('rel_usuario_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'rel_usuario_centro_custo.id_centro_custo_ccu')

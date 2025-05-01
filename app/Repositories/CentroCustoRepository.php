@@ -7,16 +7,16 @@ use App\Models\CentroCusto;
 
 class CentroCustoRepository implements CentroCustoRepositoryInterface
 {
-    public function create($request,$id_empresa)
+    public function create($request)
     {
-        $result = CentroCusto::create($request, $id_empresa);
+        $result = CentroCusto::create($request);
 
         return $result;
     }
 
-    public function getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa = null)
+    public function getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa, $getByCompany = false)
     {
-        $result = CentroCusto::getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa);
+        $result = CentroCusto::getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa, $getByCompany);
 
         return $result;
     }

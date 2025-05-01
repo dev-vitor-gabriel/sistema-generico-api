@@ -7,12 +7,9 @@ use App\Models\Material;
 
 class MaterialRepository implements MaterialRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request): Material|Model
     {
-        $result =Material::create(array_merge(
-            $request,
-            ['id_empresa_mte' => $id_empresa]
-        ));
+        $result =Material::create($request);
 
         return $result;
     }

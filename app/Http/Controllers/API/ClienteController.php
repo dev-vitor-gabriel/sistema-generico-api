@@ -70,7 +70,8 @@ class ClienteController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $cliente = $this->clienteRepository->create($request->all(),$id_empresa);
+        $request = $request->merge(['id_empresa_cli' => $id_empresa]);
+        $cliente = $this->clienteRepository->create($request->all());
 
         return response()->json($cliente,201);
     }

@@ -98,6 +98,9 @@ class InstituicaoPagamentoController extends Controller
             'desc_instituicao_pagamento_tip' => 'required|string|max:255'
         ]);
 
+        $request = $request->merge([
+            'id_empresa_tip' => $id_empresa,
+        ]);
         $instituicaoPagamento = $this->instituicaoPagamentoRepository->create($request->all(),$id_empresa);
 
         return response()->json($instituicaoPagamento, 201);

@@ -16,7 +16,7 @@ class MaterialController extends Controller
      {
         $this->middleware('auth:api', ['except' => []]);
      }
-    
+
 
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
@@ -109,7 +109,11 @@ class MaterialController extends Controller
             'id_centro_custo_mte'   => 'required|integer|',
         ]);
 
-        $material = $this->materialRepository->create($request->all(), $id_empresa);
+        $request = $request->merge([
+            'id_empresa_mte' => $id_empresa,
+        ]);
+
+        $material = $this->materialRepository->create($request->all());
 
         return response()->json($material,200);
     }

@@ -7,12 +7,9 @@ use App\Models\Cliente;
 
 class ClienteRepository implements ClienteRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = Cliente::create(array_merge(
-            $request,
-            ['id_empresa_cli' => $id_empresa]
-        ));
+        $result = Cliente::create($request);
 
         return $result;
     }
