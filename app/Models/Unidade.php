@@ -14,7 +14,8 @@ class Unidade extends Model
         'des_unidade_und',
         'des_reduz_unidade_und',
         'id_centro_custo_und',
-        'is_ativo_und'
+        'is_ativo_und',
+        'id_empresa_und',
     ];
 
     public static function getAll($id_empresa) {
@@ -24,7 +25,7 @@ class Unidade extends Model
         ->where('id_empresa_und', $id_empresa)
         ->orderBy('id_unidade_und', 'desc')
         ->get();
-      
+
         return response()->json($data);
     }
 

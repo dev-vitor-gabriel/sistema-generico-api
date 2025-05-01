@@ -49,7 +49,6 @@ class UnidadeController extends Controller
             'des_reduz_unidade_und' => 'required|string|max:255',
             'id_centro_custo_und'   => 'required|integer|',
         ]);
-
         $request = $request->merge(['id_empresa_und' => $id_empresa]);
 
         $unidade = $this->unidadeRepository->create($request->all());
