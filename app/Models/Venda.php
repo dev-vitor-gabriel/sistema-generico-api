@@ -39,6 +39,7 @@ class Venda extends Model
             'tb_status.des_status_sts',
             'tb_status.status_sts',
             'tb_venda.id_status_vda',
+            'tb_venda.created_at',
             DB::raw('SUM(rel_venda_material.vlr_unit_material_rvm * rel_venda_material.qtd_material_rvm) as total_vlr_material')
             ])
             ->join('tb_funcionarios', 'tb_venda.id_funcionario_vda', '=', 'tb_funcionarios.id_funcionario_tfu')
