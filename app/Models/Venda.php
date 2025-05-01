@@ -35,6 +35,7 @@ class Venda extends Model
             'tb_cliente.des_cliente_cli',
             'tb_cliente.telefone_cliente_cli',
             'tb_cliente.documento_cliente_cli',
+            'tb_venda.desc_venda_vda',
             'tb_status.des_status_sts',
             'tb_status.status_sts',
             'tb_venda.id_status_vda',

@@ -48,6 +48,11 @@ class ClienteController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         $document_formated = ValidateString::removeCharacterSpecial($request->documento_cliente_cli ?? '');
+        $email_null = '';
+        if($request->email_cliente_cli == null)
+        {
+            $request->merge(['email_cliente_cli' => $email_null]);
+        }
 
         $request->merge(['documento_cliente_cli' => $document_formated]);
 
