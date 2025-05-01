@@ -117,7 +117,6 @@ class CentroCustoController extends Controller
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
         $result = $this->centroCustoRepository->getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa);
-        dd($result);
 
         return $result;
     }
