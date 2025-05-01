@@ -52,9 +52,9 @@ class UnidadeController extends Controller
 
         $request = $request->merge(['id_empresa_cli' => $id_empresa]);
 
-        $servico_tipo = $this->unidadeRepository->create($request, $id_empresa);
+        $unidade = $this->unidadeRepository->create($request, $id_empresa);
 
-        return response()->json($servico_tipo,201);
+        return response()->json($unidade,201);
     }
 
     /**

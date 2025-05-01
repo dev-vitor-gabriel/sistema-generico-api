@@ -7,9 +7,9 @@ use App\Models\Unidade;
 
 class UnidadeRepository implements UnidadeRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = Unidade::create($request,$id_empresa);
+        $result = Unidade::create($request);
 
         return $result;
     }
