@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Material extends Model
 {
@@ -20,10 +21,11 @@ class Material extends Model
         'id_empresa_mte',
     ];
 
-    public static function getAll($id_empresa)
+    public static function getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque)
     {
         $data = Material::select([
             'tb_material.id_material_mte',
+            DB::raw("IFNULL(CONCAT(tb_material.des_material_mte, ' (SEM ESTOQUE)'), tb_material.des_material_mte) AS des_material_mte"),
             'tb_material.des_material_mte',
             'tb_material.vlr_material_mte',
             'tb_unidade.des_reduz_unidade_und',
@@ -33,6 +35,10 @@ class Material extends Model
             'tb_centro_custo.des_centro_custo_cco'
         ])
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
+            ->leftJoin('tb_estoque_item', function ($join) {
+                $join->on('tb_estoque_item.id_material_eti', '=', 'tb_material.id_material_mte')
+                     ->on('tb_estoque_item.id_centro_custo_eti', '=', 'tb_material.id_centro_custo_mte');
+            })
             ->leftjoin('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
             ->where('is_ativo_mte', 1)
             ->where('tb_material.id_empresa_mte', $id_empresa)
