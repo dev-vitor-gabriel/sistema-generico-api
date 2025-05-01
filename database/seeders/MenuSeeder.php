@@ -298,7 +298,7 @@ class MenuSeeder extends Seeder
             'des_menu_mnu' => 'Cadastro Origem do Cliente',
             'icon_menu_mnu' => 'TagChevron',
             'path_menu_mnu' => '/cadastro-base/perfil/origem-cliente',
-            'num_ordem_mnu' => 32,
+            'num_ordem_mnu' => 37+1,
         ]);
     }
 }
