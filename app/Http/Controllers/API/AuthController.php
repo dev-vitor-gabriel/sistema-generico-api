@@ -143,7 +143,8 @@ class AuthController extends Controller
             'name'         => 'required|string|max:255',
             'email'        => 'required|string|email|max:255|unique:users',
             'password'     => 'required|string|min:6',
-            'url_img_user' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            // 'url_img_user' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'url_img_user' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -151,9 +152,9 @@ class AuthController extends Controller
         }
 
         $filePath = null;
-        if ($request->hasFile('url_img_user')) {
-            $filePath = $request->file('url_img_user')->store('images', 'public');
-        }
+        // if ($request->hasFile('url_img_user')) {
+        //     $filePath = $request->file('url_img_user')->store('images', 'public');
+        // }
 
         $user = User::create([
             'name' => $request_formatted['name'],
