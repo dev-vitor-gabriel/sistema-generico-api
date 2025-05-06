@@ -44,7 +44,7 @@ class Venda extends Model
             ])
             ->join('tb_funcionarios', 'tb_venda.id_funcionario_vda', '=', 'tb_funcionarios.id_funcionario_tfu')
             ->join('tb_status', 'tb_venda.id_status_vda', '=', 'tb_status.id_status_sts')
-            ->join('tb_cliente', 'tb_venda.id_cliente_vda', '=', 'tb_cliente.id_cliente_cli')
+            ->leftJoin('tb_cliente', 'tb_venda.id_cliente_vda', '=', 'tb_cliente.id_cliente_cli')
             ->join('tb_centro_custo', 'tb_venda.id_centro_custo_vda', '=', 'tb_centro_custo.id_centro_custo_cco')
             ->join('rel_venda_material', 'tb_venda.id_venda_vda', '=', 'rel_venda_material.id_venda_rvm')
             ->where('tb_venda.is_deleted', 0)
