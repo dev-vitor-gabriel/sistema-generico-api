@@ -20,11 +20,11 @@ class OrigemClienteController extends Controller{
         $validator = Validator::make($request->all(), [
             'desc_origem_cliente_orc'   => 'required|string|max:255'
             ]);
-    
+
 
         if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()], 422);
-        }   
+        }
 
         $origem_cliente = $this->OrigemClienteRepository->create($request->all());
 
@@ -33,7 +33,7 @@ class OrigemClienteController extends Controller{
     }
 
     public function get(Request $request, $id_origem_cliente_orc = null) {
-        
+
         if($id_origem_cliente_orc){
             $data = $this->OrigemClienteRepository->getById($id_origem_cliente_orc);
             $data_array = json_decode($data);
@@ -65,7 +65,7 @@ class OrigemClienteController extends Controller{
         $validator = Validator::make($request->all(),[
             'desc_origem_cliente_orc'       => 'string|max:255',
             ]);
-        
+
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
@@ -75,16 +75,16 @@ class OrigemClienteController extends Controller{
         ];
 
         $updated_origem_cliente = $this->OrigemClienteRepository->updateReg($id_origem_cliente_orc, $dados_atualizados);
-        
+
         return response()->json($updated_origem_cliente,200);
 
     }
-    
+
     public function delete(Int $id_origem_cliente_orc) {
 
         $inactive_origem_cliente = $this->OrigemClienteRepository->deleteReg($id_origem_cliente_orc);
 
         return response()->json($inactive_origem_cliente,200);
     }
-    
+
 }
