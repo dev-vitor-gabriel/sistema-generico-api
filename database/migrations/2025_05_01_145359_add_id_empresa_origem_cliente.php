@@ -12,11 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tb_origem_cliente', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_empresa_orc');
-            $table->foreign('id_empresa_orc')
-            ->references('id_empresa_emp')
-            ->on('tb_empresa')
-            ->onDelete('restrict');
+            $table->unsignedBigInteger('id_empresa_orc')->default(1);
+        });
+
+        Schema::table('tb_origem_cliente', function (Blueprint $table) {
+            $table->foreign('id_empresa_orc', 'fk_origem_cliente_empresa')
+                  ->references('id_empresa_emp')
+                  ->on('tb_empresa')
+                  ->onDelete('restrict');
         });
     }
 
@@ -26,9 +29,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tb_origem_cliente', function (Blueprint $table) {
-            $table->dropForeign(['id_empresa_orc']);
+            $table->dropForeign('fk_origem_cliente_empresa');
+        });
+
+        Schema::table('tb_origem_cliente', function (Blueprint $table) {
             $table->dropColumn('id_empresa_orc');
         });
     }
 };
-
