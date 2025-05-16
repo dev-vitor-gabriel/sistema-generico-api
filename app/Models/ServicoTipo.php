@@ -15,7 +15,8 @@ class ServicoTipo extends Model
         'des_servico_tipo_stp',
         'vlr_servico_tipo_stp',
         'id_centro_custo_stp',
-        'is_ativo_stp'
+        'is_ativo_stp',
+        'id_empresa_stp'
     ];
 
     public static function getAll($id_empresa) {
