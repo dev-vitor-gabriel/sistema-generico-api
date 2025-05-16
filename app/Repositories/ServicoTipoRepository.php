@@ -7,9 +7,9 @@ use App\Models\ServicoTipo;
 
 class ServicoTipoRepository implements ServicoTipoRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = ServicoTipo::create($request,$id_empresa);
+        $result = ServicoTipo::create($request);
 
         return $result;
     }

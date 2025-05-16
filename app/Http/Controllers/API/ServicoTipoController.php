@@ -52,7 +52,8 @@ class ServicoTipoController extends Controller
             'id_centro_custo_stp'  => 'required|integer|',
         ]);
 
-        $servico_tipo = $this->servicoTipoRepository->create($request->all(), $id_empresa);
+        $request = $request->merge(['id_empresa_stp' => $id_empresa]);
+        $servico_tipo = $this->servicoTipoRepository->create($request->all());
 
         return response()->json($servico_tipo,201);
     }
