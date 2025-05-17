@@ -21,6 +21,7 @@ class Venda extends Model
         'desc_venda_vda',
         'id_empresa_vda',
         'id_status_vda',
+        'id_metodo_pagamento_vda',
     ];
 
     public static function get(Int $id_empresa, Int $id = null, $filtros = null, $per_page = 1, $page_number = 0)

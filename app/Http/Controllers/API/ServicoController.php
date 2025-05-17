@@ -68,10 +68,12 @@ class ServicoController extends Controller
             'id_centro_custo_ser'           => 'required|integer',
             'id_funcionario_servico_ser'    => 'required|integer',
             'id_cliente_ser'                => 'required|integer',
+            'id_metodo_pagamento_ser'       => 'required|integer',
         ]);
 
         $servico = Servico::create([
             'txt_servico_ser'               => $request->txt_servico_ser,
+            'id_metodo_pagamento_ser'       => $request->id_metodo_pagamento_ser,
             // 'vlr_servico_ser'               => $request->vlr_servico_ser,
             'dta_agendamento_ser'           => date('Y-m-d H:i'),
             'id_centro_custo_ser'           => $request->id_centro_custo_ser,
