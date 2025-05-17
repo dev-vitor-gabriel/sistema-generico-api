@@ -68,9 +68,10 @@ class EstoqueController extends Controller
         $per_page = $request->query('per_page', 10);
         $filter = $request->query('filter', '');
         $page_number = $request->query('page_number', 1);
+        $id_centro_custo = $request->query('id_centro_custo', null);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        $result = $this->estoqueRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->estoqueRepository->getAll($id_empresa, $filter, $per_page, $page_number, $id_centro_custo);
 
         return $result;
     }

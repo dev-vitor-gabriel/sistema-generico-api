@@ -100,7 +100,7 @@ class VendaController extends Controller
         $status = Status::getById($request->id_status_vda);
             if ($status->status_sts == StatusVendaEnum::Finalizada->value) {
 
-                $saldoInsuficiente = $this->validarSaldo($request->materiais, $request->id_centro_custo_vda, $id_empresa);
+                $saldoInsuficiente = $this->validarSaldo($request->materiais, $request->id_estoque_est, $id_empresa);
 
                 if (!empty($saldoInsuficiente)) {
                     $mensagem = "Saldo insuficiente para os seguintes materiais:";
@@ -115,7 +115,7 @@ class VendaController extends Controller
                 }
 
                 $movimentacaoRequest = new Request([
-                    'id_centro_custo_mov' => $request->id_centro_custo_vda,
+                    'id_estoque_mov' => $request->id_estoque_est,
                     'materiais' => array_map(function ($material) {
                         return [
                             'id_material_mte' => $material['id_material_rvm'],
@@ -404,13 +404,13 @@ class VendaController extends Controller
         $this->materialMovimentacaoController->create($movimentacaoRequest, 'entrada');
 
     }
-    private function validarSaldo($materiais, $id_centro_custo, $id_empresa)
+    private function validarSaldo($materiais, $id_estoque_est, $id_empresa)
     {
         $saldoInsuficiente = [];
 
         foreach ($materiais as $material) {
             $estoqueItem = $this->estoqueItemRepository->getByEstoqueMaterial(
-                $id_centro_custo,
+                $id_estoque_est,
                 $material['id_material_rvm']
             );
 

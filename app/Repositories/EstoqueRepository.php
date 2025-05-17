@@ -14,9 +14,9 @@ class EstoqueRepository implements EstoqueRepositoryInterface
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    public function getAll($id_empresa, $filter, $per_page, $page_number, $id_centro_custo= null)
     {
-        $result = Estoque::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = Estoque::getAll($id_empresa, $filter, $per_page, $page_number, $id_centro_custo);
 
         return $result;
     }
