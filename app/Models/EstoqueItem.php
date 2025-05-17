@@ -15,7 +15,7 @@ class EstoqueItem extends Model
         'id_material_eti',
         'id_empresa_eti',
         'des_estoque_item_eti',
-        'id_centro_custo_eti',
+        'id_estoque_eti',
         'qtd_estoque_item_eti',
     ];
 
@@ -32,10 +32,10 @@ class EstoqueItem extends Model
         ]);
     }
 
-    public static function getByCentroCustoMaterial(Int $id_centro_custo, Int $id_material_eti) {
+    public static function getByEstoqueMaterial(Int $id_estoque_eti, Int $id_material_eti) {
         $data = EstoqueItem::select(['*'])
         ->where('is_ativo_eti', 1)
-        ->where('id_centro_custo_eti', $id_centro_custo)
+        ->where('id_estoque_eti', $id_estoque_eti)
         ->where('id_material_eti', $id_material_eti);
 
         return $data->first();
@@ -62,12 +62,14 @@ class EstoqueItem extends Model
             'tb_estoque_item.id_estoque_item_eti',
             'tb_estoque_item.des_estoque_item_eti',
             'tb_estoque_item.qtd_estoque_item_eti',
-            'tb_material.des_material_mte',
+            'tb_estoque.des_estoque_est',
             'tb_centro_custo.des_centro_custo_cco',
+            'tb_material.des_material_mte',
             'tb_estoque_item.created_at',
             'tb_estoque_item.updated_at'
         ])
-        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque_item.id_centro_custo_eti')
+        ->join('tb_estoque', 'tb_estoque.id_estoque_est', '=', 'tb_estoque_item.id_estoque_eti')
+        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
         ->join('tb_material', 'tb_material.id_material_mte', '=', 'tb_estoque_item.id_material_eti')
         ->where('tb_estoque_item.is_ativo_eti', 1)
         ->when(!empty($filter), function ($query) use ($filter) {
@@ -101,7 +103,7 @@ class EstoqueItem extends Model
         ->where('id_empresa_eti', $id_empresa)
         ->update([
             'id_material_eti' => $obj->id_material_eti,
-            'id_centro_custo_eti' => $obj->id_centro_custo_eti,
+            'id_estoque_eti' => $obj->id_estoque_eti,
             'qtd_estoque_item_eti' => $obj->qtd_estoque_item_eti,
             'des_estoque_item_eti' => $obj->des_estoque_item_eti,
             'updated_at' => now(),

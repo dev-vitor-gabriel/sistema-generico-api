@@ -47,6 +47,7 @@ class Estoque extends Model
             $data = Estoque::select([
                 'tb_estoque.id_estoque_est',
                 'tb_estoque.des_estoque_est',
+                'tb_estoque.id_centro_custo_est',
                 'tb_centro_custo.des_centro_custo_cco',
                 'tb_estoque.created_at' ,
                 'tb_estoque.updated_at'
@@ -61,6 +62,7 @@ class Estoque extends Model
             $data = Estoque::select([
                 'tb_estoque.id_estoque_est',
                 'tb_estoque.des_estoque_est',
+                'tb_estoque.id_centro_custo_est',
                 'tb_centro_custo.des_centro_custo_cco',
                 'tb_estoque.created_at' ,
                 'tb_estoque.updated_at'
@@ -74,48 +76,37 @@ class Estoque extends Model
         return response()->json($data);
     }
 
-    public static function getEstoqueComValores()
+    public static function getEstoqueComValores($id_usuario, $id_empresa)
     {
         return DB::table('tb_estoque as te')
-            ->leftJoin('tb_material_movimentacao as tmm', function ($join) {
-                $join->on('te.id_estoque_est', '=', 'tmm.id_estoque_entrada_mov')
-                    ->orOn('te.id_estoque_est', '=', 'tmm.id_estoque_saida_mov');
-            })
-            ->leftJoin('tb_material_movimentacao_item as tmmi', 'tmm.id_movimentacao_mov', '=', 'tmmi.id_movimentacao_mit')
-            ->leftJoin('tb_material as tm', 'tmmi.id_material_mit', '=', 'tm.id_material_mte')
+            ->join('tb_centro_custo as tcc', 'te.id_centro_custo_est', '=', 'tcc.id_centro_custo_cco') // Join com centro de custo
+            ->join('rel_usuario_centro_custo as rucc', 'tcc.id_centro_custo_cco', '=', 'rucc.id_centro_custo_ccu') // Join com relação usuário-centro de custo
+            ->leftJoin('tb_estoque_item as tei', 'te.id_estoque_est', '=', 'tei.id_estoque_eti') // Join com estoque_item
+            ->leftJoin('tb_material as tm', 'tei.id_material_eti', '=', 'tm.id_material_mte') // Join com materiais
             ->select(
                 'te.id_estoque_est as estoque_id',
-                'te.des_estoque_est as estoque_descricao',
+                'te.des_estoque_est',
+                'tcc.des_centro_custo_cco as centro_custo_descricao',
+                'tm.id_material_mte as material_id',
                 'tm.des_material_mte as material_descricao',
-                'tm.vlr_material_mte as valor_unitario',
-                DB::raw('
-                    COALESCE(SUM(
-                        CASE
-                            WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
-                            WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
-                            ELSE 0
-                        END
-                    ), 0) as quantidade_em_estoque
-                '),
-                DB::raw('
-                    (
-                        COALESCE(SUM(
-                            CASE
-                                WHEN tmm.id_estoque_entrada_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
-                                WHEN tmm.id_estoque_saida_mov = te.id_estoque_est THEN tmmi.qtd_material_mit
-                                ELSE 0
-                            END
-                        ), 0) * tm.vlr_material_mte
-                    ) as valor_total_em_estoque
-                ')
+                DB::raw('COUNT(tei.id_material_eti) as total_itens'),
+                DB::raw('SUM(tei.qtd_estoque_item_eti) as quantidade_total')
             )
+            ->where('rucc.id_user', $id_usuario)
             ->where('te.is_ativo_est', 1)
             ->where('tm.is_ativo_mte', 1)
-            ->groupBy('te.id_estoque_est', 'tm.id_material_mte', 'tm.vlr_material_mte')
-            ->orderBy('te.id_estoque_est', 'desc')
+            ->where('te.id_empresa_est', $id_empresa)
+            ->groupBy(
+                'te.id_estoque_est',
+                'te.des_estoque_est',
+                'tcc.des_centro_custo_cco',
+                'tm.id_material_mte',
+                'tm.des_material_mte'
+            )
+            ->orderBy('te.des_estoque_est', 'asc')
+            ->orderBy('tm.des_material_mte', 'asc')
             ->get();
     }
-
 
     public static function getEstoqueComValoresById(Int $id_estoque = null)
     {
@@ -140,7 +131,7 @@ class Estoque extends Model
             ->where('te.id_estoque_est', $id_estoque)
             ->groupBy('te.id_estoque_est', 'tm.id_material_mte', 'tm.vlr_material_mte')
             ->orderBy('te.id_estoque_est', 'desc')
-            // ->orderBy('tm.des_material_mte', 'desc')
+            ->orderBy('tm.des_material_mte', 'desc')
             ->get();
     }
 

@@ -409,7 +409,7 @@ class VendaController extends Controller
         $saldoInsuficiente = [];
 
         foreach ($materiais as $material) {
-            $estoqueItem = $this->estoqueItemRepository->getByCentroCustoMaterial(
+            $estoqueItem = $this->estoqueItemRepository->getByEstoqueMaterial(
                 $id_centro_custo,
                 $material['id_material_rvm']
             );

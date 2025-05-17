@@ -14,13 +14,18 @@ class EstoqueController extends Controller
      )
      {
      }
-     
+
      public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
 
         return $id_empresa;
     }
 
+    public function getIdUser(Request $request) {
+        $id_usuario = (int)$request->header('id-usuario-d');
+
+        return $id_usuario;
+    }
 
     /**
      * @OA\Get(
@@ -192,28 +197,12 @@ class EstoqueController extends Controller
      *     )
      * )
      */
-    public function showEstoqueComValores() {
-        $dados = Estoque::getEstoqueComValores();
+    public function showEstoqueComValores(Request $request) {
+        $id_empresa = $this->getIdEmpresa($request);
+        $id_usuario = $this->getIdUser($request);
 
-        $result = [];
-        foreach ($dados as $item) {
-            $estoqueId = $item->estoque_id;
-            if (!isset($result[$estoqueId])) {
-                $result[$estoqueId] = [
-                    'estoque_id' => $item->estoque_id,
-                    'estoque_descricao' => $item->estoque_descricao,
-                    'materiais' => []
-                ];
-            }
+        $dados = Estoque::getEstoqueComValores($id_usuario, $id_empresa);
 
-            $result[$estoqueId]['materiais'][] = [
-                'material_descricao' => $item->material_descricao,
-                'valor_unitario' => $item->valor_unitario,
-                'quantidade_em_estoque' => $item->quantidade_em_estoque,
-                'valor_total_em_estoque' => $item->valor_total_em_estoque
-            ];
-        }
-
-        return response()->json(array_values($result));
+        return response()->json($dados);
     }
 }

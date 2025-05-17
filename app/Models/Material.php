@@ -21,15 +21,16 @@ class Material extends Model
         'id_empresa_mte',
     ];
 
-    public static function getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque)
+    public static function getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque, $id_estoque = null)
     {
-        $descricaoMaterialSql = $verificar_estoque
+        $descricaoMaterialSql = $verificar_estoque && $id_estoque != null
             ? "CASE
         WHEN tb_estoque_item.qtd_estoque_item_eti <= 0 OR tb_estoque_item.qtd_estoque_item_eti IS NULL
         THEN CONCAT('(SEM ESTOQUE) ', tb_material.des_material_mte)
         ELSE tb_material.des_material_mte
        END AS des_material_mte"
             : "tb_material.des_material_mte AS des_material_mte";
+
         $data = Material::select([
             'tb_material.id_material_mte',
             DB::raw($descricaoMaterialSql),
@@ -40,11 +41,16 @@ class Material extends Model
             'tb_material.updated_at',
             'tb_centro_custo.des_centro_custo_cco'
         ])
-            ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte')
-            ->leftJoin('tb_estoque_item', function ($join) {
+            ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte');
+
+        if ($id_estoque != null) {
+            $data = $data->leftJoin('tb_estoque_item', function ($join) use ($id_estoque) {
                 $join->on('tb_estoque_item.id_material_eti', '=', 'tb_material.id_material_mte')
-                    ->on('tb_estoque_item.id_centro_custo_eti', '=', 'tb_material.id_centro_custo_mte');
-            })
+                    ->where('tb_estoque_item.id_estoque_eti', '=', $id_estoque);
+            });
+        }
+
+        $data = $data
             ->leftjoin('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
             ->where('is_ativo_mte', 1)
             ->where('tb_material.id_empresa_mte', $id_empresa)

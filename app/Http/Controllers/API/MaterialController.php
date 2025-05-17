@@ -66,10 +66,11 @@ class MaterialController extends Controller
         $per_page = $request->query('per_page', 10);
         $filter = $request->query('filter', '');
         $page_number = $request->query('page_number', 1);
+        $id_estoque = $request->query('id_estoque', null);
         $per_page = ($per_page > 50) ? 50 : $per_page;
         $verificar_estoque = filter_var($request->query('verificarEstoque', false), FILTER_VALIDATE_BOOLEAN);
 
-        $result = $this->materialRepository->getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque);
+        $result = $this->materialRepository->getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque, $id_estoque);
         return $result;
     }
 

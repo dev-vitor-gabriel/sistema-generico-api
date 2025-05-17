@@ -14,9 +14,9 @@ class MaterialRepository implements MaterialRepositoryInterface
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque)
+    public function getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque, $id_estoque = null)
     {
-        $result = Material::getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque);
+        $result = Material::getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque, $id_estoque);
 
         return $result;
     }

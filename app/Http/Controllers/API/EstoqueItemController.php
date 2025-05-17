@@ -107,7 +107,7 @@ class EstoqueItemController extends Controller
 
         $id_empresa = $this->getIdEmpresa($request);
 
-        $estoque = $this->estoqueItemRepository->getByCentroCustoMaterial($request->id_centro_custo_eti, $request->id_material_eti);
+        $estoque = $this->estoqueItemRepository->getByEstoqueMaterial($request->id_centro_custo_eti, $request->id_material_eti);
 
         if ($estoque) {
             return response()->json([
@@ -187,53 +187,4 @@ class EstoqueItemController extends Controller
         return response()->json($inactive_estoque_item, 200);
     }
 
-    /**
-     * @OA\Get(
-     *     path="/estoque/valores",
-     *     summary="Obtém os estoques com valores e materiais associados",
-     *     tags={"Estoque"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Estoque com valores encontrados",
-     *         @OA\JsonContent(
-     *             type="array",
-     *             @OA\Items(
-     *                 @OA\Property(property="estoque_id", type="integer"),
-     *                 @OA\Property(property="estoque_descricao", type="string"),
-     *                 @OA\Property(property="materiais", type="array", @OA\Items(
-     *                     @OA\Property(property="material_descricao", type="string"),
-     *                     @OA\Property(property="valor_unitario", type="number", format="float"),
-     *                     @OA\Property(property="quantidade_em_estoque", type="number", format="float"),
-     *                     @OA\Property(property="valor_total_em_estoque", type="number", format="float")
-     *                 ))
-     *             )
-     *         )
-     *     )
-     * )
-     */
-    public function showEstoqueComValores()
-    {
-        $dados = Estoque::getEstoqueComValores();
-
-        $result = [];
-        foreach ($dados as $item) {
-            $estoqueId = $item->estoque_id;
-            if (!isset($result[$estoqueId])) {
-                $result[$estoqueId] = [
-                    'estoque_id' => $item->estoque_id,
-                    'estoque_descricao' => $item->estoque_descricao,
-                    'materiais' => []
-                ];
-            }
-
-            $result[$estoqueId]['materiais'][] = [
-                'material_descricao' => $item->material_descricao,
-                'valor_unitario' => $item->valor_unitario,
-                'quantidade_em_estoque' => $item->quantidade_em_estoque,
-                'valor_total_em_estoque' => $item->valor_total_em_estoque
-            ];
-        }
-
-        return response()->json(array_values($result));
-    }
 }
