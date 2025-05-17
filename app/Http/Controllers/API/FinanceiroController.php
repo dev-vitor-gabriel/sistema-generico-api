@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\FinanceiroRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Enums\FinanceiroReferenciaEnum;
+
 
 class FinanceiroController extends Controller
 {
     public function __construct(
-        private FinanceiroRepositoryInterface $FinanceiroRepository
+        private FinanceiroRepositoryInterface $financeiroRepository
      )
      {
      }
@@ -34,7 +36,6 @@ class FinanceiroController extends Controller
             'id_centro_custo_fin'     => 'required|exists:tb_centro_custo,id_centro_custo_cco',
             'id_referencia_fin'       => 'nullable|integer',
             'tipo_referencia_fin'     => 'required|in:0,1,2,3', // 0 = manual, 1 = venda, 2 = serviço, 3 = compra, etc.
-            'is_ativo_fin'            => 'boolean',
         ]);
 
 
@@ -44,8 +45,7 @@ class FinanceiroController extends Controller
 
         $request = $request->merge(['id_empresa_fin' => $id_empresa]);
 
-        $movimentacao_financeira = $this->FinanceiroRepository->create($request->all());
-
+        $movimentacao_financeira = $this->financeiroRepository->create($request->all());
 
         return response()->json($movimentacao_financeira,201);
     }

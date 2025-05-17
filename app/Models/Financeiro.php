@@ -20,6 +20,7 @@ class Financeiro extends Model
         'id_empresa_fin',
         'id_referencia_fin',
         'tipo_referencia_fin',
+        'id_centro_custo_fin',
         'is_ativo_fin',
     ];
 
