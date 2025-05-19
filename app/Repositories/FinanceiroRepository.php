@@ -13,4 +13,18 @@ class FinanceiroRepository implements FinanceiroRepositoryInterface
 
         return $result;
     }
+
+    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    {
+        $result = Financeiro::getAll($id_empresa, $filter, $per_page, $page_number);
+
+        return $result;
+    }
+
+    public function getById($id_financeiro, $id_empresa)
+    {
+        $result = Financeiro::getById($id_financeiro, $id_empresa);
+
+        return $result;
+    }
 }

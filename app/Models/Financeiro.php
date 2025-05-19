@@ -21,7 +21,37 @@ class Financeiro extends Model
         'id_referencia_fin',
         'tipo_referencia_fin',
         'id_centro_custo_fin',
+        'id_metodo_pagamento_fin',
         'is_ativo_fin',
     ];
 
+    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1)
+    {
+        $paginator = Financeiro::select('tb_financeiro.*', 'tb_centro_custo.des_centro_custo_cco','tb_metodo_pagamento.desc_metodo_pagamento_tmp')
+        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_financeiro.id_centro_custo_fin')  
+        ->join('tb_metodo_pagamento', 'tb_metodo_pagamento.id_metodo_pagamento_tmp', '=', 'tb_financeiro.id_metodo_pagamento_fin')
+        ->where('is_ativo_fin', 1)
+        ->where('desc_financeiro_fin', 'like', '%'.$filter.'%')
+        ->where('id_empresa_fin', $id_empresa)
+        ->orderBy('id_financeiro_fin', 'desc')
+        ->paginate($perPage, ['*'], 'page', $pageNumber);
+
+        return response()->json([
+            'items' => $paginator->items(),
+            'total' => $paginator->total(),
+        ]);
+    }
+
+    public static function getById(Int $id_financeiro,Int $id_empresa) {
+
+        $data = Financeiro::select('tb_financeiro.*', 'tb_centro_custo.des_centro_custo_cco','tb_metodo_pagamento.des_metodo_pagamento_tmp')
+        ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_financeiro.id_centro_custo_fin')
+        ->join('tb_metodo_pagamento', 'tb_metodo_pagamento.id_metodo_pagamento_tmp', '=', 'tb_financeiro.id_metodo_pagamento_fin')
+        ->where('id_financeiro_fin', $id_financeiro)
+        ->where('id_empresa_fin', $id_empresa)
+        ->where('is_ativo_fin', 1)
+        ->first();
+
+        return $data;
+    }
 }

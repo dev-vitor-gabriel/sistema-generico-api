@@ -6,6 +6,6 @@ enum FinanceiroReferenciaEnum: int
 {
     case Manual = 0;
     case Venda = 1;
-    case Servico = 2;
+    case Serviço = 2;
     case Compra = 3;
 }
