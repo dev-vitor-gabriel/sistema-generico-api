@@ -18,7 +18,7 @@ class FinanceiroController extends Controller
      {
      }
 
-    public function getIdEmpresa(Request $request) 
+    public function getIdEmpresa(Request $request)
     {
         $id_empresa = (int)$request->header('id-empresa-d');
 
@@ -30,7 +30,6 @@ class FinanceiroController extends Controller
         $id_empresa = $this->getIdEmpresa($request);
 
         $validator = Validator::make($request->all(), [
-            'desc_financeiro_fin'     => 'required|string|max:255',
             'vlr_financeiro_fin'      => 'required|integer|min:0',
             'tipo_transacao_fin'      => 'required|in:0,1', // 0 = entrada, 1 = saída
             'id_centro_custo_fin'     => 'required|exists:tb_centro_custo,id_centro_custo_cco',
@@ -72,10 +71,11 @@ class FinanceiroController extends Controller
 
         $per_page = $request->query('per_page', 10);
         $filter = $request->query('filter', '');
+        $type = $request->query('type', null);
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        $result = $this->financeiroRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = $this->financeiroRepository->getAll($id_empresa, $filter, $per_page, $page_number, $type);
         $result_array = json_decode($result->content(), true);
 
         if (isset($result_array['items'])) {

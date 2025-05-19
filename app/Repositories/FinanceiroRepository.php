@@ -14,9 +14,9 @@ class FinanceiroRepository implements FinanceiroRepositoryInterface
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    public function getAll($id_empresa, $filter, $per_page, $page_number, $type = null)
     {
-        $result = Financeiro::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = Financeiro::getAll($id_empresa, $filter, $per_page, $page_number, $type);
 
         return $result;
     }
