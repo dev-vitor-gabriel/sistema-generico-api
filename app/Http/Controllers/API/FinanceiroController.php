@@ -50,24 +50,24 @@ class FinanceiroController extends Controller
     }
 
 
-    public function get(Request $request, $id_financeiro = null) {
+    public function get(Request $request, $tipo_transacao = null) {
         $id_empresa = $this->getIdEmpresa($request);
 
-        if ($id_financeiro) {
-            $data = $this->financeiroRepository->getById($id_empresa, $id_financeiro);
-            $data_array = json_decode($data->content(), true);
+        // if ($id_financeiro) {
+        //     $data = $this->financeiroRepository->getById($id_empresa, $id_financeiro);
+        //     $data_array = json_decode($data->content(), true);
 
-            if (empty($data_array)) {
-                return response()->json([
-                    'error' => 'Transferência Não Encontrada',
-                ], 400);
-            }
+        //     if (empty($data_array)) {
+        //         return response()->json([
+        //             'error' => 'Transferência Não Encontrada',
+        //         ], 400);
+        //     }
 
-            $data_array['tipo_transacao_text'] = $data_array['tipo_transacao_fin'] == 0 ? 'Entrada' : 'Saída';
-            $data_array['tipo_referencia_text'] = FinanceiroReferenciaEnum::tryFrom($data_array['tipo_referencia_fin'])?->name ?? 'Desconhecido';
+        //     $data_array['tipo_transacao_text'] = $data_array['tipo_transacao_fin'] == 0 ? 'Entrada' : 'Saída';
+        //     $data_array['tipo_referencia_text'] = FinanceiroReferenciaEnum::tryFrom($data_array['tipo_referencia_fin'])?->name ?? 'Desconhecido';
 
-            return response()->json($data_array);
-        }
+        //     return response()->json($data_array);
+        // }
 
         $per_page = $request->query('per_page', 10);
         $filter = $request->query('filter', '');

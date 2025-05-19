@@ -16,8 +16,8 @@ use App\Http\Controllers\API\FinanceiroController;
 */
 
 Route::controller(FinanceiroController::class)->group(function () {
-    Route::get('{id_financeiro}', 'get');
-    Route::get('', 'get');
+    // Route::get('{id_financeiro}', 'get');
+    Route::get('{tipo_transacao}', 'get');
     Route::put('{id_financeiro}', 'update');
     Route::post('', 'create');
     Route::delete('{id_financeiro}', 'delete');

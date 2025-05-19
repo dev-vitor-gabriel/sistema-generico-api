@@ -47,7 +47,7 @@ class Financeiro extends Model
 
     public static function getById(Int $id_financeiro,Int $id_empresa) {
 
-        $data = Financeiro::select('tb_financeiro.*', 'tb_centro_custo.des_centro_custo_cco','tb_metodo_pagamento.des_metodo_pagamento_tmp')
+        $data = Financeiro::select('tb_financeiro.*', 'tb_centro_custo.des_centro_custo_cco','tb_metodo_pagamento.desc_metodo_pagamento_tmp')
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_financeiro.id_centro_custo_fin')
         ->join('tb_metodo_pagamento', 'tb_metodo_pagamento.id_metodo_pagamento_tmp', '=', 'tb_financeiro.id_metodo_pagamento_fin')
         ->where('id_financeiro_fin', $id_financeiro)
