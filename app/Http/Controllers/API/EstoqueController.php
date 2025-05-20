@@ -64,7 +64,6 @@ class EstoqueController extends Controller
             }
             return $data;
         }
-
         $per_page = $request->query('per_page', 10);
         $filter = $request->query('filter', '');
         $page_number = $request->query('page_number', 1);
@@ -73,7 +72,8 @@ class EstoqueController extends Controller
 
         $result = $this->estoqueRepository->getAll($id_empresa, $filter, $per_page, $page_number, $id_centro_custo);
 
-        return $result;
+        $result_final = json_decode($result->getContent(), true);
+        return $result_final;
     }
 
     /**
