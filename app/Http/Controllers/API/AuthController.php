@@ -26,7 +26,7 @@ class AuthController extends Controller
         private RelUsuarioMenuRepositoryInterface $relUsuarioMenuRepository
         )
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login']]);
     }
 
     public function getIdEmpresa(Request $request) {
@@ -144,7 +144,6 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $id_empresa = $this->getIdEmpresa($request);
-
         $request_formatted = current((array)$request->request);
 
         $validator = Validator::make(($request_formatted),[
