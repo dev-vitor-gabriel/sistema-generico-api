@@ -14,9 +14,9 @@ class ClienteRepository implements ClienteRepositoryInterface
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    public function getAll($id_empresa, $queryParams)
     {
-        $result = Cliente::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = Cliente::getAll($id_empresa, $queryParams);
 
         return $result;
     }

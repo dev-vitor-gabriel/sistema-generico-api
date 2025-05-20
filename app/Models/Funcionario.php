@@ -22,7 +22,7 @@ class Funcionario extends Model
         'is_ativo_tfu'
     ];
 
-    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) {
+    public static function getAll($id_empresa, $queryParams) {
         $paginator = Funcionario::select([
         'id_funcionario_tfu',
         'desc_funcionario_tfu',
@@ -43,10 +43,13 @@ class Funcionario extends Model
         ->leftjoin('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_funcionarios.id_centro_custo_tfu')
         ->orderBy('id_funcionario_tfu', 'desc')
         ->where('is_ativo_tfu', 1)
-        ->where('desc_funcionario_tfu', 'like', '%'.$filter.'%')
+        ->where('desc_funcionario_tfu', 'like', '%'.$queryParams->filter.'%')
+        ->when($queryParams->id_centro_custo_tfu, function ($query, $id_centro_custo_tfu) {
+            return $query->where('tb_funcionarios.id_centro_custo_tfu', $id_centro_custo_tfu);
+        })
         ->where('id_empresa_tfu', $id_empresa)
         ->orderBy('id_funcionario_tfu', 'desc')
-        ->paginate($perPage, ['*'], 'page', $pageNumber);
+        ->paginate($queryParams->perPage, ['*'], 'page', $queryParams->pageNumber);
 
         return response()->json([
             'items' => $paginator->items(),

@@ -23,16 +23,19 @@ class Cliente extends Model
         'id_origem_cliente_cli',
     ];
 
-    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1) 
+    public static function getAll($id_empresa, $queryParams)
     {
         $paginator = Cliente::select('tb_cliente.*', 'tb_centro_custo.des_centro_custo_cco', 'tb_origem_cliente.desc_origem_cliente_orc')
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_cliente.id_centro_custo_cli')
         ->join('tb_origem_cliente', 'tb_origem_cliente.id_origem_cliente_orc', '=', 'tb_cliente.id_origem_cliente_cli')
         ->where('is_ativo_cli', 1)
-        ->where('des_cliente_cli', 'like', '%'.$filter.'%')
+        ->where('des_cliente_cli', 'like', '%'.$queryParams->filter.'%')
+        ->when($queryParams->id_centro_custo_cli, function ($query, $id_centro_custo_cli) {
+            return $query->where('tb_cliente.id_centro_custo_cli', $id_centro_custo_cli);
+        })
         ->where('id_empresa_cli', $id_empresa)
         ->orderBy('id_cliente_cli', 'desc')
-        ->paginate($perPage, ['*'], 'page', $pageNumber);
+        ->paginate($queryParams->perPage, ['*'], 'page', $queryParams->pageNumber);
 
         return response()->json([
             'items' => $paginator->items(),

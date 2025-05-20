@@ -53,8 +53,8 @@ class FuncionarioController extends Controller
             'desc_funcionario_tfu'       => $request->desc_funcionario_tfu,
             'documento_funcionario_tfu'  => $request->documento_funcionario_tfu,
             'telefone_funcionario_tfu'   => $request->telefone_funcionario_tfu,
-            'endereco_funcionario_tfu'   => $request->endereco_funcionario_tfu, 
-            'id_centro_custo_tfu'        => $request->id_centro_custo_tfu, 
+            'endereco_funcionario_tfu'   => $request->endereco_funcionario_tfu,
+            'id_centro_custo_tfu'        => $request->id_centro_custo_tfu,
             'id_empresa_tfu'             => $id_empresa,
         ]);
         if($request->tipos_servico){
@@ -105,16 +105,17 @@ class FuncionarioController extends Controller
             return $data;
         }
 
-        $per_page = $request->query('per_page', 10);
-        $filter = $request->query('filter', '');
-        $page_number = $request->query('page_number', 1);
-        $per_page = ($per_page > 50) ? 50 : $per_page;
+        $queryParams = (object) [
+            'perPage' => $request->query('per_page', 10),
+            'filter' => $request->query('filter', ''),
+            'pageNumber' => $request->query('page_number', 1),
+            'id_centro_custo_tfu' => $request->query('id_centro_custo_tfu', null),
+        ];
+        $data = Funcionario::getAll($id_empresa, $queryParams);
 
-        $data = Funcionario::getAll($id_empresa, $filter, $per_page, $page_number);
+        $data = json_decode($data->content(), true);
 
-        $data = json_decode($data->content(), true); 
-
-        $itemsArray = $data['items']; 
+        $itemsArray = $data['items'];
         $itemsGrouped = $this->groupByTypeService($itemsArray);
 
         // Mantém os metadados de paginação e substitui os itens processados
