@@ -59,7 +59,6 @@ class ClienteController extends Controller
         $validator = Validator::make($request->all(), [
             'des_cliente_cli'       => 'required|string|max:255',
             'telefone_cliente_cli'  => 'required|string|max:11',
-            'email_cliente_cli'     => 'required|string|max:255',
             'documento_cliente_cli' => 'string|max:11',
             'endereco_cliente_cli'  => 'string|max:255',
             'id_centro_custo_cli'   => 'required|integer',
