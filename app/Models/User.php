@@ -24,7 +24,8 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'url_img_user',
-        'is_ativo_user'
+        'is_ativo_user',
+        'id_empresa_d'
     ];
 
     public static function getAll($id_empresa, $filter) {

@@ -29,6 +29,12 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
+    }
+
     /**
      * @OA\Post(
      *     path="/auth/login",
@@ -137,6 +143,8 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+        $id_empresa = $this->getIdEmpresa($request);
+
         $request_formatted = current((array)$request->request);
 
         $validator = Validator::make(($request_formatted),[
@@ -160,7 +168,8 @@ class AuthController extends Controller
             'name' => $request_formatted['name'],
             'email' => $request_formatted['email'],
             'password' => Hash::make($request_formatted['password']),
-            'url_img_user' => $filePath
+            'url_img_user' => $filePath,
+            'id_empresa_d' => $id_empresa
         ]);
 
         return response()->json([
