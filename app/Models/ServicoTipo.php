@@ -19,17 +19,20 @@ class ServicoTipo extends Model
         'id_empresa_stp'
     ];
 
-    public static function getAll($id_empresa) {
+    public static function getAll($id_empresa, $queryParams) {
         $data = ServicoTipo::select('tb_servico_tipo.*', 'tb_centro_custo.des_centro_custo_cco')
             ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_servico_tipo.id_centro_custo_stp')
             ->where('tb_servico_tipo.is_ativo_stp', 1)
+            ->when($queryParams->id_centro_custo_stp, function ($query, $id_centro_custo_stp) {
+                return $query->where('tb_servico_tipo.id_centro_custo_stp', $id_centro_custo_stp);
+            })
             ->where('id_empresa_stp', $id_empresa)
             ->orderBy('tb_servico_tipo.id_servico_tipo_stp', 'desc')
             ->get();
-      
+
             return response()->json($data);
     }
-    
+
 
     public static function getById(Int $id_empresa, Int $id = null) {
         if($id) {

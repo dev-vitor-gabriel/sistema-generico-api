@@ -14,9 +14,9 @@ class ServicoTipoRepository implements ServicoTipoRepositoryInterface
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    public function getAll($id_empresa, $queryParams)
     {
-        $result = ServicoTipo::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = ServicoTipo::getAll($id_empresa, $queryParams);
 
         return $result;
     }
