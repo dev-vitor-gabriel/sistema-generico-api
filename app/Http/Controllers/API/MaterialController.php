@@ -63,14 +63,19 @@ class MaterialController extends Controller
             return $data;
         }
 
-        $per_page = $request->query('per_page', 10);
-        $filter = $request->query('filter', '');
-        $page_number = $request->query('page_number', 1);
-        $id_estoque = $request->query('id_estoque', null);
-        $per_page = ($per_page > 50) ? 50 : $per_page;
-        $verificar_estoque = filter_var($request->query('verificarEstoque', false), FILTER_VALIDATE_BOOLEAN);
+        $queryParams = (object) [
+            'perPage' => $request->query('per_page', 10),
+            'filter' => $request->query('filter', ''),
+            'id_estoque' => $request->query('id_estoque', null),
+            'pageNumber' => $request->query('page_number', 1),
+            'id_centro_custo_mte' => $request->query('id_centro_custo_mte', null),
+            'verificar_estoque' => filter_var($request->query('verificarEstoque', false), FILTER_VALIDATE_BOOLEAN),
+        ];
 
-        $result = $this->materialRepository->getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque, $id_estoque);
+        $queryParams->perPage = ($queryParams->perPage > 50) ? 50 : $queryParams->perPage;
+
+
+        $result = $this->materialRepository->getAll($id_empresa, $queryParams);
         return $result;
     }
 

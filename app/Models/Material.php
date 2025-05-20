@@ -21,9 +21,9 @@ class Material extends Model
         'id_empresa_mte',
     ];
 
-    public static function getAll($id_empresa, $filter, $per_page, $page_number, $verificar_estoque, $id_estoque = null)
+    public static function getAll($id_empresa, $queryParams)
     {
-        $descricaoMaterialSql = $verificar_estoque && $id_estoque != null
+        $descricaoMaterialSql = $queryParams->verificar_estoque && $queryParams->id_estoque != null
             ? "CASE
         WHEN tb_estoque_item.qtd_estoque_item_eti <= 0 OR tb_estoque_item.qtd_estoque_item_eti IS NULL
         THEN CONCAT('(SEM ESTOQUE) ', tb_material.des_material_mte)
@@ -43,7 +43,7 @@ class Material extends Model
         ])
             ->join('tb_unidade', 'tb_unidade.id_unidade_und', '=', 'tb_material.id_unidade_mte');
 
-        if ($id_estoque != null) {
+        if ($queryParams->id_estoque != null) {
             $data = $data->leftJoin('tb_estoque_item', function ($join) use ($id_estoque) {
                 $join->on('tb_estoque_item.id_material_eti', '=', 'tb_material.id_material_mte')
                     ->where('tb_estoque_item.id_estoque_eti', '=', $id_estoque);
@@ -53,6 +53,9 @@ class Material extends Model
         $data = $data
             ->leftjoin('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_material.id_centro_custo_mte')
             ->where('is_ativo_mte', 1)
+            ->when($queryParams->id_centro_custo_mte, function ($query, $id_centro_custo_mte) {
+                return $query->where('tb_material.id_centro_custo_mte', $id_centro_custo_mte);
+            })
             ->where('tb_material.id_empresa_mte', $id_empresa)
             ->orderBy('id_material_mte', 'desc')
             ->get();
