@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tb_estoque_item', function (Blueprint $table) {
-            $table->dropForeign(['id_centro_custo_eti']);
-            $table->dropColumn(['id_centro_custo_eti']);
-            $table->unsignedBigInteger('id_estoque_eti')->nullable()->after('id_centro_custo_eti');
+            $table->dropForeign(['id_centro_custo']);
+            $table->dropColumn(['id_centro_custo']);
+            $table->unsignedBigInteger('id_estoque_eti')->nullable();
             $table->foreign('id_estoque_eti')
                 ->references('id_estoque_est')
                 ->on('tb_estoque')
