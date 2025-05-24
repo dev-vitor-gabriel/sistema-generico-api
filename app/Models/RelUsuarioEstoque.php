@@ -9,7 +9,7 @@ class RelUsuarioEstoque extends Model
 {
     use HasFactory;
 
-    protected $table = 'rel_user_estoque';
+    protected $table = 'rel_usuario_estoque';
 
     protected $fillable = [
         'id_estoque_rue',
@@ -18,7 +18,7 @@ class RelUsuarioEstoque extends Model
 
     public static function getEstoqueByIdUsuario(Int $id_user){
         $estoque = RelUsuarioEstoque::where('id_user_rue', $id_user)
-        ->join('tb_estoque as te', 'rel_user_estoque.id_estoque_rue', '=', 'te.id_estoque_est')
+        ->join('tb_estoque as te', 'rel_usuario_estoque.id_estoque_rue', '=', 'te.id_estoque_est')
         ->select([
             'te.id_estoque_est',
             'te.id_empresa_est',

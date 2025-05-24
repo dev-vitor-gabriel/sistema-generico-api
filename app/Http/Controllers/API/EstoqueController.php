@@ -11,18 +11,19 @@ class EstoqueController extends Controller
 {
     public function __construct(
         private EstoqueRepositoryInterface $estoqueRepository
-     )
-     {
-     }
+    ) {
+    }
 
-     public function getIdEmpresa(Request $request) {
-        $id_empresa = (int)$request->header('id-empresa-d');
+    public function getIdEmpresa(Request $request)
+    {
+        $id_empresa = (int) $request->header('id-empresa-d');
 
         return $id_empresa;
     }
 
-    public function getIdUser(Request $request) {
-        $id_usuario = (int)$request->header('id-usuario-d');
+    public function getIdUser(Request $request)
+    {
+        $id_usuario = (int) $request->header('id-usuario-d');
 
         return $id_usuario;
     }
@@ -50,8 +51,10 @@ class EstoqueController extends Controller
      *     )
      * )
      */
-    public function get(Request $request, Int $id_estoque = null) {
+    public function get(Request $request, int $id_estoque = null)
+    {
         $id_empresa = $this->getIdEmpresa($request);
+        $id_usuario = $this->getIdUser($request);
 
         if ($id_estoque) {
             $data = $this->estoqueRepository->getById($id_empresa, $id_estoque);
@@ -64,13 +67,22 @@ class EstoqueController extends Controller
             }
             return $data;
         }
-        $per_page = $request->query('per_page', 10);
-        $filter = $request->query('filter', '');
-        $page_number = $request->query('page_number', 1);
-        $id_centro_custo = $request->query('id_centro_custo', null);
-        $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        $result = $this->estoqueRepository->getAll($id_empresa, $filter, $per_page, $page_number, $id_centro_custo);
+        $queryParams = (object) [
+            'perPage' => $request->query('per_page', 10),
+            'filter' => $request->query('filter', ''),
+            'pageNumber' => $request->query('page_number', 1),
+            'id_centro_custo' => $request->query('id_centro_custo', null),
+            'getByCompany' => filter_var($request->query('getByCompany', false), FILTER_VALIDATE_BOOLEAN),
+        ];
+
+        if ($queryParams->id_centro_custo === "null" || $queryParams->id_centro_custo === "") {
+            $queryParams->id_centro_custo = null;
+        }
+
+        $queryParams->perPage = ($queryParams->perPage > 50) ? 50 : $queryParams->perPage;
+
+        $result = $this->estoqueRepository->getAll($id_empresa, $id_usuario, $queryParams);
 
         $result_final = json_decode($result->getContent(), true);
         return $result_final;
@@ -96,17 +108,18 @@ class EstoqueController extends Controller
      *     )
      * )
      */
-    public function create(Request $request) {
+    public function create(Request $request)
+    {
         $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
-            'des_estoque_est'     => 'required|string|max:255',
+            'des_estoque_est' => 'required|string|max:255',
             'id_centro_custo_est' => 'required|integer|exists:tb_centro_custo,id_centro_custo_cco'
         ]);
 
         $estoque = $this->estoqueRepository->create($request->all(), $id_empresa);
 
-        return response()->json($estoque,201);
+        return response()->json($estoque, 201);
     }
 
     /**
@@ -135,11 +148,12 @@ class EstoqueController extends Controller
      *     )
      * )
      */
-    public function update(Int $id_estoque, Request $request) {
+    public function update(int $id_estoque, Request $request)
+    {
         $id_empresa = $this->getIdEmpresa($request);
 
         $request->validate([
-            'des_estoque_est'     => 'required|string|max:255',
+            'des_estoque_est' => 'required|string|max:255',
             'id_centro_custo_est' => 'required|integer|exists:tb_centro_custo,id_centro_custo_cco'
         ]);
 
@@ -166,12 +180,13 @@ class EstoqueController extends Controller
      *     )
      * )
      */
-    public function delete(Request $request, Int $id_estoque) {
+    public function delete(Request $request, int $id_estoque)
+    {
         $id_empresa = $this->getIdEmpresa($request);
 
-       $inactive_estoque = $this->estoqueRepository->deleteReg($id_estoque, $id_empresa);
+        $inactive_estoque = $this->estoqueRepository->deleteReg($id_estoque, $id_empresa);
 
-       return response()->json($inactive_estoque, 200);
+        return response()->json($inactive_estoque, 200);
     }
 
     /**
@@ -198,7 +213,8 @@ class EstoqueController extends Controller
      *     )
      * )
      */
-    public function showEstoqueComValores(Request $request) {
+    public function showEstoqueComValores(Request $request)
+    {
         $id_empresa = $this->getIdEmpresa($request);
         $id_usuario = $this->getIdUser($request);
 

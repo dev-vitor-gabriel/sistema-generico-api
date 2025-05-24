@@ -20,9 +20,8 @@ class Estoque extends Model
         'id_empresa_est',
     ];
 
-    public static function getAll($id_empresa, $filter, $perPage = 10, $pageNumber = 1, $id_centro_custo = null) {
-
-        $paginator = Estoque::select([
+    public static function getAll($id_empresa, $id_usuario, $queryParams) {
+        $query = Estoque::select([
             'tb_estoque.id_estoque_est',
             'tb_estoque.des_estoque_est',
             'tb_centro_custo.des_centro_custo_cco',
@@ -31,15 +30,24 @@ class Estoque extends Model
         ])
         ->join('tb_centro_custo', 'tb_centro_custo.id_centro_custo_cco', '=', 'tb_estoque.id_centro_custo_est')
         ->where('is_ativo_est', 1)
-        ->where('tb_estoque.des_estoque_est', 'like', '%'.$filter.'%')
-        ->where('tb_estoque.id_centro_custo_est', '=', $id_centro_custo)
+        ->where('tb_estoque.des_estoque_est', 'like', '%'.$queryParams->filter.'%')
         ->where('tb_estoque.id_empresa_est', $id_empresa)
+        ->when($queryParams->id_centro_custo, function ($query, $id_centro_custo) {
+            return $query->where('tb_estoque.id_centro_custo_est', '=', $id_centro_custo);
+        });
+
+        if (!$queryParams->getByCompany) {
+              $query->join('rel_usuario_estoque', 'tb_estoque.id_estoque_est', '=', 'rel_usuario_estoque.id_estoque_rue')
+                ->where('rel_usuario_estoque.id_user_rue', $id_usuario);
+        }
+
+        $query = $query
         ->orderBy('tb_estoque.id_estoque_est', 'desc')
-        ->paginate($perPage, ['*'], 'page', $pageNumber);
+        ->paginate($queryParams->perPage, ['*'], 'page', $queryParams->pageNumber);
 
         return response()->json([
-            'items' => $paginator->items(),
-            'total' => $paginator->total(),
+            'items' => $query->items(),
+            'total' => $query->total(),
         ]);
     }
 

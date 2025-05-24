@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id('id_rel_usuario_estoque_rue');
             $table->unsignedBigInteger('id_estoque_rue');
             $table->unsignedBigInteger('id_user_rue');
-            $table->foreign('id_estoque_rue')->references('id_estoque')->on('tb_estoque');
+            $table->foreign('id_estoque_rue')->references('id_estoque_est')->on('tb_estoque');
             $table->foreign('id_user_rue')->references('id')->on('users');
             $table->timestamps();
         });
