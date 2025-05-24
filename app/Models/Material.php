@@ -59,6 +59,7 @@ class Material extends Model
             ->where('tb_material.id_empresa_mte', $id_empresa)
             ->orderBy('id_material_mte', 'desc')
             ->get();
+
         return response()->json($data);
     }
 

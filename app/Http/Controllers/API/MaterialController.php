@@ -72,6 +72,10 @@ class MaterialController extends Controller
             'verificar_estoque' => filter_var($request->query('verificarEstoque', false), FILTER_VALIDATE_BOOLEAN),
         ];
 
+       if ($queryParams->id_centro_custo_mte === "null" || $queryParams->id_centro_custo_mte === "") {
+            $queryParams->id_centro_custo_mte = null;
+        }
+
         $queryParams->perPage = ($queryParams->perPage > 50) ? 50 : $queryParams->perPage;
 
 
