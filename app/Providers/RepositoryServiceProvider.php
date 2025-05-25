@@ -41,7 +41,6 @@ use App\Repositories\OrigemClienteRepository;
 use App\Interfaces\FinanceiroRepositoryInterface;
 use App\Repositories\FinanceiroRepository;
 
-
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
