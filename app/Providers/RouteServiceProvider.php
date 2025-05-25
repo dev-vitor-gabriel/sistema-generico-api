@@ -166,6 +166,10 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware(['api', 'set.empresa.header'])
                 ->prefix('api/usuario-estoque')
                 ->group(base_path('routes/api/relUsuarioEstoque.php'));
+
+            Route::middleware(['api', 'set.empresa.header'])
+                ->prefix('api/combo')
+                ->group(base_path('routes/api/combo.php'));
         });
     }
 }
