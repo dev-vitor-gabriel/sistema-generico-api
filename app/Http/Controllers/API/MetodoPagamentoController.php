@@ -55,7 +55,9 @@ class MetodoPagamentoController extends Controller
             'desc_metodo_pagamento_tmp'       => 'required|string|max:255'
         ]);
 
-        $metodoPagamento = $this->metodoPagamentoRepository->create($request->all(), $id_empresa);
+        $request = $request->merge(['id_empresa_tmp' => $id_empresa]);
+
+        $metodoPagamento = $this->metodoPagamentoRepository->create($request->all());
 
         return response()->json($metodoPagamento,201);
     }

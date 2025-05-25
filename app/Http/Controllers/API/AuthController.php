@@ -26,7 +26,13 @@ class AuthController extends Controller
         private RelUsuarioMenuRepositoryInterface $relUsuarioMenuRepository
         )
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+    public function getIdEmpresa(Request $request) {
+        $id_empresa = (int)$request->header('id-empresa-d');
+
+        return $id_empresa;
     }
 
     /**
@@ -137,13 +143,15 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
+        $id_empresa = $this->getIdEmpresa($request);
         $request_formatted = current((array)$request->request);
 
         $validator = Validator::make(($request_formatted),[
             'name'         => 'required|string|max:255',
             'email'        => 'required|string|email|max:255|unique:users',
             'password'     => 'required|string|min:6',
-            'url_img_user' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            // 'url_img_user' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'url_img_user' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -151,15 +159,16 @@ class AuthController extends Controller
         }
 
         $filePath = null;
-        if ($request->hasFile('url_img_user')) {
-            $filePath = $request->file('url_img_user')->store('images', 'public');
-        }
+        // if ($request->hasFile('url_img_user')) {
+        //     $filePath = $request->file('url_img_user')->store('images', 'public');
+        // }
 
         $user = User::create([
             'name' => $request_formatted['name'],
             'email' => $request_formatted['email'],
             'password' => Hash::make($request_formatted['password']),
-            'url_img_user' => $filePath
+            'url_img_user' => $filePath,
+            'id_empresa_d' => $id_empresa
         ]);
 
         return response()->json([

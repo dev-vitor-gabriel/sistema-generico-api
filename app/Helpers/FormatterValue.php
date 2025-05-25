@@ -6,6 +6,7 @@ class FormatterValue
 {
     public static function formatterMoney($value)
     {
-        return number_format($value, 2, ',', '.');
+        return number_format($value / 100, 2, ',', '.');
     }
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 use App\Models\MaterialMovimentacao;
 use App\Models\Material;
 use App\Interfaces\EstoqueItemRepositoryInterface;
+use App\Interfaces\EstoqueRepositoryInterface;
 use App\Models\MaterialMovimentacaoItem;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -13,7 +14,8 @@ use Illuminate\Http\Request;
 class MaterialMovimentacaoController extends Controller
 {
     public function __construct(
-        private EstoqueItemRepositoryInterface $estoqueItemRepository
+        private EstoqueItemRepositoryInterface $estoqueItemRepository,
+        private EstoqueRepositoryInterface $estoqueRepository
     ) {
     }
 
@@ -66,7 +68,7 @@ class MaterialMovimentacaoController extends Controller
 
         // Validação dos campos
         $request->validate([
-            'id_centro_custo_mov' => 'required|int',
+            'id_estoque_mov' => 'required|int',
             'materiais' => 'required|array',
             'materiais.*.id_material_mte' => 'required|int',
             'materiais.*.qtd_material_mit' => 'required|int|min:1',
@@ -75,11 +77,20 @@ class MaterialMovimentacaoController extends Controller
         // Inicia a transação
         DB::beginTransaction();
 
+        $estoque = $this->estoqueRepository->getById($id_empresa, $request->id_estoque_mov);
+        if (!$estoque->getData()) {
+            return response()->json([
+                'message' => 'Estoque não encontrado.',
+            ], 422);
+        }
+
+        $estoque = $estoque->getData()[0];
+
         try {
             // Cria a movimentação de material
             $materialMov = MaterialMovimentacao::create([
                 'txt_movimentacao_mov' => $request->des_estoque_item_eti,
-                'id_centro_custo_mov' => $request->id_centro_custo_mov,
+                'id_centro_custo_mov' => $estoque->id_centro_custo_est,
                 'is_ativo_mov' => 1,
                 'id_empresa_mov' => $id_empresa,
             ]);
@@ -88,8 +99,8 @@ class MaterialMovimentacaoController extends Controller
                 $id_material = $material['id_material_mte'];
                 $quantidade = $material['qtd_material_mit'];
 
-                $estoque_item = $this->estoqueItemRepository->getByCentroCustoMaterial(
-                    $request->id_centro_custo_mov,
+                $estoque_item = $this->estoqueItemRepository->getByEstoqueMaterial(
+                    $estoque->id_estoque_est,
                     $id_material
                 );
 
@@ -101,7 +112,7 @@ class MaterialMovimentacaoController extends Controller
                         $this->estoqueItemRepository->create([
                             'id_material_eti' => $id_material,
                             'id_empresa_eti' => $id_empresa,
-                            'id_centro_custo_eti' => $request->id_centro_custo_mov,
+                            'id_estoque_eti' => $estoque->id_estoque_est,
                             'qtd_estoque_item_eti' => $quantidade,
                         ], $id_empresa);
                     }

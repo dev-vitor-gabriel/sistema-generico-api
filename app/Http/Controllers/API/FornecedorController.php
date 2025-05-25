@@ -20,7 +20,7 @@ class FornecedorController extends Controller
 
         return $id_empresa;
     }
-     
+
      /**
      * @OA\Post(
      *     path="/fornecedor",
@@ -50,7 +50,8 @@ class FornecedorController extends Controller
             'documento_fornecedor_frn' => 'string|max:18',
         ]);
 
-        $fornecedor = $this->fornecedorRepository->create($request->all(), $id_empresa);
+        $request = $request->merge(['id_empresa_frn' => $id_empresa,]);
+        $fornecedor = $this->fornecedorRepository->create($request);
         return response()->json($fornecedor, 201);
     }
 

@@ -7,9 +7,12 @@ use App\Models\Cargo;
 
 class CargoRepository implements CargoRepositoryInterface
 {
-    public function create($request,$id_empresa)
+    public function create($request, $id_empresa)
     {
-        $result = Cargo::create($request,$id_empresa);
+        $result = Cargo::create(array_merge(
+            $request,
+            ['id_empresa_tcg' => $id_empresa]
+        ));
 
         return $result;
     }

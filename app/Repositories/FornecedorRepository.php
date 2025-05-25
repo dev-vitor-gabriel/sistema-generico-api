@@ -7,9 +7,9 @@ use App\Models\Fornecedor;
 
 class FornecedorRepository implements FornecedorRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = Fornecedor::create($request,$id_empresa);
+        $result = Fornecedor::create($request);
 
         return $result;
     }

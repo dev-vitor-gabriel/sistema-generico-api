@@ -7,16 +7,16 @@ use App\Models\ServicoTipo;
 
 class ServicoTipoRepository implements ServicoTipoRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = ServicoTipo::create($request,$id_empresa);
+        $result = ServicoTipo::create($request);
 
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    public function getAll($id_empresa, $queryParams)
     {
-        $result = ServicoTipo::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = ServicoTipo::getAll($id_empresa, $queryParams);
 
         return $result;
     }

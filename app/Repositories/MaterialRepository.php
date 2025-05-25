@@ -7,16 +7,16 @@ use App\Models\Material;
 
 class MaterialRepository implements MaterialRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = Material::create($request,$id_empresa);
+        $result = Material::create($request);
 
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    public function getAll($id_empresa, $queryParams)
     {
-        $result = Material::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = Material::getAll($id_empresa, $queryParams);
 
         return $result;
     }

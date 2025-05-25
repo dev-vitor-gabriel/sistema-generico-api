@@ -9,5 +9,5 @@ interface EstoqueItemRepositoryInterface
     public function getById($id_empresa, $id_estoque_item);
     public function updateReg($id_empresa, $id_estoque_item, $request);
     public function deleteReg($id_empresa, $id_estoque_item);
-    public function getByCentroCustoMaterial($id_centro_custo_eti, $id_material_eti);
+    public function getByEstoqueMaterial($id_estoque_est, $id_material_eti);
 }

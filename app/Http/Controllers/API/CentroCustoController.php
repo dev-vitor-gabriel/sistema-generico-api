@@ -52,8 +52,8 @@ class CentroCustoController extends Controller
         $request->validate([
             'des_centro_custo_cco' => 'required|string|max:255'
         ]);
-
-        $centro_custo = $this->centroCustoRepository->create($request->all(),$id_empresa);
+        $request = $request->merge(['id_empresa_cco' => $id_empresa]);
+        $centro_custo = $this->centroCustoRepository->create($request->all());
 
         return response()->json($centro_custo,201);
     }
@@ -93,12 +93,8 @@ class CentroCustoController extends Controller
      */
     public function get(Request $request, $id_centro_custo = null) {
         $id_usuario = $this->getIdUsuario($request);
-        $id_empresa = null;
+        $id_empresa = $this->getIdEmpresa($request);
         $getByCompany = filter_var($request->query('getByCompany', false), FILTER_VALIDATE_BOOLEAN);
-        if ($getByCompany) {
-            $id_empresa = $this->getIdEmpresa($request);
-        }
-
         if($id_centro_custo){
             $data = $this->centroCustoRepository->getById($id_usuario, $id_centro_custo);
             $data_array = json_decode($data->content());
@@ -115,7 +111,7 @@ class CentroCustoController extends Controller
         $page_number = $request->query('page_number', 1);
         $per_page = ($per_page > 50) ? 50 : $per_page;
 
-        $result = $this->centroCustoRepository->getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa);
+        $result = $this->centroCustoRepository->getAll($id_usuario, $filter, $per_page, $page_number, $id_empresa, $getByCompany);
 
         return $result;
     }

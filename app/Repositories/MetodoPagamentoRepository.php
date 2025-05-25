@@ -7,9 +7,9 @@ use App\Models\MetodoPagamento;
 
 class MetodoPagamentoRepository implements MetodoPagamentoRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = MetodoPagamento::create($request,$id_empresa);
+        $result = MetodoPagamento::create($request);
 
         return $result;
     }

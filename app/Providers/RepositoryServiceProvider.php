@@ -38,7 +38,8 @@ use App\Interfaces\VendaRepositoryInterface;
 use App\Repositories\VendaRepository;
 use App\Interfaces\OrigemClienteRepositoryInterface;
 use App\Repositories\OrigemClienteRepository;
-
+use App\Interfaces\FinanceiroRepositoryInterface;
+use App\Repositories\FinanceiroRepository;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -67,6 +68,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ServicoRepositoryInterface::class, ServicoRepository::class);
         $this->app->bind(VendaRepositoryInterface::class, VendaRepository::class);
         $this->app->bind(OrigemClienteRepositoryInterface::class, OrigemClienteRepository::class);
+        $this->app->bind(FinanceiroRepositoryInterface::class, FinanceiroRepository::class);
     }
 
     /**

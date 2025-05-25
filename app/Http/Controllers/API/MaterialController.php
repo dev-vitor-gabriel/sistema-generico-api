@@ -16,7 +16,7 @@ class MaterialController extends Controller
      {
         $this->middleware('auth:api', ['except' => []]);
      }
-    
+
 
     public function getIdEmpresa(Request $request) {
         $id_empresa = (int)$request->header('id-empresa-d');
@@ -63,12 +63,23 @@ class MaterialController extends Controller
             return $data;
         }
 
-        $per_page = $request->query('per_page', 10);
-        $filter = $request->query('filter', '');
-        $page_number = $request->query('page_number', 1);
-        $per_page = ($per_page > 50) ? 50 : $per_page;
+        $queryParams = (object) [
+            'perPage' => $request->query('per_page', 10),
+            'filter' => $request->query('filter', ''),
+            'id_estoque' => $request->query('id_estoque', null),
+            'pageNumber' => $request->query('page_number', 1),
+            'id_centro_custo_mte' => $request->query('id_centro_custo_mte', null),
+            'verificar_estoque' => filter_var($request->query('verificarEstoque', false), FILTER_VALIDATE_BOOLEAN),
+        ];
 
-        $result = $this->materialRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+       if ($queryParams->id_centro_custo_mte === "null" || $queryParams->id_centro_custo_mte === "") {
+            $queryParams->id_centro_custo_mte = null;
+        }
+
+        $queryParams->perPage = ($queryParams->perPage > 50) ? 50 : $queryParams->perPage;
+
+
+        $result = $this->materialRepository->getAll($id_empresa, $queryParams);
         return $result;
     }
 
@@ -109,7 +120,9 @@ class MaterialController extends Controller
             'id_centro_custo_mte'   => 'required|integer|',
         ]);
 
-        $material = $this->materialRepository->create($request->all(), $id_empresa);
+        $request = $request->merge(['id_empresa_mte' => $id_empresa]);
+
+        $material = $this->materialRepository->create($request->all());
 
         return response()->json($material,200);
     }

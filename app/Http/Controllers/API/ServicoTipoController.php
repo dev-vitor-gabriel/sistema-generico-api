@@ -52,7 +52,8 @@ class ServicoTipoController extends Controller
             'id_centro_custo_stp'  => 'required|integer|',
         ]);
 
-        $servico_tipo = $this->servicoTipoRepository->create($request->all(), $id_empresa);
+        $request = $request->merge(['id_empresa_stp' => $id_empresa]);
+        $servico_tipo = $this->servicoTipoRepository->create($request->all());
 
         return response()->json($servico_tipo,201);
     }
@@ -92,12 +93,16 @@ class ServicoTipoController extends Controller
             return $data;
         }
 
-        $per_page = $request->query('per_page', 10);
-        $filter = $request->query('filter', '');
-        $page_number = $request->query('page_number', 1);
-        $per_page = ($per_page > 50) ? 50 : $per_page;
+        $queryParams = (object) [
+            'perPage' => $request->query('per_page', 10),
+            'filter' => $request->query('filter', ''),
+            'pageNumber' => $request->query('page_number', 1),
+            'id_centro_custo_stp' => $request->query('id_centro_custo_stp', null),
+        ];
 
-        $result = $this->servicoTipoRepository->getAll($id_empresa, $filter, $per_page, $page_number);
+        $queryParams->perPage = ($queryParams->perPage > 50) ? 50 : $queryParams->perPage;
+
+        $result = $this->servicoTipoRepository->getAll($id_empresa, $queryParams);
         return $result;
     }
 

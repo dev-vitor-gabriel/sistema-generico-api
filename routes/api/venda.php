@@ -19,6 +19,10 @@ Route::controller(VendaController::class)->group(function () {
     Route::post('', 'create');
     Route::get('topMateriaisVendidos', 'getTotalMateriaisPorVenda');
     Route::get('topValorMateriaisVendidos', 'getValorMateriaisPorVenda');
+    Route::get('topFuncionariosPorVenda', 'getTopTresFuncionariosPorVenda');
+    Route::get('topVendasPorCentroCusto', 'getVendasPorCentroCusto');
+    Route::get('topVendasPorCliente', 'getVendasPorCliente');
+    Route::get('totalVendasPorOrigemCliente', 'getTotalVendasPorOrigemCliente');
     Route::get('', 'get');
     Route::get('{id_venda}', 'get');
     Route::get('{id_venda}/materiais', 'getMateriais');

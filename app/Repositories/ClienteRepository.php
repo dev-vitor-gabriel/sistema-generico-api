@@ -7,16 +7,16 @@ use App\Models\Cliente;
 
 class ClienteRepository implements ClienteRepositoryInterface
 {
-    public function create($request, $id_empresa)
+    public function create($request)
     {
-        $result = Cliente::create($request,$id_empresa);
+        $result = Cliente::create($request);
 
         return $result;
     }
 
-    public function getAll($id_empresa, $filter, $per_page, $page_number)
+    public function getAll($id_empresa, $queryParams)
     {
-        $result = Cliente::getAll($id_empresa, $filter, $per_page, $page_number);
+        $result = Cliente::getAll($id_empresa, $queryParams);
 
         return $result;
     }

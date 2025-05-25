@@ -24,11 +24,18 @@ class User extends Authenticatable implements JWTSubject
         'email',
         'password',
         'url_img_user',
-        'is_ativo_user'
+        'is_ativo_user',
+        'id_empresa_d'
     ];
 
-    public static function getAll() {
-        $data = User::select(['id','name','email','url_img_user','created_at','updated_at'])->where('is_ativo_user', 1)->orderBy('id', 'desc')->get();
+    public static function getAll($id_empresa, $filter) {
+        $data = User::
+        select(['id','name','email','url_img_user','created_at','updated_at'])
+        ->where('is_ativo_user', 1)
+        ->where('id_empresa_d', $id_empresa)
+        ->where('name', 'like', '%'.$filter.'%')
+        ->orderBy('id', 'desc')
+        ->get();
         return response()->json($data->toArray());
     }
 
@@ -37,6 +44,7 @@ class User extends Authenticatable implements JWTSubject
         select(['id','name','email','url_img_user','created_at','updated_at'])
         ->where('is_ativo_user', 1)
         ->where('name', 'like', '%'.$filter.'%')
+        ->where('id_empresa_d', $id_empresa)
         ->orderBy('id', 'desc')
         ->paginate($perPage, ['*'], 'page', $pageNumber);
 

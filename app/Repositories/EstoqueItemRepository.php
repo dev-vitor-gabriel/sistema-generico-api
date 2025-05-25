@@ -41,9 +41,9 @@ class EstoqueItemRepository implements EstoqueItemRepositoryInterface
         return $result;
     }
 
-    public function getByCentroCustoMaterial($id_centro_custo_eti, $id_material_eti)
+    public function getByEstoqueMaterial($id_estoque_eti, $id_material_eti)
     {
-        $result = EstoqueItem::getByCentroCustoMaterial($id_centro_custo_eti, $id_material_eti);
+        $result = EstoqueItem::getByEstoqueMaterial($id_estoque_eti, $id_material_eti);
 
         return $result;
     }
